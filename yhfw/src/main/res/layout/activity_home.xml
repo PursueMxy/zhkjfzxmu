@@ -27,7 +27,7 @@
 
     <!--接单选择-->
     <RelativeLayout
-        android:visibility="visible"
+        android:visibility="gone"
         android:id="@+id/home_rl_order_taking"
         android:background="#ffffff"
         android:layout_marginLeft="@dimen/dp_7"
@@ -359,14 +359,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <ImageView
-                android:id="@+id/home_img_wait_navigation"
-                android:layout_marginTop="@dimen/dp_13"
-                android:layout_marginRight="@dimen/dp_15"
-                android:layout_alignParentRight="true"
-                android:src="@mipmap/icon_orderlocation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
         </RelativeLayout>
         <LinearLayout
             android:orientation="horizontal"
@@ -523,7 +515,7 @@
 
     <!--到达终点-->
     <LinearLayout
-        android:visibility="gone"
+        android:visibility="visible"
         android:orientation="vertical"
         android:background="@drawable/btn_white"
         android:layout_marginLeft="@dimen/dp_7"
@@ -533,7 +525,17 @@
         android:id="@+id/home_order_in"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_335">
-
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+      <ImageView
+          android:id="@+id/home_img_wait_navigation"
+          android:layout_marginTop="@dimen/dp_13"
+          android:layout_marginRight="@dimen/dp_15"
+          android:layout_alignParentRight="true"
+          android:src="@mipmap/icon_orderlocation"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content" />
         <TextView
             android:layout_marginTop="@dimen/dp_24"
             android:textColor="@color/color_blackCC"
@@ -543,7 +545,7 @@
             android:textStyle="bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-
+  </RelativeLayout>
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"

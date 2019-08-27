@@ -392,7 +392,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     recordAudio();
                 }else {
                     stopRecord();
-
                     Log.e("mAudioPath",mAudioPath);
                     OkGo.<String>post(AppRequestURL.URL.recording)
                             .params("type","1")
@@ -1320,18 +1319,18 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 }
                 int size = driverPath.size();
-                aMap.clear();
-                aMap.addPolyline(new PolylineOptions()
-                        .addAll(driverPath)
-                        .width(20)
-                        //是否开启纹理贴图
-                        .setUseTexture(true)
-                        //绘制成大地线
-                        .geodesic(false)
-                        //设置纹理样式
-//                .setCustomTexture(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.custtexture)))
-                        //设置画线的颜色
-                        .color(Color.argb(200, 0, 225, 12)));
+//                aMap.clear();
+//                aMap.addPolyline(new PolylineOptions()
+//                        .addAll(driverPath)
+//                        .width(20)
+//                        //是否开启纹理贴图
+//                        .setUseTexture(true)
+//                        //绘制成大地线
+//                        .geodesic(false)
+//                        //设置纹理样式
+////                .setCustomTexture(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.custtexture)))
+//                        //设置画线的颜色
+//                        .color(Color.argb(200, 0, 225, 12)));
                 //添加终点标注
                 if (stopmarker != null) {
                     stopmarker.remove();
