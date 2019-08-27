@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- -->
+    <string name="pref_title_general" tools:ignore="ExtraTranslation">General</string>
+
+    <string name="pref_key_enable_background_play" tools:ignore="ExtraTranslation">pref.enable_background_play</string>
+    <string name="pref_title_enable_background_play" tools:ignore="ExtraTranslation">Enable background play</string>
+    <string name="pref_summary_enable_background_play" tools:ignore="ExtraTranslation">need Android 4.0+</string>
+
+    <string name="pref_key_using_android_player" tools:ignore="ExtraTranslation">pref.using_android_player</string>
+    <string name="pref_title_using_android_player" tools:ignore="ExtraTranslation">Using system player</string>
+    <string name="pref_summary_using_android_player" tools:ignore="ExtraTranslation"></string>
+
+    <string name="pref_key_player" tools:ignore="ExtraTranslation">pref.player</string>
+    <string name="pref_title_player" tools:ignore="ExtraTranslation">Choose Player</string>
+    <string-array name="pref_entries_player" tools:ignore="ExtraTranslation">
+        <item>Auto Select</item>
+        <item>AndroidMediaPlayer</item>
+        <item>IjkMediaPlayer</item>
+        <item>IjkExoMediaPlayer</item>
+    </string-array>
+    <string-array name="pref_entry_values_player" tools:ignore="ExtraTranslation">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+    <string-array name="pref_entry_summaries_player" tools:ignore="ExtraTranslation">
+        <item>Auto Select</item>
+        <item>AndroidMediaPlayer</item>
+        <item>IjkMediaPlayer</item>
+        <item>IjkExoMediaPlayer</item>
+    </string-array>
+
+    <!-- -->
+    <string name="pref_title_ijkplayer_video" tools:ignore="ExtraTranslation">Video: ijkplayer</string>
+
+    <string name="pref_key_using_media_codec" tools:ignore="ExtraTranslation">pref.using_media_codec</string>
+    <string name="pref_title_using_media_codec" tools:ignore="ExtraTranslation">Using MediaCodec</string>
+    <string name="pref_summary_using_media_codec" tools:ignore="ExtraTranslation"></string>
+
+    <string name="pref_key_using_media_codec_auto_rotate" tools:ignore="ExtraTranslation">pref.using_media_codec_auto_rotate</string>
+    <string name="pref_title_using_media_codec_auto_rotate" tools:ignore="ExtraTranslation">Using MediaCodec auto rotate</string>
+    <string name="pref_summary_using_media_codec_auto_rotate" tools:ignore="ExtraTranslation"></string>
+
+    <string name="pref_key_media_codec_handle_resolution_change" tools:ignore="ExtraTranslation">pref.media_codec_handle_resolution_change</string>
+    <string name="pref_title_media_codec_handle_resolution_change" tools:ignore="ExtraTranslation">MediaCodec handle resolution change</string>
+    <string name="pref_summary_media_codec_handle_resolution_change" tools:ignore="ExtraTranslation"></string>
+
+    <string name="pref_key_pixel_format" tools:ignore="ExtraTranslation">pref.pixel_format</string>
+    <string name="pref_title_pixel_format" tools:ignore="ExtraTranslation">Pixel Format</string>
+    <string-array name="pref_entries_pixel_format" tools:ignore="ExtraTranslation">
+        <item>Auto Select</item>
+        <item>RGB 565</item>
+        <item>RGB 888</item>
+        <item>RGBX 8888</item>
+        <item>YV12</item>
+        <item>OpenGL ES2</item>
+    </string-array>
+    <string-array name="pref_entry_values_pixel_format" tools:ignore="ExtraTranslation">
+        <item></item>
+        <item>fcc-rv16</item>
+        <item>fcc-rv24</item>
+        <item>fcc-rv32</item>
+        <item>fcc-yv12</item>
+        <item>fcc-_es2</item>
+    </string-array>
+    <string-array name="pref_entry_summaries_pixel_format" tools:ignore="ExtraTranslation">
+        <item>Auto Select</item>
+        <item>RGB 565</item>
+        <item>RGB 888</item>
+        <item>RGBX 8888</item>
+        <item>YV12</item>
+        <item>OpenGL ES2</item>
+    </string-array>
+
+    <!-- -->
+    <string name="pref_title_ijkplayer_audio" tools:ignore="ExtraTranslation">Audio: ijkplayer</string>
+
+    <string name="pref_key_using_opensl_es" tools:ignore="ExtraTranslation">pref.using_opensl_es</string>
+    <string name="pref_title_using_opensl_es" tools:ignore="ExtraTranslation">Using OpenSL ES</string>
+    <string name="pref_summary_using_opensl_es" tools:ignore="ExtraTranslation"></string>
+
+    <!-- -->
+    <string name="pref_title_render_view" tools:ignore="ExtraTranslation">RenderView</string>
+
+    <string name="pref_key_enable_no_view" tools:ignore="ExtraTranslation">pref.enable_no_view</string>
+    <string name="pref_title_enable_no_view" tools:ignore="ExtraTranslation">Enable NoView</string>
+    <string name="pref_summary_enable_no_view" tools:ignore="ExtraTranslation"></string>
+
+    <string name="pref_key_enable_surface_view" tools:ignore="ExtraTranslation">pref.enable_surface_view</string>
+    <string name="pref_title_enable_surface_view" tools:ignore="ExtraTranslation">Enable SurfaceView</string>
+    <string name="pref_summary_enable_surface_view" tools:ignore="ExtraTranslation"></string>
+
+    <string name="pref_key_enable_texture_view" tools:ignore="ExtraTranslation">pref.enable_texture_view</string>
+    <string name="pref_title_enable_texture_view" tools:ignore="ExtraTranslation">Enable TextureView</string>
+    <string name="pref_summary_enable_texture_view" tools:ignore="ExtraTranslation"></string>
+
+    <string name="pref_key_enable_detached_surface_texture" tools:ignore="ExtraTranslation">pref.enable_detached_surface_texture</string>
+    <string name="pref_title_enable_detached_surface_texture" tools:ignore="ExtraTranslation">Enable detached SurfaceTexture</string>
+    <string name="pref_summary_enable_detached_surface_texture" tools:ignore="ExtraTranslation"></string>
+
+    <!-- -->
+    <string name="pref_title_misc" tools:ignore="ExtraTranslation">Misc</string>
+    <string name="pref_key_using_mediadatasource" tools:ignore="ExtraTranslation">pref.using_mediadatasource</string>
+    <string name="pref_title_using_mediadatasource" tools:ignore="ExtraTranslation">Using MediaDataSource</string>
+    <string name="pref_summary_using_mediadatasource" tools:ignore="ExtraTranslation"></string>
+
+    <!-- -->
+    <string name="pref_key_last_directory" tools:ignore="ExtraTranslation"></string>
+
+</resources>

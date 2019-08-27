@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<litepal>
+    <dbname value="yhdb" />
+    <version value="2" />
+    <list>
+        <mapping class="com.zhkj.yhfw.Utlis.LiteDataBean"  />
+        <mapping class="com.zhkj.yhfw.Bean.OrderBean"></mapping>
+    </list>
+</litepal>

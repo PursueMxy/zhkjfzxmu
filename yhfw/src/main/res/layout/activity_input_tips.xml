@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_marginTop="@dimen/dp_5"
+        android:layout_marginBottom="@dimen/dp_5"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginRight="@dimen/dp_10"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/btn_search"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/input_tips_tv_cityName"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:textSize="@dimen/sp_15"
+            android:textColor="@color/color_black"
+            android:gravity="center"
+            android:text="厦门市 V"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+        <android.support.v7.widget.SearchView
+            android:id="@+id/keyWord"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:imeOptions="actionSearch"
+            android:inputType="textCapWords"
+            android:singleLine="true"
+            android:textColor="@android:color/white"
+            android:textColorHint="@android:color/white"
+            android:background="@null"
+            app:queryHint="请输入xia车地点"
+            app:searchIcon="@null" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/inputtip_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dp">
+    </ListView>
+</LinearLayout>

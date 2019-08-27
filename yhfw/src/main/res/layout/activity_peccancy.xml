@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/BG_C0C0BF"
+    tools:context=".paasAct.PeccancyActivity">
+    <RelativeLayout
+        android:background="@color/color_white"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp_40">
+    <ImageView
+        android:id="@+id/peccancy_img_back"
+        android:layout_marginLeft="@dimen/dp_15"
+        android:layout_centerVertical="true"
+        android:src="@mipmap/icon_back"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+    <TextView
+        android:text="违章记录"
+        android:textSize="@dimen/sp_16"
+        android:textColor="@color/color_black"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>
+    <RelativeLayout
+        android:layout_marginTop="@dimen/dp_15"
+        android:layout_marginLeft="@dimen/dp_25"
+        android:layout_marginRight="@dimen/dp_25"
+        android:background="@color/color_white"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_40">
+        <ImageView
+            android:id="@+id/peccancy_img_last"
+            android:layout_toLeftOf="@+id/peccancy_tv_peccancyname"
+            android:layout_marginRight="@dimen/dp_25"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/icon_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+        <TextView
+            android:id="@+id/peccancy_tv_peccancyname"
+            android:text="2019年8月"
+            android:textSize="@dimen/sp_16"
+            android:textColor="@color/color_black"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:id="@+id/peccancy_img_next"
+            android:layout_toRightOf="@+id/peccancy_tv_peccancyname"
+            android:layout_marginLeft="@dimen/dp_25"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/icon_next"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+    </RelativeLayout>
+    <ListView
+        android:id="@+id/peccancy_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></ListView>
+</LinearLayout>

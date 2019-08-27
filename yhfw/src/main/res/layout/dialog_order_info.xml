@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+      <TextView
+          android:layout_marginTop="@dimen/dp_14"
+          android:textColor="@color/color_black"
+          android:textSize="@dimen/sp_13"
+          android:gravity="center"
+          android:text="订单信息"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content" />
+    <TextView
+        android:layout_marginLeft="@dimen/dp_19"
+        android:layout_marginRight="@dimen/dp_19"
+        android:layout_marginTop="@dimen/dp_9"
+        android:background="@color/v666666"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_0_5" />
+
+    <TextView
+        android:layout_marginTop="@dimen/dp_16"
+        android:layout_gravity="center"
+        android:textSize="@dimen/sp_15"
+        android:drawableLeft="@mipmap/spot"
+        android:text="厦门市国贸大厦"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_marginTop="@dimen/dp_14"
+        android:layout_gravity="center"
+        android:textSize="@dimen/sp_15"
+        android:drawableLeft="@mipmap/spot_red"
+        android:text="厦门市湖里万达广场"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_marginTop="@dimen/dp_27"
+            android:text="起步费："
+            android:layout_marginLeft="@dimen/dp_42"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_marginTop="@dimen/dp_27"
+            android:layout_marginRight="@dimen/dp_45"
+            android:text="¥ 15"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <TextView
+        android:layout_marginTop="@dimen/dp_6"
+        android:layout_marginLeft="@dimen/dp_36"
+        android:layout_marginRight="@dimen/dp_36"
+        android:background="@color/v666666"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_0_5" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_marginTop="@dimen/dp_23"
+            android:text="里程数："
+            android:layout_marginLeft="@dimen/dp_42"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_marginTop="@dimen/dp_23"
+            android:layout_marginRight="@dimen/dp_45"
+            android:text="8公里"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <TextView
+        android:layout_marginTop="@dimen/dp_6"
+        android:layout_marginLeft="@dimen/dp_36"
+        android:layout_marginRight="@dimen/dp_36"
+        android:background="@color/v666666"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_0_5" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_marginTop="@dimen/dp_23"
+            android:text="预计价格："
+            android:layout_marginLeft="@dimen/dp_42"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_marginTop="@dimen/dp_23"
+            android:layout_marginRight="@dimen/dp_45"
+            android:text="¥ 45"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <TextView
+        android:layout_marginTop="@dimen/dp_6"
+        android:layout_marginLeft="@dimen/dp_36"
+        android:layout_marginRight="@dimen/dp_36"
+        android:background="@color/v666666"
+        android:layout_height="@dimen/dp_0_5"
+        android:layout_width="match_parent" />
+      <LinearLayout
+          android:background="@drawable/btn_bottom_white"
+          android:layout_marginTop="@dimen/dp_23"
+          android:layout_width="match_parent"
+          android:layout_height="@dimen/dp_36"
+          android:orientation="horizontal">
+          <TextView
+              android:background="@drawable/btn_bottom_858585"
+              android:text="拒  单"
+              android:textSize="@dimen/sp_13"
+              android:gravity="center"
+              android:textColor="@color/color_white"
+              android:layout_weight="1"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent" />
+          <TextView
+              android:background="@drawable/btn_bottom_fa6265"
+              android:text="接  单"
+              android:textSize="@dimen/sp_13"
+              android:gravity="center"
+              android:textColor="@color/color_white"
+              android:layout_weight="1"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent" />
+      </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/BG_C0C0BF"
+    tools:context=".paasAct.CustonServiceActivity">
+    <RelativeLayout
+        android:background="@color/color_white"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50">
+        <ImageView
+            android:id="@+id/CustonService_img_back"
+            android:layout_marginLeft="@dimen/dp_15"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/icon_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+        <TextView
+            android:text="联系客服"
+            android:textSize="@dimen/sp_16"
+            android:textColor="@color/color_black"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <ImageView
+        android:layout_marginTop="@dimen/dp_25"
+        android:src="@mipmap/yhfwa"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_marginTop="@dimen/dp_25"
+        android:gravity="center"
+        android:text="一乎服务"
+        android:enabled="true"
+        android:textSize="@dimen/sp_23"
+        android:textColor="@color/color_black"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_marginTop="@dimen/dp_20"
+        android:background="@color/color_black"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_2" />
+
+    <RelativeLayout
+        android:padding="@dimen/dp_20"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textSize="@dimen/sp_19"
+            android:textColor="@color/color_black"
+            android:text="联系方式：0592-5711628"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:id="@+id/custom_service_img_call"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/icon_call"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_marginLeft="@dimen/dp_20"
+        android:textSize="@dimen/sp_19"
+        android:textColor="@color/color_black"
+        android:text="联系地址：厦门市"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</LinearLayout>

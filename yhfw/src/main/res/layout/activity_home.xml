@@ -1,0 +1,775 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomeActivity">
+
+    <com.amap.api.maps.TextureMapView
+        android:id="@+id/activity_track_service_map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></com.amap.api.maps.TextureMapView>
+
+    <ImageView
+        android:id="@+id/home_img_common"
+        android:src="@mipmap/icon_home_head"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:id="@+id/home_img_head"
+        android:layout_marginTop="@dimen/dp_25"
+        android:layout_marginLeft="@dimen/dp_270"
+        android:src="@mipmap/hone_icon_head"
+        android:layout_width="@dimen/dp_25"
+        android:layout_height="@dimen/dp_25" />
+
+    <!--接单选择-->
+    <RelativeLayout
+        android:visibility="visible"
+        android:id="@+id/home_rl_order_taking"
+        android:background="#ffffff"
+        android:layout_marginLeft="@dimen/dp_7"
+        android:layout_marginRight="@dimen/dp_7"
+        android:layout_marginTop="@dimen/dp_530"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_119">
+        <Button
+            android:background="@drawable/btn_ordertaking"
+            android:id="@+id/btn_start"
+            android:text="路边接单"
+            android:textSize="@dimen/sp_19"
+            android:textColor="@color/color_white"
+            android:layout_marginLeft="@dimen/dp_46"
+            android:layout_marginBottom="@dimen/dp_40"
+            android:layout_marginTop="@dimen/dp_40"
+            android:layout_width="@dimen/dp_102"
+            android:layout_height="@dimen/dp_39" />
+        <Button
+            android:id="@+id/btn_sala"
+            android:background="@drawable/btn_sala"
+            android:layout_alignParentRight="true"
+            android:text="大  厅"
+            android:textSize="@dimen/sp_19"
+            android:textColor="@color/color_white"
+            android:layout_marginRight="@dimen/dp_46"
+            android:layout_marginBottom="@dimen/dp_40"
+            android:layout_marginTop="@dimen/dp_40"
+            android:layout_width="@dimen/dp_102"
+            android:layout_height="@dimen/dp_39" />
+        
+    </RelativeLayout>
+
+    <!--代驾类型-->
+    <LinearLayout
+        android:id="@+id/home_ll_driver"
+        android:visibility="gone"
+        android:background="@color/color_white"
+        android:layout_marginTop="@dimen/dp_400"
+        android:layout_marginLeft="@dimen/dp_7"
+        android:layout_marginRight="@dimen/dp_7"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="@dimen/dp_220">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_60">
+            <TextView
+                android:id="@+id/designated_driver"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/dp_5"
+                android:layout_marginLeft="@dimen/dp_46"
+                android:padding="@dimen/dp_8"
+                android:background="@drawable/btn_jhdj"
+                android:text="酒后代驾"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/bao_times_driving"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="@dimen/dp_5"
+                android:layout_marginRight="@dimen/dp_46"
+                android:padding="@dimen/dp_8"
+                android:background="@drawable/btn_jhdj"
+                android:text="包时代驾"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_40">
+            <ImageView
+                android:layout_marginLeft="@dimen/dp_15"
+                android:layout_centerVertical="true"
+                android:id="@+id/img_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/spot"/>
+
+            <TextView
+                android:textSize="@dimen/sp_15"
+                android:layout_marginLeft="@dimen/dp_5"
+                android:layout_toLeftOf="@+id/img_start_right"
+                android:id="@+id/tv_start_address"
+                android:layout_toRightOf="@+id/img_start"
+                android:lines="2"
+                android:text=""
+                android:hint="获取出发点中"
+                android:gravity="center|left"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+                <ImageView
+                    android:id="@+id/img_start_right"
+                    android:layout_marginRight="@dimen/dp_15"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:src="@mipmap/rightwart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+        <TextView
+            android:layout_marginLeft="@dimen/dp_15"
+            android:layout_marginRight="@dimen/dp_15"
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginBottom="@dimen/dp_5"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#979292"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_40">
+            <ImageView
+                android:layout_marginLeft="@dimen/dp_15"
+                android:layout_centerVertical="true"
+                android:id="@+id/img_stop"
+                android:src="@mipmap/spot_red"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:textSize="@dimen/sp_15"
+                android:hint="请选择目的地"
+                android:id="@+id/tv_destination"
+                android:layout_toLeftOf="@+id/img_stop_right"
+                android:layout_marginLeft="@dimen/dp_5"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/img_stop"
+                android:text=""
+                android:lines="2"
+                android:gravity="center|left"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <ImageView
+                android:id="@+id/img_stop_right"
+                android:layout_marginRight="@dimen/dp_15"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:src="@mipmap/rightwart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_1"
+            android:background="#ffffff"/>
+
+        <Button
+            android:id="@+id/home_btn_next"
+            android:layout_marginLeft="@dimen/dp_15"
+            android:layout_marginRight="@dimen/dp_15"
+            android:layout_marginTop="@dimen/dp_10"
+            android:background="@drawable/btn_ordertaking"
+            android:text="下一步"
+            android:textSize="@dimen/sp_15"
+            android:textColor="@color/color_white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <!--到达上车点-->
+    <LinearLayout
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:background="@drawable/btn_white"
+        android:layout_marginLeft="@dimen/dp_7"
+        android:layout_marginRight="@dimen/dp_7"
+        android:layout_marginTop="@dimen/dp_316"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:id="@+id/home_order_geton"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_330">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_marginTop="@dimen/dp_24"
+                android:textColor="@color/color_blackCC"
+                android:textSize="@dimen/sp_21"
+                android:layout_centerHorizontal="true"
+                android:text="商务代驾"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <ImageView
+                android:id="@+id/hone_img_navigation"
+                android:layout_marginTop="@dimen/dp_13"
+                android:layout_marginRight="@dimen/dp_15"
+                android:layout_alignParentRight="true"
+                android:src="@mipmap/icon_orderlocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_129">
+            <RelativeLayout
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <com.zhkj.yhfw.customview.CircleImageView
+                    android:id="@+id/home_geton_img_head"
+                    android:src="@mipmap/ic_launcher_round"
+                    android:layout_centerInParent="true"
+                    android:layout_width="@dimen/dp_65"
+                    android:layout_height="@dimen/dp_65" />
+            </RelativeLayout>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/home_order_geton_startaddress"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:layout_marginTop="@dimen/dp_23"
+                    android:drawableLeft="@mipmap/spot"
+                    android:text=""
+                    android:textColor="@color/color_black"
+                    android:textSize="@dimen/sp_17"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/home_order_geton_stopaddress"
+                    android:maxLines="1"
+                     android:ellipsize="end"
+                    android:layout_marginTop="@dimen/dp_12"
+                    android:drawableLeft="@mipmap/spot_red"
+                    android:text=""
+                    android:textColor="@color/color_black"
+                    android:textSize="@dimen/sp_17"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/home_tv_geton_orderDt"
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:drawableLeft="@mipmap/alarm"
+                    android:text=""
+                    android:textColor="@color/color_black"
+                    android:textSize="@dimen/sp_17"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_marginTop="@dimen/dp_15"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/home_tv_callPhone"
+                android:drawablePadding="@dimen/dp_5"
+                android:drawableTop="@mipmap/icon_phone"
+                android:textStyle="bold"
+                android:layout_marginTop="@dimen/dp_13"
+                android:textColor="@color/color_black"
+                android:text="联系客户"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:textSize="@dimen/sp_12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/home_tv_cancelOrder"
+                android:drawablePadding="@dimen/dp_5"
+                android:drawableTop="@mipmap/icon_orderback"
+                android:textStyle="bold"
+                android:layout_marginTop="@dimen/dp_13"
+                android:textColor="@color/color_black"
+                android:text="取消订单"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:textSize="@dimen/sp_12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_marginTop="@dimen/dp_18"
+            android:layout_marginBottom="@dimen/dp_0"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/home_tv_geton"
+                android:background="@drawable/btn_bottom"
+                android:gravity="center"
+                android:textSize="@dimen/sp_22"
+                android:text="到达上车点"
+                android:textColor="@color/color_white"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <!--开始行驶-->
+    <LinearLayout
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:background="@drawable/btn_white"
+        android:layout_marginLeft="@dimen/dp_7"
+        android:layout_marginRight="@dimen/dp_7"
+        android:layout_marginTop="@dimen/dp_230"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:id="@+id/home_order_wait"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_400">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_marginTop="@dimen/dp_24"
+                android:textColor="@color/color_blackCC"
+                android:textSize="@dimen/sp_21"
+                android:layout_centerHorizontal="true"
+                android:text="商务代驾"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <ImageView
+                android:id="@+id/home_img_wait_navigation"
+                android:layout_marginTop="@dimen/dp_13"
+                android:layout_marginRight="@dimen/dp_15"
+                android:layout_alignParentRight="true"
+                android:src="@mipmap/icon_orderlocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_129">
+            <RelativeLayout
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <com.zhkj.yhfw.customview.CircleImageView
+                    android:id="@+id/home_wait_img_head"
+                    android:src="@mipmap/ic_launcher_round"
+                    android:layout_centerInParent="true"
+                    android:layout_width="@dimen/dp_65"
+                    android:layout_height="@dimen/dp_65" />
+            </RelativeLayout>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/home_tv_wait_startaddress"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:layout_marginTop="@dimen/dp_23"
+                    android:drawableLeft="@mipmap/spot"
+                    android:text=""
+                    android:textColor="@color/color_black"
+                    android:textSize="@dimen/sp_17"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/home_tv_wait_stopaddress"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:layout_marginTop="@dimen/dp_12"
+                    android:drawableLeft="@mipmap/spot_red"
+                    android:text=""
+                    android:textColor="@color/color_black"
+                    android:textSize="@dimen/sp_17"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/home_tv_wait_orderDt"
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:drawableLeft="@mipmap/alarm"
+                    android:text=""
+                    android:textColor="@color/color_black"
+                    android:textSize="@dimen/sp_17"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:textColor="@color/color_black"
+                android:text="等待时间"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:textSize="@dimen/sp_16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:textColor="@color/color_black"
+                android:text="等待费用"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:textSize="@dimen/sp_16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/home_tv_wait_time"
+                android:textStyle="bold"
+                android:layout_marginTop="@dimen/dp_18"
+                android:textColor="@color/red"
+                android:text="00 : 00"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:textSize="@dimen/sp_19"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/home_tv_wait_sum"
+                android:textStyle="bold"
+                android:layout_marginTop="@dimen/dp_18"
+                android:textColor="@color/red"
+                android:text="0.00元"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:textSize="@dimen/sp_19"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_marginTop="@dimen/dp_13"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/home_tv_wait_callPhone"
+                android:drawablePadding="@dimen/dp_5"
+                android:drawableTop="@mipmap/icon_phone"
+                android:textStyle="bold"
+                android:layout_marginTop="@dimen/dp_15"
+                android:textColor="@color/color_black"
+                android:text="联系客户"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:textSize="@dimen/sp_12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/home_tv_wait_cancelOrder"
+                android:drawablePadding="@dimen/dp_5"
+                android:drawableTop="@mipmap/icon_orderback"
+                android:textStyle="bold"
+                android:layout_marginTop="@dimen/dp_15"
+                android:textColor="@color/color_black"
+                android:text="取消订单"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:textSize="@dimen/sp_12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_marginTop="@dimen/dp_18"
+            android:layout_marginBottom="@dimen/dp_0"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/home_tv_start_driving"
+                android:background="@drawable/btn_bottom"
+                android:gravity="center"
+                android:textSize="@dimen/sp_22"
+                android:text="开始驾驶"
+                android:textColor="@color/color_white"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <!--到达终点-->
+    <LinearLayout
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:background="@drawable/btn_white"
+        android:layout_marginLeft="@dimen/dp_7"
+        android:layout_marginRight="@dimen/dp_7"
+        android:layout_marginTop="@dimen/dp_308"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:id="@+id/home_order_in"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_335">
+
+        <TextView
+            android:layout_marginTop="@dimen/dp_24"
+            android:textColor="@color/color_blackCC"
+            android:textSize="@dimen/sp_21"
+            android:text="商务代驾"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_129">
+            <RelativeLayout
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <com.zhkj.yhfw.customview.CircleImageView
+                    android:id="@+id/home_in_img_head"
+                    android:src="@mipmap/ic_launcher_round"
+                    android:layout_centerInParent="true"
+                    android:layout_width="@dimen/dp_65"
+                    android:layout_height="@dimen/dp_65" />
+            </RelativeLayout>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/home_tv_in_startaddress"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:layout_marginTop="@dimen/dp_23"
+                    android:drawableLeft="@mipmap/spot"
+                    android:text=""
+                    android:textColor="@color/color_black"
+                    android:textSize="@dimen/sp_17"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/home_tv_in_stopaddress"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:layout_marginTop="@dimen/dp_12"
+                    android:drawableLeft="@mipmap/spot_red"
+                    android:text=""
+                    android:textColor="@color/color_black"
+                    android:textSize="@dimen/sp_17"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/home_tv_in_orderDt"
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:drawableLeft="@mipmap/alarm"
+                    android:text=" "
+                    android:textColor="@color/color_black"
+                    android:textSize="@dimen/sp_17"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:textColor="@color/color_black"
+                android:text="代驾时间"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:textSize="@dimen/sp_16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:textColor="@color/color_black"
+                android:text="代驾里程"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:textSize="@dimen/sp_16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/home_tv_travel_time"
+                android:textStyle="bold"
+                android:layout_marginTop="@dimen/dp_18"
+                android:textColor="@color/red"
+                android:text="00:00"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:textSize="@dimen/sp_19"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/home_tv_driving_distance"
+                android:textStyle="bold"
+                android:layout_marginTop="@dimen/dp_18"
+                android:textColor="@color/red"
+                android:text="0.00M"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:textSize="@dimen/sp_19"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <TextView
+            android:id="@+id/home_tv_come_on"
+            android:layout_marginTop="@dimen/dp_33"
+            android:background="@drawable/btn_bottom"
+            android:gravity="center"
+            android:textSize="@dimen/sp_22"
+            android:text="到达终点"
+            android:textColor="@color/color_white"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <!--订单完成-->
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/home_ll_order_completion"
+        android:layout_marginTop="@dimen/dp_422"
+        android:background="@color/color_white"
+        android:layout_marginLeft="@dimen/dp_7"
+        android:layout_marginRight="@dimen/dp_7"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="@dimen/dp_215">
+        <TextView
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginBottom="@dimen/dp_5"
+            android:gravity="center"
+            android:textColor="@color/color_black"
+            android:textSize="@dimen/sp_19"
+            android:text="酒后代驾"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginBottom="@dimen/dp_5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_weight="3"
+            android:text="总计"
+            android:textColor="@color/color_blackCC"
+            android:textSize="@dimen/sp_15"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/home_tv_totalMoney"
+            android:layout_marginRight="@dimen/dp_10"
+            android:layout_weight="1"
+            android:text=""
+            android:gravity="center|right"
+            android:textColor="@color/red"
+            android:textSize="@dimen/sp_15"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+        <LinearLayout
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginBottom="@dimen/dp_5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_weight="3"
+                android:text="优惠券"
+                android:textColor="@color/color_blackCC"
+                android:textSize="@dimen/sp_15"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/home_tv_coupon"
+                android:layout_marginRight="@dimen/dp_10"
+                android:layout_weight="1"
+                android:text="没有使用优惠券"
+                android:gravity="center|right"
+                android:textColor="@color/color_413F3F"
+                android:textSize="@dimen/sp_15"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_margin="@dimen/dp_10"
+            android:background="@color/color_413F3F"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp" />
+        
+        <LinearLayout
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginBottom="@dimen/dp_5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_weight="3"
+                android:text="支付金额"
+                android:textColor="@color/color_blackCC"
+                android:textSize="@dimen/sp_15"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/home_tv_meetMoney"
+                android:layout_marginRight="@dimen/dp_10"
+                android:layout_weight="1"
+                android:text=""
+                android:gravity="center|right"
+                android:textColor="@color/red"
+                android:textSize="@dimen/sp_15"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/home_btn_orderOpen"
+            android:layout_marginLeft="@dimen/dp_40"
+            android:layout_marginRight="@dimen/dp_40"
+            android:layout_marginTop="@dimen/dp_10"
+            android:background="@drawable/btn_ordertaking"
+            android:text="确  认"
+            android:textSize="@dimen/sp_17"
+            android:textColor="@color/color_white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+</FrameLayout>

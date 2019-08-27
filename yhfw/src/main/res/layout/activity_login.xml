@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/BG_C0C0BF"
+    tools:context=".LoginActivity">
+<TextView
+    android:background="#ffffff"
+    android:textColor="#ff6f6666"
+    android:text="一心服务"
+    android:gravity="center"
+    android:textSize="@dimen/sp_19"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp_46" />
+    <com.zhkj.yhfw.customview.CircleImageView
+        android:id="@+id/login_img_head"
+        android:layout_marginTop="@dimen/dp_48"
+        android:src="@mipmap/ic_launcher"
+        android:layout_gravity="center"
+        android:layout_width="@dimen/dp_71"
+        android:layout_height="@dimen/dp_71" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/dp_54"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_marginLeft="@dimen/dp_50"
+            android:src="@mipmap/icon_head"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/login_edt_username"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:hint="请输入您的账号"
+            android:background="@null"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_marginTop="@dimen/dp_5"
+        android:layout_marginBottom="@dimen/dp_5"
+        android:layout_marginRight="@dimen/dp_50"
+        android:layout_marginLeft="@dimen/dp_50"
+        android:background="@color/v666666"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/dp_5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_marginLeft="@dimen/dp_50"
+            android:src="@mipmap/icon_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/login_edt_password"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:hint="请输入您的密码"
+            android:background="@null"
+            android:inputType="textPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_marginTop="@dimen/dp_5"
+        android:layout_marginBottom="@dimen/dp_5"
+        android:layout_marginRight="@dimen/dp_50"
+        android:layout_marginLeft="@dimen/dp_50"
+        android:background="@color/v666666"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp" />
+    <TextView
+        android:layout_marginTop="@dimen/dp_6"
+        android:layout_marginLeft="@dimen/dp_259"
+        android:text="忘记密码"
+        android:textColor="@color/blue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <RadioButton
+        android:checked="true"
+        android:text="阅读并同意用户协议"
+        android:textColor="#ff7e7777"
+        android:textSize="12sp"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <RelativeLayout
+        android:layout_marginTop="@dimen/dp_229"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/login_btn_login"
+            android:textColor="#ffffffff"
+            android:textSize="@dimen/sp_17"
+            android:layout_marginLeft="@dimen/dp_65"
+            android:background="@drawable/btn_ordertaking"
+            android:text="登  录"
+            android:layout_width="@dimen/dp_92"
+            android:layout_height="@dimen/dp_35" />
+
+        <Button
+            android:textColor="#ffffffff"
+            android:textSize="@dimen/sp_17"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/dp_65"
+            android:background="@drawable/btn_sala"
+            android:text="取  消"
+            android:layout_width="@dimen/dp_92"
+            android:layout_height="@dimen/dp_35" />
+
+    </RelativeLayout>
+
+</LinearLayout>

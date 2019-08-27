@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+   >
+
+    <TextView
+        android:id="@+id/dialog_confirm_tv_title"
+        android:textColor="@color/color_black"
+        android:textSize="@dimen/sp_20"
+        android:gravity="center"
+        android:text="确认开始行驶"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_80" />
+    <TextView
+        android:background="@color/color_413F3F"
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50">
+        <TextView
+            android:id="@+id/dialog_confirm_tv_back"
+            android:layout_weight="1"
+            android:text="取消"
+            android:gravity="center"
+            android:textSize="@dimen/sp_17"
+            android:textColor="@color/color_blackCC"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <TextView
+            android:background="@color/color_413F3F"
+            android:layout_width="0.3dp"
+            android:layout_height="match_parent" />
+        <TextView
+            android:id="@+id/dialog_confirm_tv_confirm"
+            android:layout_weight="1"
+            android:text="确认"
+            android:gravity="center"
+            android:textSize="@dimen/sp_17"
+            android:textColor="@color/blue"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+</LinearLayout>

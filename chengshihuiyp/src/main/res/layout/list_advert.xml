@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+   <ImageView
+       android:id="@+id/advicer_img"
+       android:src="@mipmap/csh_logo"
+       android:layout_width="@dimen/dp_100"
+       android:layout_height="@dimen/dp_100" />
+   <TextView
+       android:paddingLeft="@dimen/dp_5"
+       android:paddingRight="@dimen/dp_5"
+       android:background="#F52111"
+       android:textSize="@dimen/sp_15"
+       android:textColor="#FFFFFF"
+       android:text="爆款"
+       android:layout_alignRight="@+id/advicer_img"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content" />
+     <TextView
+         android:id="@+id/advicer_money"
+         android:text="¥ 289"
+         android:enabled="true"
+         android:textSize="@dimen/sp_13"
+         android:textColor="#FFFFFF"
+         android:background="#F52111"
+         android:layout_alignBottom="@+id/advicer_img"
+         android:layout_width="@dimen/dp_50"
+         android:gravity="center"
+         android:layout_height="wrap_content" />
+   <TextView
+       android:id="@+id/advicer_price"
+       android:text="¥ 289"
+       android:enabled="true"
+       android:textSize="@dimen/sp_13"
+       android:textColor="#817F7F"
+       android:background="#FFFFFF"
+       android:layout_alignRight="@+id/advicer_img"
+       android:layout_alignBottom="@+id/advicer_img"
+       android:layout_width="@dimen/dp_50"
+       android:gravity="center"
+       android:layout_height="wrap_content" />
+</RelativeLayout>

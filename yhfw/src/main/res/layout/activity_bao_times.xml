@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/BG_C0C0BF"
+    tools:context=".BaoTimesActivity">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_40">
+        <TextView
+            android:id="@+id/bao_times_back"
+            android:textSize="@dimen/sp_16"
+            android:textColor="@color/color_black"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:text="返回"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+        <TextView
+            android:text="包时代驾"
+            android:textSize="@dimen/sp_16"
+            android:textColor="@color/color_black"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:background="@color/color_ffd700"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_100"></RelativeLayout>
+
+    <TextView
+        android:gravity="center"
+        android:textSize="@dimen/sp_15"
+        android:textColor="@color/color_blackCC"
+        android:text="选择包时套餐"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_35" />
+
+<ListView
+    android:divider="@color/BG_C0C0BF"
+    android:dividerHeight="@dimen/dp_20"
+    android:layout_marginLeft="@dimen/dp_20"
+    android:layout_marginRight="@dimen/dp_20"
+    android:id="@+id/list_bao_times"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"></ListView>
+
+</LinearLayout>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/btn_white">
+    <TextView
+        android:textSize="@dimen/sp_17"
+        android:textColor="@color/color_blackCC"
+        android:gravity="center"
+        android:text="取消订单"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_35" />
+
+    <TextView
+        android:background="@color/color_413F3F"
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp" />
+
+    <RadioGroup
+        android:layout_marginTop="@dimen/dp_15"
+        android:id="@+id/dialog_cancel_radioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <RadioButton android:id="@+id/dialog_cancel_radio_btn_one"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:layout_marginLeft="@dimen/dp_25"
+            android:text="乘客不需要乘车" />
+        <RadioButton android:id="@+id/dialog_cancel_radio_btn_two"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_25"
+            android:text="乘客信息有误" />
+        <RadioButton android:id="@+id/dialog_cancel_radio_btn_three"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_25"
+            android:text="司机有事" />
+        <RadioButton android:id="@+id/dialog_cancel_radio_btn_four"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_25"
+            android:text="其它" />
+    </RadioGroup>
+
+    <EditText
+        android:id="@+id/dialog_cancel_edt_content"
+        android:layout_marginTop="@dimen/dp_15"
+        android:background="@drawable/edt_bg"
+        android:layout_marginLeft="@dimen/dp_20"
+        android:layout_marginRight="@dimen/dp_20"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_60" />
+    <LinearLayout
+        android:background="@drawable/btn_bottom_white"
+        android:layout_marginTop="@dimen/dp_23"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_36"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/dialog_cancel_tv_back"
+            android:background="@drawable/btn_bottom_858585"
+            android:text="取 消"
+            android:textSize="@dimen/sp_13"
+            android:gravity="center"
+            android:textColor="@color/color_white"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <TextView
+            android:id="@+id/dialog_cancel_tv_confirm"
+            android:background="@drawable/btn_bottom_fa6265"
+            android:text="提 交"
+            android:textSize="@dimen/sp_13"
+            android:gravity="center"
+            android:textColor="@color/color_white"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+</LinearLayout>

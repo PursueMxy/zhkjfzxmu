@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+   <ImageView
+       android:id="@+id/list_contact_img"
+       android:layout_marginTop="@dimen/dp_20"
+       android:layout_marginBottom="@dimen/dp_20"
+       android:layout_marginLeft="@dimen/dp_20"
+       android:src="@mipmap/paas_icon_customer"
+       android:layout_width="@dimen/dp_35"
+       android:layout_height="@dimen/dp_35" />
+
+     <TextView
+         android:id="@+id/list_contract_tv_customerName"
+         android:textColor="@color/color_blackCC"
+         android:textSize="@dimen/sp_13"
+         android:layout_marginLeft="@dimen/dp_20"
+         android:layout_toRightOf="@+id/list_contact_img"
+         android:layout_alignTop="@+id/list_contact_img"
+         android:text="name"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/list_contract_tv_mobile"
+        android:textColor="@color/color_blackCC"
+        android:textSize="@dimen/sp_13"
+        android:layout_marginLeft="@dimen/dp_20"
+        android:layout_toRightOf="@+id/list_contact_img"
+        android:layout_alignBottom="@+id/list_contact_img"
+        android:text="13888888888"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:id="@+id/list_contract_img_delete"
+        android:layout_marginRight="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_20"
+        android:layout_marginBottom="@dimen/dp_20"
+        android:src="@mipmap/icon_delete"
+        android:layout_alignParentRight="true"
+        android:layout_width="@dimen/dp_35"
+        android:layout_height="@dimen/dp_35" />
+</RelativeLayout>

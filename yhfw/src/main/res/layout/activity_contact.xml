@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".paasAct.ContactActivity">
+    <RelativeLayout
+        android:background="@color/color_white"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50">
+        <ImageView
+            android:id="@+id/Contact_img_back"
+            android:layout_marginLeft="@dimen/dp_15"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/icon_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+        <TextView
+            android:text="紧急联系人"
+            android:textSize="@dimen/sp_16"
+            android:textColor="@color/color_black"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_marginTop="@dimen/dp_20"
+        android:layout_marginLeft="@dimen/dp_20"
+        android:textSize="@dimen/sp_15"
+        android:textColor="@color/color_black"
+        android:text="1、可设置多个紧急联系人"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_marginTop="@dimen/dp_20"
+        android:layout_marginLeft="@dimen/dp_20"
+        android:textSize="@dimen/sp_15"
+        android:textColor="@color/color_black"
+        android:text="2、可对紧急联系人发送短信"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <ListView
+        android:scrollbars="none"
+        android:layout_above="@id/contact_btn_add"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginRight="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_20"
+        android:id="@+id/Contact_list"
+        android:dividerHeight="@dimen/dp_5"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+     <Button
+         android:layout_marginBottom="@dimen/dp_20"
+         android:layout_marginLeft="@dimen/dp_60"
+         android:layout_marginRight="@dimen/dp_60"
+         android:layout_alignParentBottom="true"
+         android:text="新  增"
+         android:textSize="@dimen/sp_16"
+         android:background="@drawable/btn_ordertaking"
+         android:id="@+id/contact_btn_add"
+         android:textColor="@color/color_white"
+         android:layout_width="match_parent"
+         android:layout_height="@dimen/dp_30" />
+    </RelativeLayout>
+</LinearLayout>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout
+        android:background="@color/color_white"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_180">
+        <TextView
+            android:id="@+id/service_type_back"
+            android:layout_marginLeft="@dimen/dp_8"
+            android:padding="@dimen/dp_8"
+            android:text="取消"
+            android:textColor="@color/blue"
+            android:textSize="@dimen/sp_13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/service_type_confirm"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/dp_8"
+            android:padding="@dimen/dp_8"
+            android:text="确定"
+            android:textColor="@color/blue"
+            android:textSize="@dimen/sp_13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.zhkj.yhfw.customview.MyWheelView
+            android:id="@+id/service_type_wheel_view"
+            android:layout_centerInParent="true"
+            app:itemVisibleNum="2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+</LinearLayout>

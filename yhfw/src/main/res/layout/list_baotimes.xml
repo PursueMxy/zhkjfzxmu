@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:background="@color/color_white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+       >
+        <RelativeLayout
+            android:id="@+id/rls_times"
+            android:background="@color/color_ffd700"
+            android:layout_width="@dimen/dp_83"
+            android:layout_height="@dimen/dp_50">
+            <TextView
+                android:layout_marginLeft="@dimen/dp_12"
+                android:id="@+id/tvs_times"
+                android:text="3"
+                android:gravity="center"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/sp_40"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_50" />
+            <TextView
+                android:layout_marginBottom="@dimen/dp_5"
+                android:layout_alignBottom="@+id/tvs_times"
+                android:layout_alignParentBottom="true"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/sp_14"
+                android:text="小时"
+                android:layout_toRightOf="@+id/tvs_times"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_toLeftOf="@+id/imgs_rightnext"
+            android:layout_toRightOf="@+id/rls_times"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/tv_set_meal"
+                android:textSize="@dimen/sp_14"
+                android:gravity="center"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:text="3小时 168.00元起"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_25" />
+            <TextView
+                android:id="@+id/tv_max_mileage"
+                android:layout_below="@+id/tv_set_meal"
+                android:textSize="@dimen/sp_16"
+                android:gravity="center"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:text="300"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_25" />
+        </RelativeLayout>
+        <ImageView
+            android:id="@+id/imgs_rightnext"
+            android:layout_marginRight="@dimen/dp_12"
+            android:src="@mipmap/rightwart"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+ </RelativeLayout>

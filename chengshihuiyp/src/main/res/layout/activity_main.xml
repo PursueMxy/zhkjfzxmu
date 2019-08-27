@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:keepScreenOn="true"
+    tools:context=".MainActivity">
+    <LinearLayout
+        android:id="@+id/layout_main"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:scaleType="fitXY"
+            android:src="@mipmap/csh_logo"
+            android:id="@+id/main_img_left"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+            <com.fzzhkj.spgg.CustomVideoView
+                android:layout_weight="1"
+                android:id="@+id/videoPlayView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"/>
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_alignParentRight="true"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <RelativeLayout
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <ImageView
+                        android:scaleType="fitXY"
+                        android:id="@+id/main_img"
+                        android:src="@drawable/icon_reds"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                    <TextView
+                        android:id="@+id/main_tv_name1"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:layout_marginRight="@dimen/dp_10"
+                        android:layout_marginLeft="@dimen/dp_10"
+                        android:textSize="@dimen/sp_15"
+                        android:lines="2"
+                        android:textColor="#FFFFFF"
+                        android:text=""
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:layout_marginRight="@dimen/dp_50"
+                        android:layout_above="@+id/main_tv_price1"
+                        android:id="@+id/main_tv_money1"
+                        android:text="¥ "
+                        android:enabled="true"
+                        android:textSize="@dimen/sp_15"
+                        android:textColor="#FFFFFF"
+                        android:background="@drawable/icon_tv_bg"
+                        android:layout_width="match_parent"
+                        android:gravity="center|left"
+                        android:layout_height="@dimen/dp_20" />
+                    <TextView
+                        android:id="@+id/main_tv_price1"
+                        android:text="¥ "
+                        android:enabled="true"
+                        android:textSize="@dimen/sp_17"
+                        android:textColor="#FFFFFF"
+                        android:background="@drawable/icon_tv_bg"
+                        android:layout_alignRight="@+id/main_img"
+                        android:layout_alignBottom="@+id/main_img"
+                        android:layout_width="match_parent"
+                        android:gravity="center|left"
+                        android:layout_height="@dimen/dp_25" />
+                </RelativeLayout>
+                <ImageView
+                    android:layout_weight="1"
+                    android:scaleType="fitXY"
+                    android:id="@+id/main_img_top1"
+                    android:src="@mipmap/csh_logo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <RelativeLayout
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <ImageView
+                        android:scaleType="fitXY"
+                        android:id="@+id/advicer_img1"
+                        android:src="@drawable/icon_reds"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                    <TextView
+                        android:id="@+id/main_tv_name2"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:layout_marginRight="@dimen/dp_10"
+                        android:layout_marginLeft="@dimen/dp_10"
+                        android:textSize="@dimen/sp_15"
+                        android:lines="2"
+                        android:textColor="#FFFFFF"
+                        android:text=""
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:layout_marginRight="@dimen/dp_50"
+                        android:layout_above="@+id/main_tv_price2"
+                        android:id="@+id/main_tv_money2"
+                        android:text="¥ "
+                        android:enabled="true"
+                        android:textSize="@dimen/sp_15"
+                        android:textColor="#FFFFFF"
+                        android:background="@drawable/icon_tv_bg"
+                        android:layout_width="match_parent"
+                        android:gravity="center|left"
+                        android:layout_height="@dimen/dp_20" />
+                    <TextView
+                        android:id="@+id/main_tv_price2"
+                        android:text="¥ "
+                        android:enabled="true"
+                        android:textSize="@dimen/sp_17"
+                        android:textColor="#FFFFFF"
+                        android:background="@drawable/icon_tv_bg"
+                        android:layout_alignRight="@+id/advicer_img1"
+                        android:layout_alignBottom="@+id/advicer_img1"
+                        android:layout_width="match_parent"
+                        android:gravity="center|left"
+                        android:layout_height="@dimen/dp_25" />
+                </RelativeLayout>
+                <ImageView
+                    android:layout_weight="1"
+                    android:scaleType="fitXY"
+                    android:id="@+id/main_img_top2"
+                    android:src="@mipmap/csh_logo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <RelativeLayout
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:scaleType="fitXY"
+                    android:id="@+id/main_img_qrcode"
+                    android:src="@drawable/icon_qrcode"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_120" />
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+    <ImageView
+        android:visibility="gone"
+        android:src="@drawable/zmy_bg"
+        android:layout_weight="1"
+        android:id="@+id/main_img_advert"
+        android:scaleType="fitXY"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <RelativeLayout
+        android:id="@+id/main_rl_binding"
+        android:layout_marginTop="@dimen/dp_280"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/main_edt_xxh"
+            android:hint="请输入序号号"
+            android:gravity="center|left"
+            android:textColorHint="#ff7a0b"
+            android:textSize="@dimen/sp_20"
+            android:textColor="#ff7a0b"
+            android:padding="@dimen/dp_5"
+            android:inputType="number"
+            android:layout_marginLeft="@dimen/dp_120"
+            android:background="@drawable/main_edt_bg"
+            android:layout_width="@dimen/dp_250"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_marginLeft="@dimen/dp_10"
+            android:padding="@dimen/dp_5"
+            android:background="@drawable/main_edt_bg"
+            android:layout_toRightOf="@+id/main_edt_xxh"
+            android:id="@+id/main_tv_binding"
+            android:text="绑定"
+            android:textSize="@dimen/sp_20"
+            android:textColor="#ff7a0b"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+</FrameLayout>
