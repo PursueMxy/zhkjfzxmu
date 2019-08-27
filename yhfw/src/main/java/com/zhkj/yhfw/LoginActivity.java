@@ -85,7 +85,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         switch (v.getId()){
             case R.id.login_btn_login:
                 login_btn_login.setEnabled(false);
-//                login_btn_login.setClickable(false);
                 username = edt_username.getText().toString();
                 password = edt_password.getText().toString();
                 OkGo.<String>post(AppRequestURL.URL.Login)
@@ -108,7 +107,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                             com.zhkj.yhfw.Bean.loginbean.DataBean.UserinfoBean userinfo = data.getUserinfo();
                                             String token = userinfo.getToken();
                                             String avatar = userinfo.getAvatar();
-                                            editor.putString("token", token);
+                                            editor.putString("token",token);
                                             editor.putString("avatar", avatar);
                                             editor.putString("user_id", userinfo.getUser_id() + "");
                                             editor.putString("mobile", userinfo.getMobile());

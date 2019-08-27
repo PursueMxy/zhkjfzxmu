@@ -83,7 +83,7 @@ public class PeccancyActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void InitData() {
-        OkGo.<String>get("http://fztestc.xmhavefun.com/api/member/index")
+        OkGo.<String>get("https://www.yihu16888.com/api/member/index")
                 .params("type",1)
                 .params("token", token)
                 .params("start",start_dt)

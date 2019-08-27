@@ -88,7 +88,7 @@ public class BackService extends Service {
             e.printStackTrace();
         }
         String appVersionName = getAppVersionName(getApplicationContext());
-        Log.e("版本号",appVersionName+"哈哈哈");
+        Log.e("版本号",appVersionName+"哈哈哈"+token);
     }
     public static String getAppVersionName(Context context) {
         String versionName = "";
@@ -220,7 +220,7 @@ public class BackService extends Service {
      * 心跳检测时间
      */
     private static final long HEART_BEAT_RATE = 2 * 1000;//每隔15秒进行一次对长连接的心跳检测
-    private static final String WEBSOCKET_HOST_AND_PORT = "ws://39.98.177.238:8283";//可替换为自己的主机名和端口号
+    private static final String WEBSOCKET_HOST_AND_PORT = "wss://hduxh.xmhavefun.com/websocket";//可替换为自己的主机名和端口号
     private WebSocket mWebSocket;
 
 
@@ -232,7 +232,7 @@ public class BackService extends Service {
             @Override
             public void onOpen(WebSocket webSocket, Response response) {//开启长连接成功的回调
                 super.onOpen(webSocket, response);
-//                Log.e("BackService","进来了");
+                Log.e("BackService","进来了");
                 mWebSocket = webSocket;
                 String s = new Gson().toJson(new LoginDemoBean(token, "1", user_id,"login"));
                 mWebSocket.send(s);
@@ -243,6 +243,7 @@ public class BackService extends Service {
                 super.onMessage(webSocket, text);
                 //收到服务器端传过来的消息text
                 Log.e("BackService1",text);
+                Log.e("tokens",token);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -326,11 +327,11 @@ public class BackService extends Service {
                                     }
                                 }else if (code==100){
                                     String event = ordersBean.getEvent();
-                                    if (event.equals("login")){
+                                    if (event.equals("logindfff")){
                                         String username = sp.getString("username", "");
                                         String password = sp.getString("password", "");
                                         if (!username.equals("")) {
-                                            OkGo.<String>post("http://fztestc.xmhavefun.com/api/user/login")
+                                            OkGo.<String>post("https://www.yihu16888.com/api/user/login")
                                                     .params("account", username)
                                                     .params("password", password)
                                                     .params("type", "1")
@@ -361,7 +362,6 @@ public class BackService extends Service {
                                                     });
                                         }
                                         token = sp.getString("token", "");
-                                        Log.e("tokens",token);
                                         String s = new Gson().toJson(new LoginDemoBean(token, "1", user_id,"login"));
                                         mWebSocket.send(s);
                                     }
@@ -490,7 +490,7 @@ public class BackService extends Service {
 
     //开始行驶
     public void passengerBoarding(int order_id){
-        OkGo.<String>get("http://fztestc.xmhavefun.com/api/order/trip_add_trace")
+        OkGo.<String>get("https://www.yihu16888.com/api/order/trip_add_trace")
                 .params("type", "1")
                 .params("token", token)
                 .params("trip_id",order_trip_id)
@@ -596,7 +596,7 @@ public class BackService extends Service {
     Runnable gjrunbale=new Runnable() {
         @Override
         public void run() {
-            OkGo.<String>get("http://fztestc.xmhavefun.com/api/order/up_trace")
+            OkGo.<String>get("https://www.yihu16888.com/api/order/up_trace")
                     .params("type", "1")
                     .params("token", token)
                     .params("order_trip_id",order_trip_id)

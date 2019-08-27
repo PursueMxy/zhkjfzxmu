@@ -27,7 +27,7 @@
 
     <!--接单选择-->
     <RelativeLayout
-        android:visibility="gone"
+        android:visibility="visible"
         android:id="@+id/home_rl_order_taking"
         android:background="#ffffff"
         android:layout_marginLeft="@dimen/dp_7"
@@ -515,7 +515,7 @@
 
     <!--到达终点-->
     <LinearLayout
-        android:visibility="visible"
+        android:visibility="gone"
         android:orientation="vertical"
         android:background="@drawable/btn_white"
         android:layout_marginLeft="@dimen/dp_7"

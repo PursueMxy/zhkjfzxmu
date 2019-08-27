@@ -60,7 +60,7 @@ public class OrderTakingHallActivity extends AppCompatActivity implements View.O
     }
 
     public void InitData(){
-        OkGo.<String>get("http://fztestc.xmhavefun.com/api/order/hall")
+        OkGo.<String>get("https://www.yihu16888.com/api/order/hall")
                 .params("type",1)
                 .params("token",token)
                 .params("drive_type",drive_type)

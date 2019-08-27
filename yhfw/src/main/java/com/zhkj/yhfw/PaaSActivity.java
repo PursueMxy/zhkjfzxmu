@@ -163,13 +163,13 @@ public class PaaSActivity extends AppCompatActivity implements View.OnClickListe
                     case 8:
                         Intent intent9 = new Intent(mContext, YffwWebActivity.class);
                         intent9.putExtra("name","用户协议");
-                        intent9.putExtra("url","http://fztestc.xmhavefun.com/index/index/driver#/CommonRichText?type=driver");
+                        intent9.putExtra("url","https://www.yihu16888.com/index/index/driver#/CommonRichText?type=driver");
                         startActivityForResult(intent9, YFFWWEB_CODE);
                         break;
                     case 9:
                         Intent intent10 = new Intent(mContext, YffwWebActivity.class);
                         intent10.putExtra("name","用户协议");
-                        intent10.putExtra("url","http://fztestc.xmhavefun.com/index/index/driver#/CommonRichText?type=jifei");
+                        intent10.putExtra("url","https://www.yihu16888.com/index/index/driver#/CommonRichText?type=jifei");
                         startActivityForResult(intent10, YFFWWEB_CODE);
                         break;
                 }

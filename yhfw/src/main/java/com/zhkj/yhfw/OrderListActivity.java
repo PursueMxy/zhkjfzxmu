@@ -60,7 +60,7 @@ public class OrderListActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void InitData() {
-        OkGo.<String>get("http://fztestc.xmhavefun.com/api/order/index")
+        OkGo.<String>get("https://www.yihu16888.com/api/order/index")
                 .params("type","1")
                 .params("token", token)
                 .params("page",pageType)

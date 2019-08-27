@@ -56,7 +56,7 @@ public class ContactActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void InitData() {
-        OkGo.<String>get("http://fztestc.xmhavefun.com/api/emergencycontact/index")
+        OkGo.<String>get("https://www.yihu16888.com/api/emergencycontact/index")
                 .params("type","1")
                 .params("token",token)
                 .execute(new StringCallback() {
@@ -108,7 +108,7 @@ public class ContactActivity extends AppCompatActivity implements View.OnClickLi
                         if (!name.equals("")){
                             if (!mobile.equals("")) {
                                 add_dialog.dismiss();
-                                OkGo.<String>get("http://fztestc.xmhavefun.com/api/emergencycontact/add")
+                                OkGo.<String>get("https://www.yihu16888.com/api/emergencycontact/add")
                                         .params("type","1")
                                         .params("token",token)
                                         .params("name",name)
@@ -181,7 +181,7 @@ public class ContactActivity extends AppCompatActivity implements View.OnClickLi
                         @Override
                         public void onClick(View v) {
                             show.dismiss();
-                            OkGo.<String>get("http://fztestc.xmhavefun.com/api/emergencycontact/delete")
+                            OkGo.<String>get("https://www.yihu16888.com/api/emergencycontact/delete")
                                     .params("type","1")
                                     .params("token",token)
                                     .params("id",customer_id)

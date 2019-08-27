@@ -3,7 +3,9 @@ package com.zhkj.yhfw.Utlis;
 public class AppRequestURL {
     public static final class URL {
         //请求头
-        public static final String HOST = "http://fztestc.xmhavefun.com";
+//        public static final String HOST = "http://fztestc.xmhavefun.com";
+
+        public static final String HOST = "https://www.yihu16888.com";
 
         public static final  String Login=HOST+"/api/user/login";
 

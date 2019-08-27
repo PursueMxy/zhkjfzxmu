@@ -56,7 +56,7 @@ public class BaoTimesActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void InitData() {
-        OkGo.<String>get("http://fztestc.xmhavefun.com/api/order/meal")
+        OkGo.<String>get("https://www.yihu16888.com/api/order/meal")
                 .params("type",1)
                 .params("token",token)
                 .execute(new StringCallback() {

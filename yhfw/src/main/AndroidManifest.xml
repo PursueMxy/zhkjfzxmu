@@ -18,10 +18,6 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" /> <!-- service 后台存活 -->
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
-    <!-- 相机权限 -->
-    <uses-permission android:name="android.permission.CAMERA" />
-    <!-- 存储权限 -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 
     <application
