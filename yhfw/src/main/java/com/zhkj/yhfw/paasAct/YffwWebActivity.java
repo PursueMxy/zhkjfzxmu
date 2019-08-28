@@ -49,6 +49,14 @@ public class YffwWebActivity extends AppCompatActivity implements View.OnClickLi
         webSettings.setSupportZoom(true);
         webSettings.setDomStorageEnabled(true);
         webSettings.setBuiltInZoomControls(true);
+        yffw_web.setWebViewClient(new WebViewClient(){
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+               yffw_web.loadUrl(url);
+               return true;
+
+            }
+        });
         findViewById(R.id.YffwWeb_img_back).setOnClickListener(this);
         tv_title = findViewById(R.id.YffwWeb_title);
         tv_title.setText(name);

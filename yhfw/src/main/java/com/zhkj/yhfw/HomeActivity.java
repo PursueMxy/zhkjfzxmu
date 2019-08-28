@@ -146,11 +146,13 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.zip.Inflater;
 
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -294,6 +296,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private MediaPlayer mPlayer;
     private File soundFile;
     private String mAudioPath;
+    private OkHttpClient okHttpClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -318,14 +321,16 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         mapView = findViewById(R.id.activity_track_service_map);
         mapView.getMap().moveCamera(CameraUpdateFactory.zoomTo(15));
         mapView.onCreate(savedInstanceState);
+        okHttpClient = new OkHttpClient.Builder()
+                .readTimeout(60, TimeUnit.SECONDS)
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(120, TimeUnit.SECONDS)
+                .build();
         InitUI();
 //        //获取AMapNavi实例
 //        mAMapNavi = AMapNavi.getInstance(getApplicationContext());
 //        //添加监听回调，用于处理算路成功
 //        mAMapNavi.addAMapNaviListener(aMapNaviListener);
-//        LitePal.deleteAll(LiteDataBean.class);
-
-
         Intent intent1 = new Intent(mContext, BackService.class);
         startService(intent1);
         initService();
@@ -393,48 +398,18 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 }else {
                     stopRecord();
                     Log.e("mAudioPath",mAudioPath);
-                    OkGo.<String>post(AppRequestURL.URL.recording)
-                            .params("type","1")
-                            .params("token",token)
-                            .params("path",mAudioPath)
-                            .execute(new StringCallback() {
-                                @Override
-                                public void onSuccess(Response<String> response) {
-                                    String body = response.body();
-                                    Log.e("录音功能",body);
-                                }
-                            });
-                    //1.创建OkHttpClient对象
-        OkHttpClient okHttpClient = new OkHttpClient();
-        //上传的图片
-            //2.通过RequestBody.create 创建requestBody对象,application/octet-stream 表示文件是任意二进制数据流
-            RequestBody requestBody = RequestBody.create(MediaType.parse("application/octet-stream"), soundFile.getName());
-            // 3.创建Request对象，设置URL地址，将RequestBody作为post方法的参数传入
-            Request request = new Request.Builder().url(AppRequestURL.URL.HOST+"/api/recording/add?type=1&token=e69d4cc2-986f-4e6b-a68f-b275c458b90e").post(requestBody).build();
-            //4.创建一个call对象,参数就是Request请求对象
-            Call call = okHttpClient.newCall(request);
-            //5.请求加入调度,重写回调方法
-            call.enqueue(new Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {
-                    Log.e("上传日志55", e.getMessage().toString());
-                }
-
-                @Override
-                public void onResponse(Call call, okhttp3.Response response) throws IOException {
-                    final String datas = parseResponse(response.body().byteStream());
-                    Log.e("上传日志66", datas);
-                }
-
-            });
-//                    mPlayer = new MediaPlayer();
-//                    try {
-//                        mPlayer.setDataSource(mAudioPath);
-//                        mPlayer.prepare();
-//                        mPlayer.start();
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
+                    //okHttpClient
+                    RequestBody requestBody = new MultipartBody.Builder()
+                            .setType(MultipartBody.FORM)
+                            .addFormDataPart("file", soundFile.getName(), RequestBody.create(MediaType.parse("application/octet-stream"),soundFile))
+                            .build();
+                    //ProgressRequestBody progressRequestBody = new ProgressRequestBody(requestBody, progressListener);
+                    Request request = new Request.Builder()
+                            .url(AppRequestURL.URL.HOST+"/api/Recording/uploadRecording?type=1&token="+token)
+                            .post(requestBody)
+                            .build();
+                    //上面url中的内容请改成自己php文件的所在地址
+                    okHttpClient.newCall(request).enqueue(callback_upload);
                 }
             }
         });
@@ -1743,4 +1718,22 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             return null;
         }
     }
+
+    //上传请求后的回调方法
+    private Callback callback_upload = new Callback() {
+        @Override
+        public void onFailure(Call call, IOException e) {
+            Log.e("上传日志55", e.getMessage().toString());
+        }
+
+        @Override
+        public void onResponse(Call call, okhttp3.Response response) throws IOException {
+            final String datas = parseResponse(response.body().byteStream());
+            Log.e("上传日志66", datas);
+            GsonBuilder builder = new GsonBuilder();
+            Gson gson = builder.create();
+        }
+
+    };
+
 }

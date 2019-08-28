@@ -31,6 +31,12 @@ public class AppRequestURL {
         //上传录音功能
         public static final String recording=HOST+"/api/recording/add";
 
+        //获取录音功能
+        public static final String recording_index=HOST+"/api/recording/index";
+
+        //删除录音功能
+        public static final String recording_delete=HOST+"/api/recording/delete";
+
         //开始行驶
         public static final  String trip_add_trace=HOST+"/api/order/trip_add_trace";
 
@@ -44,11 +50,13 @@ public class AppRequestURL {
         public static final String emergencycontact=HOST+"/api/emergencycontact/index";
 
         //新增联系人
-        public static final String emergencycontact_add=HOST+"api/emergencycontact/add";
+        public static final String emergencycontact_add=HOST+"/api/emergencycontact/add";
 
         //删除联系人
-        public static final String emergencycontact_delete=HOST+"api/emergencycontact/delete";
+        public static final String emergencycontact_delete=HOST+"/api/emergencycontact/delete";
 
+        //我的绩效
+        public static final String team=HOST+"/api/team/index";
 
     }
 }

@@ -111,6 +111,7 @@
             android:layout_height="@dimen/dp_35" />
 
         <Button
+            android:id="@+id/login_btn_register"
             android:textColor="#ffffffff"
             android:textSize="@dimen/sp_17"
             android:layout_alignParentRight="true"

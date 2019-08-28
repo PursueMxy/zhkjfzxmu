@@ -221,7 +221,7 @@ public class BackService extends Service {
     /**
      * 心跳检测时间
      */
-    private static final long HEART_BEAT_RATE = 2 * 1000;//每隔15秒进行一次对长连接的心跳检测
+    private static final long HEART_BEAT_RATE =5 * 1000;//每隔15秒进行一次对长连接的心跳检测
     private WebSocket mWebSocket;
 
 
@@ -248,8 +248,6 @@ public class BackService extends Service {
                     @Override
                     public void run() {
                 if (text!=null){
-                    String logins = new Gson().toJson(new LoginDemoBean(token, "1", user_id,"login"));
-                    mWebSocket.send(logins);
                     GsonBuilder builder = new GsonBuilder();
                     Gson gson = builder.create();
                     TypeBean typeBean = gson.fromJson(text, TypeBean.class);
@@ -261,7 +259,6 @@ public class BackService extends Service {
                             if (ordersBean!=null){
                                 int code = ordersBean.getCode();
                                 if (code ==200) {
-                                    mHandler.postDelayed(heartBeatRunnable, HEART_BEAT_RATE);//开启心跳检测
                                     String event = ordersBean.getEvent();
                                     if (!event.equals("")) {
                                         if (event.equals("order_info")) {
@@ -317,6 +314,7 @@ public class BackService extends Service {
 //                                            orderInfo();
                                             HomeActivity.refuseOrder();
                                         }else if (event.equals("login")){
+                                            mHandler.postDelayed(heartBeatRunnable, HEART_BEAT_RATE);//开启心跳检测
                                             //查询是否存在订单
                                             orderInfo();
                                         }else if (event.equals("receipt")){

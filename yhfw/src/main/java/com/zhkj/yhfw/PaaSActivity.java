@@ -1,17 +1,14 @@
 package com.zhkj.yhfw;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -21,13 +18,13 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.zhkj.yhfw.Bean.UserInfoBean;
-import com.zhkj.yhfw.Bean.loginbean;
 import com.zhkj.yhfw.Utlis.AppRequestURL;
 import com.zhkj.yhfw.adapter.GridAdapter;
 import com.zhkj.yhfw.customview.CircleImageView;
 import com.zhkj.yhfw.paasAct.CommonRecordingActivity;
 import com.zhkj.yhfw.paasAct.ContactActivity;
 import com.zhkj.yhfw.paasAct.CustonServiceActivity;
+import com.zhkj.yhfw.paasAct.TeamActivity;
 import com.zhkj.yhfw.paasAct.PeccancyActivity;
 import com.zhkj.yhfw.paasAct.PurseActivity;
 import com.zhkj.yhfw.paasAct.SafeActivity;
@@ -57,11 +54,14 @@ public class PaaSActivity extends AppCompatActivity implements View.OnClickListe
     private int PURSE_ONE=2000;
     private int INTENT_ONE=2001;
     private int ORDER_ONE=2002;
+    private int TEAM_ONE=2003;
     private int CONTACT_CODE=2004;
     private int COMMON_FIVE=2005;
     private int YFFWWEB_CODE=2010;
     private int YFFWWEB_SAFE=2008;
     private int CUSTON_CODE=2007;
+    private String nickname;
+    private String avatar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,8 +72,8 @@ public class PaaSActivity extends AppCompatActivity implements View.OnClickListe
         token = sp.getString("token", "");
         user_id = sp.getString("user_id", "");
         mobile = sp.getString("mobile", "");
-        mobile = sp.getString("nickname", "");
-        mobile = sp.getString("nickname", "");
+        nickname = sp.getString("nickname", "");
+        avatar = sp.getString("avatar", "");
         InitUI();
         //获取个人信息
         OkGo.<String>get(AppRequestURL.URL.getUserInfo)
@@ -143,6 +143,10 @@ public class PaaSActivity extends AppCompatActivity implements View.OnClickListe
                     case 2:
                         Intent intent3 = new Intent(mContext,OrderListActivity.class);
                         startActivityForResult(intent3, ORDER_ONE);
+                        break;
+                    case 3:
+                        Intent intent1 = new Intent(mContext, TeamActivity.class);
+                        startActivityForResult(intent1,TEAM_ONE);
                         break;
                     case 4:
                         Intent intent4 = new Intent(mContext, ContactActivity.class);

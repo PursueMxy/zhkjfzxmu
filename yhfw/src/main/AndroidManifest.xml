@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.zhkj.yhfw">
     <!-- 读写权限 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- 录音权限 -->
@@ -19,7 +20,6 @@
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
-
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -29,6 +29,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".paasAct.WithdrawalDefaultActivity"></activity>
+        <activity android:name=".paasAct.ConnissionActivity" />
+        <activity android:name=".paasAct.QrCodeActivity" />
+        <activity android:name=".paasAct.WithdrawlogActivity" />
+        <activity android:name=".paasAct.MyTeamActivity" />
+        <activity android:name=".paasAct.TeamActivity" />
+        <activity android:name=".RegisterActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -40,7 +47,23 @@
                 android:resource="@xml/filepaths" />
         </provider>
 
-        <activity android:name=".paasAct.ContactActivity"></activity>
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.winfo.photoselector.ImageSelectorActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.winfo.photoselector.PreviewActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.winfo.photoselector.RvPreviewActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".paasAct.ContactActivity" />
         <activity android:name=".PacketTimeActivity" />
         <activity android:name=".paasAct.CommonRecordingActivity" />
         <activity android:name=".paasAct.OrderDetailslActivity" />

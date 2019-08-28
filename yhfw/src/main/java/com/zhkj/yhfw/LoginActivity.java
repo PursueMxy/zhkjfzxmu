@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,6 +24,7 @@ import com.hjq.permissions.XXPermissions;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
+import com.winfo.photoselector.PhotoSelector;
 import com.zhkj.yhfw.Bean.LoginPublicBean;
 import com.zhkj.yhfw.Bean.loginbean;
 import com.zhkj.yhfw.Utlis.AppRequestURL;
@@ -78,6 +80,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (avatar!=null){
             Glide.with(this).load(AppRequestURL.URL.HOST+avatar).into(imghead);
         }
+        findViewById(R.id.login_btn_register).setOnClickListener(this);
     }
 
     @Override
@@ -128,6 +131,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 }
                             }
                         });
+                break;
+            case R.id.login_btn_register:
+                startActivity(new Intent(mContext,RegisterActivity.class));
+                finish();
                 break;
                 default:
                     break;

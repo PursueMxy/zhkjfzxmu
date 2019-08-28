@@ -193,7 +193,7 @@ public class ContactActivity extends AppCompatActivity implements View.OnClickLi
                                             Gson gson = gsonBuilder.create();
                                             PublicResultBean publicResultBean = gson.fromJson(response.body(), PublicResultBean.class);
                                             if (publicResultBean!=null){
-                                                if (publicResultBean.getCode()==200){
+                                                if (publicResultBean.getCode()==201){
                                                     InitData();
                                                 }
                                             }
