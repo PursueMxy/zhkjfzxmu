@@ -410,7 +410,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             //2.通过RequestBody.create 创建requestBody对象,application/octet-stream 表示文件是任意二进制数据流
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/octet-stream"), soundFile.getName());
             // 3.创建Request对象，设置URL地址，将RequestBody作为post方法的参数传入
-            Request request = new Request.Builder().url("https://www.yihu16888.com/api/recording/add?type=1&token=e69d4cc2-986f-4e6b-a68f-b275c458b90e").post(requestBody).build();
+            Request request = new Request.Builder().url(AppRequestURL.URL.HOST+"/api/recording/add?type=1&token=e69d4cc2-986f-4e6b-a68f-b275c458b90e").post(requestBody).build();
             //4.创建一个call对象,参数就是Request请求对象
             Call call = okHttpClient.newCall(request);
             //5.请求加入调度,重写回调方法
@@ -899,7 +899,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     spservice.passengerBoarding(orderId);
 
                 }else if (DIALOG_CONFIRM_TYPE==2) {
-                    OkGo.<String>get("https://www.yihu16888.com/api/order/get_trace_info")
+                    OkGo.<String>get(AppRequestURL.URL.HOST+"/api/order/get_trace_info")
                             .params("order_trip_id",order_trip_id)
                             .execute(new StringCallback() {
                                 @Override
@@ -1614,7 +1614,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 .setNeutralButton("好的", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                         OkGo.<String>get("https://www.yihu16888.com/api/order/driver_trip_delete")
+                         OkGo.<String>get(AppRequestURL.URL.HOST+"/api/order/driver_trip_delete")
                                  .params("type", "1")
                                  .params("token", token)
                                  .execute(new StringCallback() {
@@ -1628,7 +1628,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 .setPositiveButton("填写信息", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        OkGo.<String>get("https://www.yihu16888.com/api/order/driver_trip_delete")
+                        OkGo.<String>get(AppRequestURL.URL.HOST+"/api/order/driver_trip_delete")
                                 .params("type", "1")
                                 .params("token", token)
                                 .execute(new StringCallback() {

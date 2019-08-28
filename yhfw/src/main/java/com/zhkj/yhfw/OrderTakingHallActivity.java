@@ -24,6 +24,7 @@ import com.lzy.okgo.model.Response;
 import com.zhkj.yhfw.Bean.LoginPublicBean;
 import com.zhkj.yhfw.Bean.OrderHallBean;
 import com.zhkj.yhfw.Bean.PublicResultBean;
+import com.zhkj.yhfw.Utlis.AppRequestURL;
 import com.zhkj.yhfw.Utlis.StringFormatUtil;
 
 import java.util.ArrayList;
@@ -60,7 +61,7 @@ public class OrderTakingHallActivity extends AppCompatActivity implements View.O
     }
 
     public void InitData(){
-        OkGo.<String>get("https://www.yihu16888.com/api/order/hall")
+        OkGo.<String>get(AppRequestURL.URL.HOST+"/api/order/hall")
                 .params("type",1)
                 .params("token",token)
                 .params("drive_type",drive_type)

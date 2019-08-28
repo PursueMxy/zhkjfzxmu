@@ -1,5 +1,6 @@
 package com.zhkj.yhfw.service;
 
+import android.app.Application;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -39,6 +40,7 @@ import com.zhkj.yhfw.Bean.TypeBean;
 import com.zhkj.yhfw.Bean.loginbean;
 import com.zhkj.yhfw.Bean.points;
 import com.zhkj.yhfw.HomeActivity;
+import com.zhkj.yhfw.Utlis.AppRequestURL;
 
 import org.json.JSONObject;
 
@@ -220,14 +222,13 @@ public class BackService extends Service {
      * 心跳检测时间
      */
     private static final long HEART_BEAT_RATE = 2 * 1000;//每隔15秒进行一次对长连接的心跳检测
-    private static final String WEBSOCKET_HOST_AND_PORT = "wss://hduxh.xmhavefun.com/websocket";//可替换为自己的主机名和端口号
     private WebSocket mWebSocket;
 
 
     // 初始化socket
     private void initSocket() throws UnknownHostException, IOException {
         OkHttpClient client = new OkHttpClient.Builder().readTimeout(0, TimeUnit.MILLISECONDS).build();
-        final Request request = new Request.Builder().url(WEBSOCKET_HOST_AND_PORT).build();
+        final Request request = new Request.Builder().url(AppRequestURL.URL.WEBSOCKET_HOST_AND_PORT).build();
         client.newWebSocket(request, new WebSocketListener() {
             @Override
             public void onOpen(WebSocket webSocket, Response response) {//开启长连接成功的回调
@@ -243,7 +244,6 @@ public class BackService extends Service {
                 super.onMessage(webSocket, text);
                 //收到服务器端传过来的消息text
                 Log.e("BackService1",text);
-                Log.e("tokens",token);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -261,6 +261,7 @@ public class BackService extends Service {
                             if (ordersBean!=null){
                                 int code = ordersBean.getCode();
                                 if (code ==200) {
+                                    mHandler.postDelayed(heartBeatRunnable, HEART_BEAT_RATE);//开启心跳检测
                                     String event = ordersBean.getEvent();
                                     if (!event.equals("")) {
                                         if (event.equals("order_info")) {
@@ -327,11 +328,11 @@ public class BackService extends Service {
                                     }
                                 }else if (code==100){
                                     String event = ordersBean.getEvent();
-                                    if (event.equals("logindfff")){
+                                    if (event.equals("login")){
                                         String username = sp.getString("username", "");
                                         String password = sp.getString("password", "");
                                         if (!username.equals("")) {
-                                            OkGo.<String>post("https://www.yihu16888.com/api/user/login")
+                                            OkGo.<String>post(AppRequestURL.URL.Login)
                                                     .params("account", username)
                                                     .params("password", password)
                                                     .params("type", "1")
@@ -380,19 +381,19 @@ public class BackService extends Service {
             @Override
             public void onMessage(WebSocket webSocket, ByteString bytes) {
                 super.onMessage(webSocket, bytes);
-//                Log.e("BackService2",bytes.toString());
+                Log.e("BackService2",bytes.toString());
             }
 
             @Override
             public void onClosing(WebSocket webSocket, int code, String reason) {
                 super.onClosing(webSocket, code, reason);
-//                Log.e("BackService3",reason);
+                Log.e("BackService3",reason);
             }
 
             @Override
             public void onClosed(WebSocket webSocket, int code, String reason) {
                 super.onClosed(webSocket, code, reason);
-//                Log.e("BackService4",reason);
+                Log.e("BackService4",reason);
             }
 
             @Override
@@ -402,7 +403,6 @@ public class BackService extends Service {
             }
         });
         client.dispatcher().executorService().shutdown();
-        mHandler.postDelayed(heartBeatRunnable, HEART_BEAT_RATE);//开启心跳检测
     }
 
     private long sendTime = 0L;
@@ -490,7 +490,7 @@ public class BackService extends Service {
 
     //开始行驶
     public void passengerBoarding(int order_id){
-        OkGo.<String>get("https://www.yihu16888.com/api/order/trip_add_trace")
+        OkGo.<String>get(AppRequestURL.URL.trip_add_trace)
                 .params("type", "1")
                 .params("token", token)
                 .params("trip_id",order_trip_id)
@@ -596,7 +596,7 @@ public class BackService extends Service {
     Runnable gjrunbale=new Runnable() {
         @Override
         public void run() {
-            OkGo.<String>get("https://www.yihu16888.com/api/order/up_trace")
+            OkGo.<String>get(AppRequestURL.URL.up_trace)
                     .params("type", "1")
                     .params("token", token)
                     .params("order_trip_id",order_trip_id)

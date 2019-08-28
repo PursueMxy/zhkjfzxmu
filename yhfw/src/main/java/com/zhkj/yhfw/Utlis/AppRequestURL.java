@@ -2,10 +2,20 @@ package com.zhkj.yhfw.Utlis;
 
 public class AppRequestURL {
     public static final class URL {
-        //请求头
-//        public static final String HOST = "http://fztestc.xmhavefun.com";
 
-        public static final String HOST = "https://www.yihu16888.com";
+        //长连接
+        //长连接 测试
+        public static final String WEBSOCKET_HOST_AND_PORT = "ws://39.98.177.238:8283";
+
+        // 请求头测试
+        public static final String HOST = "http://fztestc.xmhavefun.com";
+
+        //长连接线上
+//        public static final String WEBSOCKET_HOST_AND_PORT = "wss://hduxh.xmhavefun.com/websocket";
+
+
+        // 请求头线上
+//        public static final String HOST = "https://www.yihu16888.com";
 
         public static final  String Login=HOST+"/api/user/login";
 
@@ -20,6 +30,25 @@ public class AppRequestURL {
 
         //上传录音功能
         public static final String recording=HOST+"/api/recording/add";
+
+        //开始行驶
+        public static final  String trip_add_trace=HOST+"/api/order/trip_add_trace";
+
+        //上传轨迹点
+        public static final  String up_trace=HOST+"/api/order/up_trace";
+
+        //查询yue
+        public static final String index=HOST+"/api/member/index";
+
+        //查看联系人
+        public static final String emergencycontact=HOST+"/api/emergencycontact/index";
+
+        //新增联系人
+        public static final String emergencycontact_add=HOST+"api/emergencycontact/add";
+
+        //删除联系人
+        public static final String emergencycontact_delete=HOST+"api/emergencycontact/delete";
+
 
     }
 }

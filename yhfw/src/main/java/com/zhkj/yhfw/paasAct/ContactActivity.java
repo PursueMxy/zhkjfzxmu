@@ -21,6 +21,7 @@ import com.lzy.okgo.model.Response;
 import com.zhkj.yhfw.Bean.CustomerBean;
 import com.zhkj.yhfw.Bean.PublicResultBean;
 import com.zhkj.yhfw.R;
+import com.zhkj.yhfw.Utlis.AppRequestURL;
 import com.zhkj.yhfw.Utlis.ToastUtils;
 
 import java.util.ArrayList;
@@ -56,7 +57,7 @@ public class ContactActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void InitData() {
-        OkGo.<String>get("https://www.yihu16888.com/api/emergencycontact/index")
+        OkGo.<String>get(AppRequestURL.URL.emergencycontact)
                 .params("type","1")
                 .params("token",token)
                 .execute(new StringCallback() {
@@ -108,7 +109,7 @@ public class ContactActivity extends AppCompatActivity implements View.OnClickLi
                         if (!name.equals("")){
                             if (!mobile.equals("")) {
                                 add_dialog.dismiss();
-                                OkGo.<String>get("https://www.yihu16888.com/api/emergencycontact/add")
+                                OkGo.<String>get(AppRequestURL.URL.emergencycontact_add)
                                         .params("type","1")
                                         .params("token",token)
                                         .params("name",name)
@@ -181,7 +182,7 @@ public class ContactActivity extends AppCompatActivity implements View.OnClickLi
                         @Override
                         public void onClick(View v) {
                             show.dismiss();
-                            OkGo.<String>get("https://www.yihu16888.com/api/emergencycontact/delete")
+                            OkGo.<String>get(AppRequestURL.URL.emergencycontact_delete)
                                     .params("type","1")
                                     .params("token",token)
                                     .params("id",customer_id)

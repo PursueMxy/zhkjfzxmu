@@ -15,6 +15,7 @@ import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.zhkj.yhfw.PaaSActivity;
 import com.zhkj.yhfw.R;
+import com.zhkj.yhfw.Utlis.AppRequestURL;
 import com.zhkj.yhfw.Utlis.TimeUtils;
 
 import java.text.ParseException;
@@ -83,7 +84,7 @@ public class PeccancyActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void InitData() {
-        OkGo.<String>get("https://www.yihu16888.com/api/member/index")
+        OkGo.<String>get(AppRequestURL.URL.index)
                 .params("type",1)
                 .params("token", token)
                 .params("start",start_dt)

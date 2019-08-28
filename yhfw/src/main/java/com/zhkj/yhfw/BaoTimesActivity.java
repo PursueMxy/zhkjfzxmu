@@ -22,6 +22,7 @@ import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.zhkj.yhfw.Bean.BaoTimesBean;
 import com.zhkj.yhfw.Bean.OrderListBean;
+import com.zhkj.yhfw.Utlis.AppRequestURL;
 import com.zhkj.yhfw.Utlis.StringFormatUtil;
 
 import java.util.ArrayList;
@@ -56,7 +57,7 @@ public class BaoTimesActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void InitData() {
-        OkGo.<String>get("https://www.yihu16888.com/api/order/meal")
+        OkGo.<String>get(AppRequestURL.URL.HOST+"/api/order/meal")
                 .params("type",1)
                 .params("token",token)
                 .execute(new StringCallback() {

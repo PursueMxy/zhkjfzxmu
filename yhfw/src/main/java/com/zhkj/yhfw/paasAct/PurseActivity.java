@@ -22,6 +22,7 @@ import com.zhkj.yhfw.Bean.PurseBean;
 import com.zhkj.yhfw.OrderListActivity;
 import com.zhkj.yhfw.PaaSActivity;
 import com.zhkj.yhfw.R;
+import com.zhkj.yhfw.Utlis.AppRequestURL;
 import com.zhkj.yhfw.Utlis.TimeUtils;
 
 import java.text.ParseException;
@@ -112,7 +113,7 @@ public class PurseActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void InitData() {
-        OkGo.<String>get("https://www.yihu16888.com/api/member/index")
+        OkGo.<String>get(AppRequestURL.URL.index)
                 .params("type",1)
                 .params("token", token)
                 .params("start",start_dt)
