@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -34,6 +35,7 @@ public class MyTeamActivity extends AppCompatActivity implements View.OnClickLis
     private TextView tv_message;
     private MyTeamAdapter myTeamAdapter;
     private List<MyTeamBean.DataBean.TeamMemberBean> team_member=new ArrayList<>();
+    private LinearLayoutManager mLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +49,26 @@ public class MyTeamActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void InitUI() {
-     findViewById(R.id.MyTeam_img_back).setOnClickListener(this);
+      findViewById(R.id.MyTeam_img_back).setOnClickListener(this);
         tv_message = findViewById(R.id.my_team_tv_message);
         mRecyclerView = findViewById(R.id.my_team_recyclerView);
+        mLayoutManager = new LinearLayoutManager(mContext);
         myTeamAdapter = new MyTeamAdapter(mContext);
+        mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(myTeamAdapter);
+        mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
+            @Override
+            public void onRefresh() {
+                mRecyclerView.refreshComplete();//刷新动画完成
+            }
 
+            @Override
+            public void onLoadMore() {
+                //加载更多
+                mRecyclerView.loadMoreComplete();//加载动画完成
+                mRecyclerView.setNoMore(true);//数据加载完成
+            }
+        });
     }
 
     private void InitData() {
@@ -68,9 +84,9 @@ public class MyTeamActivity extends AppCompatActivity implements View.OnClickLis
                         MyTeamBean myTeamBean = gson.fromJson(response.body(), MyTeamBean.class);
                         if (myTeamBean.getCode()==200){
                             tv_message.setVisibility(View.GONE);
-                            myTeamAdapter.notifyDataSetChanged();
                             team_member = myTeamBean.getData().getTeam_member();
                             myTeamAdapter.setListAll(team_member);
+                            mRecyclerView.setAdapter(myTeamAdapter);
                         }else {
                             tv_message.setVisibility(View.VISIBLE);
                         }

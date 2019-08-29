@@ -117,7 +117,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/dp_65"
             android:background="@drawable/btn_sala"
-            android:text="取  消"
+            android:text="注  册"
             android:layout_width="@dimen/dp_92"
             android:layout_height="@dimen/dp_35" />
 

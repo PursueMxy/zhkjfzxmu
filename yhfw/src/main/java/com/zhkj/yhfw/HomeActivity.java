@@ -765,6 +765,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     if (!Stop_address.equals("")) {
                         spservice.PlaceOrder(mobile, aboart_lati + "", aboart_longi + "", aboartAddress, stop_lati + "", stop_Longi + "", Stop_address);
 //                          spservice.orderInfo();
+//                                        //构建开始点与终止点的经纬度数据
+                        RouteSearch.FromAndTo fromAndTo = new RouteSearch.FromAndTo(
+                                new LatLonPoint(aboart_lati, aboart_longi),
+                                new LatLonPoint(stop_lati, stop_Longi));
+                        RouteSearch.DriveRouteQuery query = new RouteSearch.DriveRouteQuery(fromAndTo, 1, null, null, "");
+                        routeSearch.calculateDriveRouteAsyn(query);
                     } else {
                         Toast.makeText(mContext, "目的地不能为空", Toast.LENGTH_SHORT).show();
                     }
@@ -1080,7 +1086,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     static Runnable runnable_order = new Runnable() {
         @Override
         public void run() {
-
             if (Travel_type == 1) {
                 home_tv_wait_time.setText(TimeUtils.GetTiem(createtime));
                 long currenttimes = System.currentTimeMillis();
@@ -1153,16 +1158,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                                 @Override
                                 public void onLatestPointCallback(LatestPointResponse latestPointResponse) {
                                     if (latestPointResponse.isSuccess()) {
-
-                                        Point point = latestPointResponse.getLatestPoint().getPoint();
-//                                        //构建开始点与终止点的经纬度数据
-//                                        RouteSearch.FromAndTo fromAndTo = new RouteSearch.FromAndTo(
-//                                                new LatLonPoint(point.getLat(), point.getLng()),
-//                                                new LatLonPoint(stop_lati, stop_Longi));
-//                                        RouteSearch.DriveRouteQuery query = new RouteSearch.DriveRouteQuery(fromAndTo, 1, null, null, "");
-//                                        routeSearch.calculateDriveRouteAsyn(query);
-//                                        start_lati = point.getLat();
-//                                        stop_Longi = point.getLng();
 
                                     } else {
 //                                        tv_latlng.setText("查询实时位置失败，" + latestPointResponse.getErrorMsg());
@@ -1296,18 +1291,18 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 }
                 int size = driverPath.size();
-//                aMap.clear();
-//                aMap.addPolyline(new PolylineOptions()
-//                        .addAll(driverPath)
-//                        .width(20)
-//                        //是否开启纹理贴图
-//                        .setUseTexture(true)
-//                        //绘制成大地线
-//                        .geodesic(false)
-//                        //设置纹理样式
-////                .setCustomTexture(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.custtexture)))
-//                        //设置画线的颜色
-//                        .color(Color.argb(200, 0, 225, 12)));
+                aMap.clear();
+                aMap.addPolyline(new PolylineOptions()
+                        .addAll(driverPath)
+                        .width(20)
+                        //是否开启纹理贴图
+                        .setUseTexture(true)
+                        //绘制成大地线
+                        .geodesic(false)
+                        //设置纹理样式
+//                .setCustomTexture(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.custtexture)))
+                        //设置画线的颜色
+                        .color(Color.argb(200, 0, 225, 12)));
                 //添加终点标注
                 if (stopmarker != null) {
                     stopmarker.remove();
@@ -1764,7 +1759,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         dialog.show();//显示对话框
     }
 
-
+    //报警功能
     public void police(){
         NDialog nDialog = new NDialog(this) {
             @Override
