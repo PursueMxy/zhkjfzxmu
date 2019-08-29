@@ -3,6 +3,7 @@ package com.zhkj.yhfw;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -31,12 +32,17 @@ import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
@@ -112,6 +118,7 @@ import com.google.gson.GsonBuilder;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
+import com.necer.ndialog.NDialog;
 import com.zhkj.yhfw.Bean.OrderBean;
 import com.zhkj.yhfw.Bean.OrderDetailBean;
 import com.zhkj.yhfw.Bean.OrderInfoBean;
@@ -122,12 +129,15 @@ import com.zhkj.yhfw.Bean.TraceInfoBean;
 import com.zhkj.yhfw.Bean.loginbean;
 import com.zhkj.yhfw.Bean.points;
 import com.zhkj.yhfw.Utlis.AppRequestURL;
+import com.zhkj.yhfw.Utlis.BottomDialog;
 import com.zhkj.yhfw.Utlis.Constants;
 import com.zhkj.yhfw.Utlis.SimpleOnTrackLifecycleListener;
 import com.zhkj.yhfw.Utlis.SimpleOnTrackListener;
 import com.zhkj.yhfw.Utlis.TimeUtils;
+import com.zhkj.yhfw.Utlis.ToastUtils;
 import com.zhkj.yhfw.customview.CircleImageView;
 import com.zhkj.yhfw.customview.CustomDialog;
+import com.zhkj.yhfw.customview.PoliceDialog;
 import com.zhkj.yhfw.service.BackService;
 
 import java.io.BufferedReader;
@@ -297,6 +307,15 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private File soundFile;
     private String mAudioPath;
     private OkHttpClient okHttpClient;
+    private Dialog dialog;
+    private View inflate;
+    private TextView safe_baojing;
+    private TextView safe_luyin;
+    private ImageView safe_close;
+    private android.support.v7.app.AlertDialog alertDialog;
+    private static TextView dialog_reading_tv_date;
+    private android.support.v7.app.AlertDialog readDialog;
+    private static long reading_start;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -389,32 +408,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void InitUI() {
-        //录音功能
-        findViewById(R.id.home_img_common).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mIsRecording){
-                    recordAudio();
-                }else {
-                    stopRecord();
-                    Log.e("mAudioPath",mAudioPath);
-                    //okHttpClient
-                    RequestBody requestBody = new MultipartBody.Builder()
-                            .setType(MultipartBody.FORM)
-                            .addFormDataPart("file", soundFile.getName(), RequestBody.create(MediaType.parse("application/octet-stream"),soundFile))
-                            .build();
-                    //ProgressRequestBody progressRequestBody = new ProgressRequestBody(requestBody, progressListener);
-                    Request request = new Request.Builder()
-                            .url(AppRequestURL.URL.HOST+"/api/Recording/uploadRecording?type=1&token="+token)
-                            .post(requestBody)
-                            .build();
-                    //上面url中的内容请改成自己php文件的所在地址
-                    okHttpClient.newCall(request).enqueue(callback_upload);
-                }
-            }
-        });
         findViewById(R.id.home_img_head).setOnClickListener(this);
-
+         findViewById(R.id.home_tv_safe).setOnClickListener(this);
         //自定义确认弹出窗
         confirmDialog();
         //下单时间
@@ -711,6 +706,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.home_tv_safe:
+                show();
+                break;
             case R.id.home_img_head:
                 Intent passintent = new Intent(mContext, PaaSActivity.class);
                 startActivityForResult(passintent,PASS_CODE);
@@ -744,7 +742,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 intent2.putExtra("positionE",start_lati+"");
                 intent2.putExtra("positionN",start_Longi+"");
                 startActivityForResult(intent2, BAO_TIMES_CODE);
-                Log.e("service_type",start_lati+""+start_Longi);
                 break;
             case R.id.designated_driver:
                 DRIVING_TYPE = 1;
@@ -752,14 +749,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 tv_designated_driver.setTextColor(this.getResources().getColor(R.color.color_ffd700));
                 break;
             case R.id.btn_sala:
-//                home_rl_order_taking.setVisibility(View.GONE);
-//                home_ll_driver.setVisibility(View.GONE);
-//                ll_order_geton.setVisibility(View.GONE);
-//                ll_order_in.setVisibility(View.GONE);
-//                ll_order_wait.setVisibility(View.GONE);
-//                new CustomDialog(this)
-//                        .setDialogCornersRadius(20f)
-//                        .create().show();
                 Intent intent3 = new Intent(mContext,OrderTakingHallActivity.class);
                 intent3.putExtra("positionE",start_lati);
                 intent3.putExtra("positionN",start_Longi);
@@ -918,6 +907,17 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 //确认取消订单
                 spservice.refuse_order(orderId,Reaton);
                 cancel_show.dismiss();
+                break;
+            case R.id.ll_safa_baojing:
+                dialog.dismiss();
+                police();
+                break;
+            case R.id.ll_safe_luyin:
+                dialog.dismiss();
+                safe_reading();
+                break;
+            case R.id.ll_safe_close:
+                dialog.dismiss();
                 break;
             default:
                 break;
@@ -1083,15 +1083,17 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
             if (Travel_type == 1) {
                 home_tv_wait_time.setText(TimeUtils.GetTiem(createtime));
+                long currenttimes = System.currentTimeMillis();
+                int times = (int) (currenttimes - (createtime*1000)) / 1000 - free_waiting_time;
+                if (times > 5) {
+                    if (times % 30 == 0) {
+                        home_tv_wait_sum.setText(times / 60 * waiting_price + "元");
+                    }
+                }
             } else if (Travel_type == 2) {
                 home_tv_travel_time.setText(TimeUtils.GetTiem(createtime));
-            }
-            long currenttimes = System.currentTimeMillis();
-            int times = (int) (currenttimes - (createtime*1000)) / 1000 - free_waiting_time;
-            if (times > 5) {
-                if (times % 30 == 0) {
-                    home_tv_wait_sum.setText(times / 60 * waiting_price + "元");
-                }
+            }else if (Travel_type==3){
+                dialog_reading_tv_date.setText(TimeUtils.GetTiem(reading_start));
             }
             handler_order.postDelayed(runnable_order, 1000);
         }
@@ -1736,4 +1738,120 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     };
 
+    //安全功能
+    public void show(){
+        dialog = new BottomDialog(this,R.style.ActionSheetDialogStyle);
+        //填充对话框的布局
+        inflate = LayoutInflater.from(this).inflate(R.layout.ll_safe, null);
+        //初始化控件
+        safe_baojing = (TextView) inflate.findViewById(R.id.ll_safa_baojing);
+        safe_luyin = (TextView) inflate.findViewById(R.id.ll_safe_luyin);
+        safe_close = (ImageView) inflate.findViewById(R.id.ll_safe_close);
+        safe_baojing.setOnClickListener(this);
+        safe_luyin.setOnClickListener(this);
+        safe_close.setOnClickListener(this);
+        //将布局设置给Dialog
+        dialog.setContentView(inflate);
+        //获取当前Activity所在的窗体
+        Window dialogWindow = dialog.getWindow();
+        //设置Dialog从窗体底部弹出
+        dialogWindow.setGravity( Gravity.BOTTOM);
+        //获得窗体的属性
+        WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+        lp.y = 20;//设置Dialog距离底部的距离
+//       将属性设置给窗体
+        dialogWindow.setAttributes(lp);
+        dialog.show();//显示对话框
+    }
+
+
+    public void police(){
+        NDialog nDialog = new NDialog(this) {
+            @Override
+            protected void setDialogDetails(Context context, final android.support.v7.app.AlertDialog alertDialog) {
+                View inflate = LayoutInflater.from(context).inflate(R.layout.dialog_police, null);
+                alertDialog.setContentView(inflate);
+                //可在这里设置 NDialog 的属性
+                setCanceledOnTouchOutside(true);
+                setCancelable(true);
+                setDimAmount(0.0F);
+                inflate.findViewById(R.id.dialog_police_tv_sms).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        OkGo.<String>get(AppRequestURL.URL.send_sms)
+                                .params("type","1")
+                                .params("token", token)
+                                .params("position",Start_address)
+                                .params("positionN",start_lati)
+                                .params("positionE",start_Longi)
+                                .execute(new StringCallback() {
+                                    @Override
+                                    public void onSuccess(Response<String> response) {
+                                        ToastUtils.showToast(mContext,"发送成功");
+                                        alertDialog.dismiss();
+                                    }
+                                });
+                    }
+                });
+                inflate.findViewById(R.id.dialog_police_tv_call).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intentcall = new Intent();
+                        //设置拨打电话的动作
+                        intentcall.setAction(Intent.ACTION_CALL);
+                        //设置拨打电话的号码
+                        intentcall.setData(Uri.parse("tel:" + "110"));
+                        //开启打电话的意图
+                        startActivity(intentcall);
+                        alertDialog.dismiss();
+                    }
+                });
+            }
+        };
+        alertDialog = nDialog.create();
+        alertDialog.show();
+
+    }
+    //录音功能
+    public void safe_reading(){
+        reading_start =System.currentTimeMillis()/1000;
+        Travel_type=3;
+        handler_order.postDelayed(runnable_order, 1000);
+        recordAudio();
+        NDialog nDialog = new NDialog(this) {
+            @Override
+            protected void setDialogDetails(Context context, final android.support.v7.app.AlertDialog alertDialog) {
+                View inflate = LayoutInflater.from(context).inflate(R.layout.dialog_reading, null);
+                alertDialog.setContentView(inflate);
+                //可在这里设置 NDialog 的属性
+                setCanceledOnTouchOutside(true);
+                setCancelable(true);
+                setDimAmount(0.0F);
+                inflate.findViewById(R.id.dialog_reading_tv_stop).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        stopRecord();
+//                    Log.e("mAudioPath",mAudioPath);
+                    //okHttpClient
+                    RequestBody requestBody = new MultipartBody.Builder()
+                            .setType(MultipartBody.FORM)
+                            .addFormDataPart("file", soundFile.getName(), RequestBody.create(MediaType.parse("application/octet-stream"),soundFile))
+                            .build();
+                    //ProgressRequestBody progressRequestBody = new ProgressRequestBody(requestBody, progressListener);
+                    Request request = new Request.Builder()
+                            .url(AppRequestURL.URL.HOST+"/api/Recording/uploadRecording?type=1&token="+token)
+                            .post(requestBody)
+                            .build();
+                    //上面url中的内容请改成自己php文件的所在地址
+                    okHttpClient.newCall(request).enqueue(callback_upload);
+                        readDialog.dismiss();
+                        handler_order.removeCallbacks(runnable_order);
+                    }
+                });
+                dialog_reading_tv_date = inflate.findViewById(R.id.dialog_reading_tv_date);
+            }
+        };
+        readDialog = nDialog.create();
+        readDialog.show();
+    }
 }

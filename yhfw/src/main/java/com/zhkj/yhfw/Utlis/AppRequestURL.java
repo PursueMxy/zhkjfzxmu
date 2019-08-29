@@ -58,5 +58,26 @@ public class AppRequestURL {
         //我的绩效
         public static final String team=HOST+"/api/team/index";
 
+        //提现数据
+        public static final String withdrawal_default=HOST+"/api/member/get_withdrawal_default";
+
+        //提交提现
+        public static final String withdraw=HOST+"/api/team/withdraw";
+
+        //我的团队
+        public static final String myteam=HOST+"/api/team/myteam";
+
+        //提现明细
+        public static final String withdrawlog=HOST+"/api/team/withdrawlog";
+
+        //获取二维码
+        public static final String getQR=HOST+"/api/scene/getQR";
+
+        //佣金明细
+        public static final String commission=HOST+"/api/team/commission_log";
+
+        //发送短信
+        public static final String send_sms=HOST+"/api/emergencycontact/send_sms";
+
     }
 }

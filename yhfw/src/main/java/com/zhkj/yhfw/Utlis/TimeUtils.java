@@ -164,13 +164,13 @@ public class TimeUtils {
                     }else {
                         finaltime = days+"天"+"0"+hours+":0"+minutes+second;
                     }
-                 }else {
+                }else {
                     if (second<10){
                         finaltime = days+"天"+":0"+hours+minutes+second;
                     }else {
                         finaltime = days+"天"+":0"+hours+minutes+second;
                     }
-                 }
+                }
             }else {
                 if (minutes<10){
                     if (second<10){

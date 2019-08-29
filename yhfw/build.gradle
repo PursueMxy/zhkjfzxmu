@@ -74,4 +74,7 @@ dependencies {
     //图片选择
     implementation 'com.winfo.photoselector:PhotoSelector:1.2.1'
 
+    //recyclerview
+    implementation 'com.zhouyou:easyrecyclerview:1.0.5'
+
 }

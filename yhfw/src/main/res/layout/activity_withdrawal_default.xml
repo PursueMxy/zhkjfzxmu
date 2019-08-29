@@ -34,6 +34,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_30">
         <TextView
+            android:id="@+id/Withdrawal_tv_bankName"
             android:layout_marginLeft="@dimen/dp_10"
             android:gravity="center"
             android:textSize="@dimen/sp_13"
@@ -43,6 +44,7 @@
             android:layout_height="match_parent" />
 
         <TextView
+            android:id="@+id/Withdrawal_tv_cardID"
             android:layout_marginRight="@dimen/dp_10"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/WithdrawalDefaul_next"
@@ -71,6 +73,7 @@
         android:orientation="vertical"
         android:layout_height="wrap_content">
         <TextView
+            android:id="@+id/Withdrawal_tv_setmoney"
             android:layout_marginTop="@dimen/dp_10"
             android:gravity="center"
             android:text="可提现金额 ：0.00元"
@@ -78,15 +81,18 @@
             android:layout_height="wrap_content" />
 
         <EditText
+            android:inputType="numberDecimal"
+            android:id="@+id/Withdrawal_edt_money"
+            android:paddingLeft="@dimen/dp_13"
+            android:drawableLeft="@mipmap/icon_renminbi"
             android:layout_marginTop="@dimen/dp_20"
             android:hint="请输入提现金额"
-            android:background="@null"
-            android:gravity="center"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <Button
+            android:id="@+id/Withdrawal_btn_ok"
             android:layout_marginTop="@dimen/dp_30"
             android:layout_marginRight="@dimen/dp_20"
             android:layout_marginLeft="@dimen/dp_20"
@@ -95,14 +101,15 @@
             android:textColor="@color/white"
             android:text="预计两小时内到账，确认提现"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_20" />
+            android:layout_height="@dimen/dp_30" />
     </LinearLayout>
 
     <LinearLayout
+        android:background="@color/white"
         android:layout_marginRight="@dimen/dp_20"
         android:layout_marginLeft="@dimen/dp_20"
         android:paddingBottom="@dimen/dp_20"
-        android:paddingTop="@dimen/dp_20"
+        android:paddingTop="@dimen/dp_30"
         android:layout_marginTop="@dimen/dp_10"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

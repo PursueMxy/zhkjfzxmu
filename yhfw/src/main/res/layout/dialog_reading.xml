@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+ <TextView
+     android:layout_margin="@dimen/dp_10"
+     android:gravity="center"
+     android:textColor="@color/color_black"
+     android:text="开始录音"
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/dialog_reading_tv_date"
+        android:gravity="center"
+        android:textSize="@dimen/sp_15"
+        android:text="00:00:00"
+        android:textColor="@color/red"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_60" />
+
+    <TextView
+        android:padding="@dimen/dp_10"
+        android:id="@+id/dialog_reading_tv_stop"
+        android:gravity="center"
+        android:background="@color/color_ffd700"
+        android:textColor="@color/white"
+        android:text="结束录音"
+        android:textSize="@dimen/sp_15"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>

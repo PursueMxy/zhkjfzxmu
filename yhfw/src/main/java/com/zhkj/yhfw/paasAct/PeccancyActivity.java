@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -124,6 +125,17 @@ public class PeccancyActivity extends AppCompatActivity implements View.OnClickL
                     break;
         }
     }
-
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if ((keyCode == KeyEvent.KEYCODE_BACK))
+        {
+            Intent intent = new Intent(getApplicationContext(), PaaSActivity.class);
+            setResult(INTENT_ONE,intent);
+            finish();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 
 }

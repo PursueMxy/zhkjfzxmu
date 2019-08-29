@@ -27,6 +27,7 @@
     </RelativeLayout>
 
     <com.zhkj.yhfw.customview.CircleImageView
+        android:id="@+id/qrcode_img_head"
         android:layout_marginTop="@dimen/dp_50"
         android:layout_gravity="center"
         android:src="@mipmap/icon_round"
@@ -34,6 +35,7 @@
         android:layout_height="@dimen/dp_60" />
 
     <TextView
+        android:id="@+id/qrcode_tv_nikenema"
         android:layout_marginTop="@dimen/dp_3"
         android:textColor="@color/color_blackCC"
         android:textSize="@dimen/sp_14"
@@ -43,6 +45,7 @@
         android:layout_height="wrap_content" />
 
     <ImageView
+        android:id="@+id/qrcode_img_qrcode"
         android:layout_marginTop="@dimen/dp_20"
         android:layout_gravity="center"
         android:src="#000000"

@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -16,9 +17,17 @@ import android.webkit.WebViewClient;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
+import com.zhkj.yhfw.Bean.ChargingDocBean;
+import com.zhkj.yhfw.Bean.DriverAgreementBean;
 import com.zhkj.yhfw.HomeActivity;
 import com.zhkj.yhfw.PaaSActivity;
 import com.zhkj.yhfw.R;
+import com.zhkj.yhfw.Utlis.AppRequestURL;
 
 public class YffwWebActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -28,6 +37,7 @@ public class YffwWebActivity extends AppCompatActivity implements View.OnClickLi
     private TextView tv_title;
     private int YFFWWEB_CODE=2010;
     private String name;
+    private TextView tv_content;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,25 +48,31 @@ public class YffwWebActivity extends AppCompatActivity implements View.OnClickLi
         name = intent.getStringExtra("name");
         url = intent.getStringExtra("url");
         InitUI();
+        InitData();
+    }
+
+    private void InitData() {
+        OkGo.<String>get(url)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        Gson gson = new GsonBuilder().create();
+                        if (name.equals("用户协议")) {
+                            DriverAgreementBean driverAgreementBean = gson.fromJson(response.body(), DriverAgreementBean.class);
+                            DriverAgreementBean.DataBean data = driverAgreementBean.getData();
+                            tv_content.setText(Html.fromHtml(data.getDriver_agreement()));
+                        }else{
+                            ChargingDocBean chargingDocBean = gson.fromJson(response.body(), ChargingDocBean.class);
+                            ChargingDocBean.DataBean data = chargingDocBean.getData();
+                            tv_content.setText(Html.fromHtml(data.getCharging_doc()));
+                        }
+                    }
+                });
+
     }
 
     private void InitUI() {
-        yffw_web = findViewById(R.id.webview);
-        yffw_web.loadUrl(url);
-        //设置可自由缩放网页、JS生效
-        WebSettings webSettings = yffw_web.getSettings();
-        webSettings.setJavaScriptEnabled(true);
-        webSettings.setSupportZoom(true);
-        webSettings.setDomStorageEnabled(true);
-        webSettings.setBuiltInZoomControls(true);
-        yffw_web.setWebViewClient(new WebViewClient(){
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-               yffw_web.loadUrl(url);
-               return true;
-
-            }
-        });
+        tv_content = findViewById(R.id.YffwWeb_tv_content);
         findViewById(R.id.YffwWeb_img_back).setOnClickListener(this);
         tv_title = findViewById(R.id.YffwWeb_title);
         tv_title.setText(name);
@@ -65,7 +81,7 @@ public class YffwWebActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)
     {
-        if ((keyCode == KeyEvent.KEYCODE_BACK) && yffw_web.canGoBack())
+        if (keyCode == KeyEvent.KEYCODE_BACK)
         {
             Intent intent = new Intent(this, PaaSActivity.class);
             setResult(YFFWWEB_CODE,intent);
@@ -78,10 +94,6 @@ public class YffwWebActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        yffw_web.stopLoading();
-        yffw_web.removeAllViews();
-        yffw_web.destroy();
-        yffw_web = null;
     }
 
     @Override

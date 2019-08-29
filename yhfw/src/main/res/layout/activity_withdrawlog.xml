@@ -31,6 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_30">
         <TextView
+            android:id="@+id/Withdrawlog_slt_one"
             android:textColor="@color/color_ffd700"
             android:text="全部"
             android:textSize="@dimen/sp_14"
@@ -39,6 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
         <TextView
+            android:id="@+id/Withdrawlog_slt_two"
             android:textSize="@dimen/sp_14"
             android:textColor="@color/color_black"
             android:text="待审核"
@@ -47,6 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
         <TextView
+            android:id="@+id/Withdrawlog_slt_three"
             android:textSize="@dimen/sp_14"
             android:textColor="@color/color_black"
             android:text="待打款"
@@ -55,6 +58,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
         <TextView
+            android:id="@+id/Withdrawlog_slt_four"
             android:textSize="@dimen/sp_14"
             android:textColor="@color/color_black"
             android:text="已打款"
@@ -63,6 +67,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
         <TextView
+            android:id="@+id/Withdrawlog_slt_five"
             android:textSize="@dimen/sp_14"
             android:textColor="@color/color_black"
             android:text="无效"
@@ -71,9 +76,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>
-    <ListView
+    <com.zhouyou.recyclerview.XRecyclerView
+        android:id="@+id/Withdrawlog_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-    </ListView>
+    </com.zhouyou.recyclerview.XRecyclerView>
 </LinearLayout>

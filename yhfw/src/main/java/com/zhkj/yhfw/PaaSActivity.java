@@ -116,7 +116,7 @@ public class PaaSActivity extends AppCompatActivity implements View.OnClickListe
         paas_grid_one = findViewById(R.id.paas_grid_one);
         dataList = new ArrayList<Map<String, Object>>();
         //图标下的文字
-        String name[]={"我的钱包","违章记录","我的订单","我的团队","紧急联系人","录音管理","联系客服","保险流程","用户协议","计费规则"};
+        String name[]={"我的钱包","违章记录","我的订单","我的绩效","紧急联系人","录音管理","联系客服","保险流程","用户协议","计费规则"};
         int icno[] = {R.mipmap.paas_icon_purse,R.mipmap.pass_icon_peccancy,R.mipmap.paas_icon_order,R.mipmap.pass_icon_team,R.mipmap.paas_icon_customer,
                 R.mipmap.paas_icon_tape,R.mipmap.paas_icon_custon_service,R.mipmap.paas_icon_safe,R.mipmap.pass_icon_user_protocol,R.mipmap.paas_icon_nav_billing};
         for (int i = 0; i <name.length; i++) {
@@ -167,13 +167,13 @@ public class PaaSActivity extends AppCompatActivity implements View.OnClickListe
                     case 8:
                         Intent intent9 = new Intent(mContext, YffwWebActivity.class);
                         intent9.putExtra("name","用户协议");
-                        intent9.putExtra("url",AppRequestURL.URL.HOST+"/index/index/driver#/CommonRichText?type=driver");
+                        intent9.putExtra("url",AppRequestURL.URL.HOST+"/api/index/agreement?key=driver_agreement");
                         startActivityForResult(intent9, YFFWWEB_CODE);
                         break;
                     case 9:
                         Intent intent10 = new Intent(mContext, YffwWebActivity.class);
-                        intent10.putExtra("name","用户协议");
-                        intent10.putExtra("url",AppRequestURL.URL.HOST+"/index/index/driver#/CommonRichText?type=jifei");
+                        intent10.putExtra("name","积分规则");
+                        intent10.putExtra("url",AppRequestURL.URL.HOST+"/api/index/agreement?key=charging_doc");
                         startActivityForResult(intent10, YFFWWEB_CODE);
                         break;
                 }

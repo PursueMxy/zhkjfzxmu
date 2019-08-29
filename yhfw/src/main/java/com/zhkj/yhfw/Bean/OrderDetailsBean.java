@@ -1,14 +1,13 @@
 package com.zhkj.yhfw.Bean;
 
-import java.util.List;
-
 public class OrderDetailsBean {
+
 
     /**
      * code : 200
      * msg : OK
-     * time : 1565589161
-     * data : {"id":233,"type":"","driver_id":3,"user_id":null,"startingpointE":"24.475664","startingpointN":"118.118862","startingpoint":"厦门市思明区湖滨南路338号","destinationE":"24.636125","destinationN":"118.074093","destination":"厦门北站","status":"6","departuretime":1565572823,"estimatedeparturetime":0,"createtime":1565572762,"updatetime":1565572941,"endtime":1565572941,"meal_id":0,"driver_arrivaltime":1565572804,"arrivaltime":1565572827,"money":"19.00","start_money":"19.00","mileage_money":"0.00","return_money":"0.00","travel_time":4,"wait_time":19,"wait_money":"0.00","mileage":"0","city":"","estimated_mileage":0,"coupon_id":null,"paymoney":"19.00","mobile":"18859187133","order_trip_id":925,"budget":null,"service_type":"市内服务","createddatetime":"09:19:22","pay_type":"线下支付","commission_platform":"4.09","reason":"","estimated_time":0,"driverInfo":{"nickname":"肖振玉  测试账户","drivingage":1,"mobile":"18859187133","avatar":"/uploads/tx/20190715190759_.jpeg","id":3,"driving_license_time":958437205},"userInfo":[],"info_submited":0,"score":null}
+     * time : 1567059143
+     * data : {"id":276,"type":"0","driver_id":3,"user_id":178,"startingpointE":"119.27835","startingpointN":"26.060734","startingpoint":"福建省福州市台江区宁化街道尚文路18号富力中心","destinationE":"119.218394","destinationN":"26.018004","destination":"福建省福州市快了柠檬(正荣·财富中心1号楼)","status":"6","departuretime":1567050828,"estimatedeparturetime":0,"createtime":1566961227,"updatetime":1567050832,"endtime":1567050832,"meal_id":0,"driver_arrivaltime":1567050826,"arrivaltime":1567050830,"money":"19.00","start_money":"19.00","mileage_money":"0.00","return_money":"0.00","travel_time":2,"wait_time":2,"wait_money":"0.00","mileage":"0.0","city":"福州市","estimated_mileage":11,"coupon_id":null,"paymoney":"19.00","mobile":"18756070310","order_trip_id":968,"budget":null,"service_type":"","createddatetime":"11:00:27","pay_type":"线下支付","commission_platform":"4.09","reason":"","estimated_time":1417,"driverInfo":{"nickname":"肖振玉  测试账户","drivingage":1,"mobile":"18859187133","avatar":"/uploads/tx/20190715190759_.jpeg","id":3,"driving_license_time":958437205},"userInfo":{"nickname":"戚戚烊","mobile":"18756070310","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83eqsWFqgmdWco2CpRrtd0CPTm2Sr60baOlHHjIWicZ8HvNV23ROqGuNBETnJ10iaciabsnup6jzfZxG4g/132","id":178,"VIP":"0"},"info_submited":0,"score":null}
      */
 
     private int code;
@@ -50,48 +49,48 @@ public class OrderDetailsBean {
 
     public static class DataBean {
         /**
-         * id : 233
-         * type :
+         * id : 276
+         * type : 0
          * driver_id : 3
-         * user_id : null
-         * startingpointE : 24.475664
-         * startingpointN : 118.118862
-         * startingpoint : 厦门市思明区湖滨南路338号
-         * destinationE : 24.636125
-         * destinationN : 118.074093
-         * destination : 厦门北站
+         * user_id : 178
+         * startingpointE : 119.27835
+         * startingpointN : 26.060734
+         * startingpoint : 福建省福州市台江区宁化街道尚文路18号富力中心
+         * destinationE : 119.218394
+         * destinationN : 26.018004
+         * destination : 福建省福州市快了柠檬(正荣·财富中心1号楼)
          * status : 6
-         * departuretime : 1565572823
+         * departuretime : 1567050828
          * estimatedeparturetime : 0
-         * createtime : 1565572762
-         * updatetime : 1565572941
-         * endtime : 1565572941
+         * createtime : 1566961227
+         * updatetime : 1567050832
+         * endtime : 1567050832
          * meal_id : 0
-         * driver_arrivaltime : 1565572804
-         * arrivaltime : 1565572827
+         * driver_arrivaltime : 1567050826
+         * arrivaltime : 1567050830
          * money : 19.00
          * start_money : 19.00
          * mileage_money : 0.00
          * return_money : 0.00
-         * travel_time : 4
-         * wait_time : 19
+         * travel_time : 2
+         * wait_time : 2
          * wait_money : 0.00
-         * mileage : 0
-         * city :
-         * estimated_mileage : 0
+         * mileage : 0.0
+         * city : 福州市
+         * estimated_mileage : 11
          * coupon_id : null
          * paymoney : 19.00
-         * mobile : 18859187133
-         * order_trip_id : 925
+         * mobile : 18756070310
+         * order_trip_id : 968
          * budget : null
-         * service_type : 市内服务
-         * createddatetime : 09:19:22
+         * service_type :
+         * createddatetime : 11:00:27
          * pay_type : 线下支付
          * commission_platform : 4.09
          * reason :
-         * estimated_time : 0
+         * estimated_time : 1417
          * driverInfo : {"nickname":"肖振玉  测试账户","drivingage":1,"mobile":"18859187133","avatar":"/uploads/tx/20190715190759_.jpeg","id":3,"driving_license_time":958437205}
-         * userInfo : []
+         * userInfo : {"nickname":"戚戚烊","mobile":"18756070310","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83eqsWFqgmdWco2CpRrtd0CPTm2Sr60baOlHHjIWicZ8HvNV23ROqGuNBETnJ10iaciabsnup6jzfZxG4g/132","id":178,"VIP":"0"}
          * info_submited : 0
          * score : null
          */
@@ -99,7 +98,7 @@ public class OrderDetailsBean {
         private int id;
         private String type;
         private int driver_id;
-        private Object user_id;
+        private int user_id;
         private String startingpointE;
         private String startingpointN;
         private String startingpoint;
@@ -137,9 +136,9 @@ public class OrderDetailsBean {
         private String reason;
         private int estimated_time;
         private DriverInfoBean driverInfo;
+        private UserInfoBean userInfo;
         private int info_submited;
         private Object score;
-        private List<?> userInfo;
 
         public int getId() {
             return id;
@@ -165,11 +164,11 @@ public class OrderDetailsBean {
             this.driver_id = driver_id;
         }
 
-        public Object getUser_id() {
+        public int getUser_id() {
             return user_id;
         }
 
-        public void setUser_id(Object user_id) {
+        public void setUser_id(int user_id) {
             this.user_id = user_id;
         }
 
@@ -469,6 +468,14 @@ public class OrderDetailsBean {
             this.driverInfo = driverInfo;
         }
 
+        public UserInfoBean getUserInfo() {
+            return userInfo;
+        }
+
+        public void setUserInfo(UserInfoBean userInfo) {
+            this.userInfo = userInfo;
+        }
+
         public int getInfo_submited() {
             return info_submited;
         }
@@ -483,14 +490,6 @@ public class OrderDetailsBean {
 
         public void setScore(Object score) {
             this.score = score;
-        }
-
-        public List<?> getUserInfo() {
-            return userInfo;
-        }
-
-        public void setUserInfo(List<?> userInfo) {
-            this.userInfo = userInfo;
         }
 
         public static class DriverInfoBean {
@@ -556,6 +555,62 @@ public class OrderDetailsBean {
 
             public void setDriving_license_time(int driving_license_time) {
                 this.driving_license_time = driving_license_time;
+            }
+        }
+
+        public static class UserInfoBean {
+            /**
+             * nickname : 戚戚烊
+             * mobile : 18756070310
+             * avatar : http://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83eqsWFqgmdWco2CpRrtd0CPTm2Sr60baOlHHjIWicZ8HvNV23ROqGuNBETnJ10iaciabsnup6jzfZxG4g/132
+             * id : 178
+             * VIP : 0
+             */
+
+            private String nickname;
+            private String mobile;
+            private String avatar;
+            private int id;
+            private String VIP;
+
+            public String getNickname() {
+                return nickname;
+            }
+
+            public void setNickname(String nickname) {
+                this.nickname = nickname;
+            }
+
+            public String getMobile() {
+                return mobile;
+            }
+
+            public void setMobile(String mobile) {
+                this.mobile = mobile;
+            }
+
+            public String getAvatar() {
+                return avatar;
+            }
+
+            public void setAvatar(String avatar) {
+                this.avatar = avatar;
+            }
+
+            public int getId() {
+                return id;
+            }
+
+            public void setId(int id) {
+                this.id = id;
+            }
+
+            public String getVIP() {
+                return VIP;
+            }
+
+            public void setVIP(String VIP) {
+                this.VIP = VIP;
             }
         }
     }

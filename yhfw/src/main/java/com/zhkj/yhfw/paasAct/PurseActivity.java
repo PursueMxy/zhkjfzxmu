@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -159,7 +160,18 @@ public class PurseActivity extends AppCompatActivity implements View.OnClickList
               break;
       }
     }
-
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if ((keyCode == KeyEvent.KEYCODE_BACK))
+        {
+            Intent intent = new Intent(getApplicationContext(), PaaSActivity.class);
+            setResult(PURSE_ONE,intent);
+            finish();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
     public class MyAdapter extends BaseAdapter{
 
 

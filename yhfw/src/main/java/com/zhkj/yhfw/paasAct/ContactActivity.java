@@ -2,10 +2,12 @@ package com.zhkj.yhfw.paasAct;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,7 @@ import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.zhkj.yhfw.Bean.CustomerBean;
 import com.zhkj.yhfw.Bean.PublicResultBean;
+import com.zhkj.yhfw.PaaSActivity;
 import com.zhkj.yhfw.R;
 import com.zhkj.yhfw.Utlis.AppRequestURL;
 import com.zhkj.yhfw.Utlis.ToastUtils;
@@ -44,6 +47,7 @@ public class ContactActivity extends AppCompatActivity implements View.OnClickLi
     private TextView add_edt_mobile;
     private TextView add_edt_name;
     private AlertDialog add_dialog;
+    private int CONTACT_CODE=2004;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +94,9 @@ public class ContactActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.Contact_img_back:
+                Intent intent = new Intent(getApplicationContext(), PaaSActivity.class);
+                setResult(CONTACT_CODE,intent);
+                finish();
                 break;
             case R.id.contact_btn_add:
                 dialog_customer_add = LayoutInflater.from(mContext).inflate(R.layout.dialog_customer_add, null);
@@ -142,6 +149,18 @@ public class ContactActivity extends AppCompatActivity implements View.OnClickLi
                 default:
                     break;
         }
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if ((keyCode == KeyEvent.KEYCODE_BACK))
+        {
+            Intent intent = new Intent(getApplicationContext(), PaaSActivity.class);
+            setResult(CONTACT_CODE,intent);
+            finish();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
     public class MyAdapter extends BaseAdapter{
         @Override

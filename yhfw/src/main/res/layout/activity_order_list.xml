@@ -15,10 +15,10 @@
           android:layout_marginLeft="@dimen/dp_15"
           android:gravity="center"
           android:layout_width="wrap_content"
-          android:layout_height="@dimen/dp_35" />
+          android:layout_height="@dimen/dp_40" />
       <TextView
           android:layout_centerHorizontal="true"
-          android:text="订单列表"
+          android:text="订单记录"
           android:textColor="#000000"
           android:textSize="@dimen/sp_22"
           android:gravity="center"
@@ -26,6 +26,8 @@
           android:layout_height="@dimen/dp_35" />
    </RelativeLayout>
    <ListView
+       android:scrollbars="none"
+       android:layout_marginTop="@dimen/dp_10"
        android:id="@+id/order_list"
        android:layout_width="match_parent"
        android:layout_height="match_parent"></ListView>

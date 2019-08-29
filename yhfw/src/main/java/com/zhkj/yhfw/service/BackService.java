@@ -233,7 +233,7 @@ public class BackService extends Service {
             @Override
             public void onOpen(WebSocket webSocket, Response response) {//开启长连接成功的回调
                 super.onOpen(webSocket, response);
-                Log.e("BackService","进来了");
+//                Log.e("BackService","进来了");
                 mWebSocket = webSocket;
                 String s = new Gson().toJson(new LoginDemoBean(token, "1", user_id,"login"));
                 mWebSocket.send(s);
@@ -243,7 +243,7 @@ public class BackService extends Service {
             public void onMessage(WebSocket webSocket, final String text) {//接收消息的回调
                 super.onMessage(webSocket, text);
                 //收到服务器端传过来的消息text
-                Log.e("BackService1",text);
+//                Log.e("BackService1",text);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -379,25 +379,25 @@ public class BackService extends Service {
             @Override
             public void onMessage(WebSocket webSocket, ByteString bytes) {
                 super.onMessage(webSocket, bytes);
-                Log.e("BackService2",bytes.toString());
+//                Log.e("BackService2",bytes.toString());
             }
 
             @Override
             public void onClosing(WebSocket webSocket, int code, String reason) {
                 super.onClosing(webSocket, code, reason);
-                Log.e("BackService3",reason);
+//                Log.e("BackService3",reason);
             }
 
             @Override
             public void onClosed(WebSocket webSocket, int code, String reason) {
                 super.onClosed(webSocket, code, reason);
-                Log.e("BackService4",reason);
+//                Log.e("BackService4",reason);
             }
 
             @Override
             public void onFailure(WebSocket webSocket, Throwable t, @Nullable Response response) {//长连接连接失败的回调
                 super.onFailure(webSocket, t, response);
-                Log.e("BackService5","发发发");
+//                Log.e("BackService5","发发发");
             }
         });
         client.dispatcher().executorService().shutdown();
@@ -576,7 +576,7 @@ public class BackService extends Service {
     public void crossdOrder(int meal_id,String posintion,String positionE,String positionN,String service_type,String estimatedeparturetime){
         IsPoint=false;
 
-        String s1 = new Gson().toJson(new CrossedPathsOrderBean("crossed_paths_order", token, "1", user_id,new CrossedPathsOrderBean.data(CityName,1,estimatedeparturetime+"",
+        String s1 = new Gson().toJson(new CrossedPathsOrderBean("crossed_paths_order", token, "0", user_id,new CrossedPathsOrderBean.data(CityName,1,estimatedeparturetime+"",
                 meal_id+"",posintion,positionE,positionN,service_type,posintion,positionE,positionN,"91")));
         boolean isSuccess = mWebSocket.send("");//发送一个空消息给服务器，通过发送消息的成功失败来判断长连接的连接状态
         if (!isSuccess) {//长连接已断开

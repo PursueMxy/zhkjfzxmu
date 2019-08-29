@@ -56,7 +56,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
         <TextView
         android:paddingTop="@dimen/dp_8"
         android:paddingBottom="@dimen/dp_8"

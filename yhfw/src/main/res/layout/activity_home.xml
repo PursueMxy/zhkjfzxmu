@@ -11,9 +11,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"></com.amap.api.maps.TextureMapView>
 
-    <ImageView
-        android:id="@+id/home_img_common"
-        android:src="@mipmap/icon_home_head"
+    <Button
+        android:layout_marginLeft="@dimen/dp_10"
+        android:drawableRight="@mipmap/icon_next"
+        android:layout_marginTop="@dimen/dp_400"
+        android:background="@drawable/btn_white"
+        android:text="安全"
+        android:id="@+id/home_tv_safe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

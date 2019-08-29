@@ -16,6 +16,7 @@ import com.google.gson.GsonBuilder;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
+import com.zhkj.yhfw.Bean.OrderDetails1Bean;
 import com.zhkj.yhfw.Bean.OrderDetailsBean;
 import com.zhkj.yhfw.R;
 import com.zhkj.yhfw.Utlis.AppRequestURL;
@@ -42,16 +43,19 @@ public class OrderDetailslActivity extends AppCompatActivity {
     private TextView tv_backReason;
     private TextView tv_backTime;
     private LinearLayout ll_statusBack;
+    private String type="0";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_detailsil);
+
         SharedPreferences sp = this.getSharedPreferences("login", Context.MODE_PRIVATE);
         token = sp.getString("token", "");
         Intent intent = getIntent();
         order_id = intent.getStringExtra("order_id");
         statusType = intent.getStringExtra("StatusType");
+        type = intent.getStringExtra("type");
         InitUI();
         InitData();
     }
@@ -67,27 +71,52 @@ public class OrderDetailslActivity extends AppCompatActivity {
                         String body = response.body();
                         GsonBuilder builder = new GsonBuilder();
                         Gson gson = builder.create();
-                        OrderDetailsBean orderDetailsBean = gson.fromJson(body, OrderDetailsBean.class);
-                        if (orderDetailsBean!=null){
-                            if (orderDetailsBean.getCode()==200){
-                                OrderDetailsBean.DataBean data = orderDetailsBean.getData();
-                                if (data!=null){
-                                    tv_startaddress.setText(data.getStartingpoint());
-                                    tv_stopaddress.setText(data.getDestination());
-                                    tv_start_money.setText("¥ "+data.getStart_money());
-                                    tv_start_mileage.setText(data.getMileage()+"公里");
-                                    tv_mileage_money.setText("¥ "+data.getMileage_money());
-                                    tv_return_money.setText("¥ "+data.getReturn_money());
-                                    tv_waitTime.setText(data.getWait_time()+"秒");
-                                    tv_wait_money.setText("¥ "+data.getWait_money());
-                                    tv_money.setText("¥ "+data.getMoney());
-                                    tv_pay_money.setText("¥ "+data.getPaymoney());
-                                    tv_orderTime.setText(TimeUtils.GetOrderTime(data.getEndtime()-data.getCreatetime()));
-                                    tv_backReason.setText(data.getReason());
-                                    tv_backTime.setText(TimeUtils.getDateToString(data.getUpdatetime()));
+                        if (type.equals("0")){
+                            OrderDetailsBean orderDetailsBean = gson.fromJson(body, OrderDetailsBean.class);
+                            if (orderDetailsBean!=null){
+                                if (orderDetailsBean.getCode()==200){
+                                    OrderDetailsBean.DataBean data = orderDetailsBean.getData();
+                                    if (data!=null){
+                                        tv_startaddress.setText(data.getStartingpoint());
+                                        tv_stopaddress.setText(data.getDestination());
+                                        tv_start_money.setText("¥ "+data.getStart_money());
+                                        tv_start_mileage.setText(data.getMileage()+"公里");
+                                        tv_mileage_money.setText("¥ "+data.getMileage_money());
+                                        tv_return_money.setText("¥ "+data.getReturn_money());
+                                        tv_waitTime.setText(data.getWait_time()+"秒");
+                                        tv_wait_money.setText("¥ "+data.getWait_money());
+                                        tv_money.setText("¥ "+data.getMoney());
+                                        tv_pay_money.setText("¥ "+data.getPaymoney());
+                                        tv_orderTime.setText(TimeUtils.GetOrderTime(data.getEndtime()-data.getCreatetime()));
+                                        tv_backReason.setText(data.getReason());
+                                        tv_backTime.setText(TimeUtils.getDateToString(data.getUpdatetime()));
+                                    }
+                                }
+                            }
+                        }else {
+                            OrderDetails1Bean orderDetailsBean = gson.fromJson(body, OrderDetails1Bean.class);
+                            if (orderDetailsBean!=null){
+                                if (orderDetailsBean.getCode()==200){
+                                    OrderDetails1Bean.DataBean data = orderDetailsBean.getData();
+                                    if (data!=null){
+                                        tv_startaddress.setText(data.getStartingpoint());
+                                        tv_stopaddress.setText(data.getDestination());
+                                        tv_start_money.setText("¥ "+data.getStart_money());
+                                        tv_start_mileage.setText(data.getMileage()+"公里");
+                                        tv_mileage_money.setText("¥ "+data.getMileage_money());
+                                        tv_return_money.setText("¥ "+data.getReturn_money());
+                                        tv_waitTime.setText(data.getWait_time()+"秒");
+                                        tv_wait_money.setText("¥ "+data.getWait_money());
+                                        tv_money.setText("¥ "+data.getMoney());
+                                        tv_pay_money.setText("¥ "+data.getPaymoney());
+                                        tv_orderTime.setText(TimeUtils.GetOrderTime(data.getEndtime()-data.getCreatetime()));
+                                        tv_backReason.setText(data.getReason());
+                                        tv_backTime.setText(TimeUtils.getDateToString(data.getUpdatetime()));
+                                    }
                                 }
                             }
                         }
+
                     }
                 });
     }

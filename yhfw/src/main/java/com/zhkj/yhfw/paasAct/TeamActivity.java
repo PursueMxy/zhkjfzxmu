@@ -7,6 +7,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,6 +19,7 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.zhkj.yhfw.Bean.TeamBean;
+import com.zhkj.yhfw.PaaSActivity;
 import com.zhkj.yhfw.R;
 import com.zhkj.yhfw.Utlis.AppRequestURL;
 
@@ -34,6 +36,7 @@ public class TeamActivity extends AppCompatActivity implements View.OnClickListe
     private String nickname;
     private String avatar;
     private ImageView img_head;
+    private int CUSTON_CODE=2003;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +64,8 @@ public class TeamActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.Team_tv_withdrawlog).setOnClickListener(this);
         findViewById(R.id.Team_tv_qrcode).setOnClickListener(this);
         findViewById(R.id.Team_tv_connission).setOnClickListener(this);
+        findViewById(R.id.Team_tv_withdraw).setOnClickListener(this);
+        findViewById(R.id.Team_img_back).setOnClickListener(this);
     }
 
     private void InitData() {
@@ -68,9 +73,7 @@ public class TeamActivity extends AppCompatActivity implements View.OnClickListe
                 .params("type","1")
                 .params("token", token)
                 .execute(new StringCallback() {
-
                     private String fname;
-
                     @Override
                     public void onSuccess(Response<String> response) {
                         String body = response.body();
@@ -83,7 +86,7 @@ public class TeamActivity extends AppCompatActivity implements View.OnClickListe
                             if (data!=null){
                                 fname = data.getFname();
                                 money = data.getMoney();
-                                tv_fname.setText("推荐人 :"+fname);
+                                tv_fname.setText("推荐人："+fname);
                                 tv_money.setText("可提现佣金："+money+"元");
                             }
                         }
@@ -110,9 +113,33 @@ public class TeamActivity extends AppCompatActivity implements View.OnClickListe
             case
             R.id.Team_tv_connission:
                 startActivity(new Intent(mContext,ConnissionActivity.class));
+                finish();
+                break;
+            case  R.id.Team_tv_withdraw:
+                Intent intent = new Intent(mContext, WithdrawalDefaultActivity.class);
+                intent.putExtra("money",money);
+                startActivity(intent);
+                finish();
+            break;
+            case R.id.Team_img_back:
+                Intent intents = new Intent(getApplicationContext(), PaaSActivity.class);
+                setResult(CUSTON_CODE,intents);
+                finish();
                 break;
                 default:
                     break;
         }
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if ((keyCode == KeyEvent.KEYCODE_BACK))
+        {
+            Intent intent = new Intent(getApplicationContext(), PaaSActivity.class);
+            setResult(CUSTON_CODE,intent);
+            finish();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

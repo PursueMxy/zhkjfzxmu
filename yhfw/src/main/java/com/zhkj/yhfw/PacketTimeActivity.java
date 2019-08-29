@@ -155,7 +155,7 @@ public class PacketTimeActivity extends AppCompatActivity implements View.OnClic
                       bottomDialog.dismiss();
                   }
               });
-              bottomDialog = new BottomDialog(this, R.style.ActionSheetDialogStyle);
+              bottomDialog = new BottomDialog(this, R.style.ActionSheetDialogStyles);
               //将布局设置给Dialog
               bottomDialog.setContentView(outerView1);
               bottomDialog.show();//显示对话框

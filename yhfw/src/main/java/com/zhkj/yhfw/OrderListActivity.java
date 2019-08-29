@@ -97,6 +97,7 @@ public class OrderListActivity extends AppCompatActivity implements View.OnClick
                 Intent intent = new Intent(mContext, OrderDetailslActivity.class);
                 intent.putExtra("order_id",orderList.get(position).getId()+"");
                 intent.putExtra("StatusType",orderList.get(position).getStatus());
+                intent.putExtra("type",orderList.get(position).getType()+"");
                 startActivityForResult(intent, ORDERDETAIL_CODE);
             }
         });
@@ -165,9 +166,9 @@ public class OrderListActivity extends AppCompatActivity implements View.OnClick
             }
                 holder.tv_orderNo.setText(TimeUtils.getDateToString(orderList.get(position).getCreatetime()));
                 if (orderList.get(position).getType().equals("0")) {
-                    holder.tv_driverName.setText("酒后代驾");
-                } else {
                     holder.tv_driverName.setText("包时代驾");
+                } else {
+                    holder.tv_driverName.setText("酒后代驾");
                 }
                 holder.tv_order_status.setText(orderList.get(position).getStatus());
                 holder.tv_startDt.setText( orderList.get(position).getStartingpoint());
