@@ -148,6 +148,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -316,6 +317,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private static TextView dialog_reading_tv_date;
     private android.support.v7.app.AlertDialog readDialog;
     private static long reading_start;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

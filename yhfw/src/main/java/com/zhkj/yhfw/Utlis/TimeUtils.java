@@ -35,6 +35,17 @@ public class TimeUtils {
     }
 
     /*
+     * 将时间转换为时间戳
+     */
+    public static long dateToStamp1s(String s) throws ParseException {
+        String res;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd");
+        Date date = simpleDateFormat.parse(s);
+        long ts = date.getTime();
+        return    ts;
+    }
+
+    /*
      * 是否大于当前时间
      */
     public static boolean dateGreater(String s) throws ParseException {
@@ -49,6 +60,20 @@ public class TimeUtils {
         }
     }
 
+    /*
+     * 是否大于当前时间
+     */
+    public static boolean dateGreaters(String s) throws ParseException {
+        long current_time = System.currentTimeMillis();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd");
+        Date date = simpleDateFormat.parse(s);
+        long ts = date.getTime();
+        if (ts>current_time){
+            return   true;
+        }else {
+            return   false;
+        }
+    }
     /*
      * 将时间戳转换为时间
      */
