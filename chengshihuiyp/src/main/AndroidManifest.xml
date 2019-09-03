@@ -22,13 +22,13 @@
     <uses-permission
         android:name="android.permission.READ_LOGS"
         tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
-    <uses-permission android:name="android.permission.VIBRATE"/>
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-    <uses-permission android:name="android.permission.GET_TASKS"/>
-    <!--<uses-permission android:name="android.permission.WAKE_LOCK"/>-->
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.GET_TASKS" /> <!-- <uses-permission android:name="android.permission.WAKE_LOCK"/> -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
+
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -38,11 +38,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ALiVodPlayerActivity"
-            android:screenOrientation="landscape"
-            android:launchMode="singleTask"
-            android:configChanges="keyboardHidden|orientation|screenSize">
+        <activity android:name=".ALYVodplayerActivity">
         </activity>
+        <activity
+            android:name=".ALiVodPlayerActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape"></activity>
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -56,8 +58,8 @@
 
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="landscape"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

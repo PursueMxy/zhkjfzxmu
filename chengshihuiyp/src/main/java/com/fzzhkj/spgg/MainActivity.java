@@ -615,7 +615,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             Gson gson = builder.create();
                             TypeResult typeResult = gson.fromJson(body, TypeResult.class);
                             if (typeResult.getStatus().equals("1")){
-                                startActivity(new Intent(mContext,ALiVodPlayerActivity.class));
+                                startActivity(new Intent(mContext,ALYVodplayerActivity.class));
                                 finish();
                             }
                         }
