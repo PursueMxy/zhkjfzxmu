@@ -2,6 +2,10 @@ package com.fzzhkj.spgg;
 
 import android.app.Application;
 import android.content.Context;
+import android.hardware.display.DisplayManager;
+import android.util.Log;
+import android.view.Display;
+import android.view.WindowManager;
 
 import com.alivc.player.AliVcMediaPlayer;
 import com.danikula.videocache.HttpProxyCacheServer;
@@ -29,6 +33,16 @@ public class MyApplication extends Application {
     //全局初始化一个本地代理服务器
     private HttpProxyCacheServer proxy;
 
+    private DifferentDislay mPresentation;
+    private Display[] displays; //定义一个屏幕数组
+
+    private static MyApplication sMPosApplication;
+
+    public static MyApplication getInstance() {
+        return sMPosApplication;
+    }
+
+
     public static HttpProxyCacheServer getProxy(Context context) {
         MyApplication app = ( MyApplication) context.getApplicationContext();
         return app.proxy == null ? (app.proxy = app.newProxy()) : app.proxy;
@@ -48,6 +62,12 @@ public class MyApplication extends Application {
         //初始化播放器（只需调用一次即可，建议在application中初始化）
         AliVcMediaPlayer.init(getApplicationContext());
         CrashReport.initCrashReport(getApplicationContext(), "aa0a7c1182", true);
+
+        sMPosApplication = this;
+        DisplayManager mDisplayManager;// 屏幕管理类
+        mDisplayManager = (DisplayManager) this
+                .getSystemService(Context.DISPLAY_SERVICE);
+        displays = mDisplayManager.getDisplays();
     }
 
     private void SetOkGohttp() {
@@ -88,5 +108,17 @@ public class MyApplication extends Application {
                 .setRetryCount(3)                               //全局统一超时重连次数，默认为三次，那么最差的情况会请求4次(一次原始请求，三次重连请求)，不需要可以设置为0
                 .addCommonHeaders(headers)                      //全局公共头
                 .addCommonParams(params);
+    }
+
+    public DifferentDislay showExternalAd(Context context) {
+        if (mPresentation == null) {
+            Log.e("displays",displays.length+"条");
+            mPresentation = new DifferentDislay(context, displays[displays.length - 1]);// displays[1]是副屏 displays[0]是主屏
+            mPresentation.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+            mPresentation.show();
+            return mPresentation;
+        } else {
+            return null;
+        }
     }
 }

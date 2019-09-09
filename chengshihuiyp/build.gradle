@@ -53,7 +53,7 @@ dependencies {
     implementation(name: 'AliyunVodPlayer-3.4.11', ext: 'aar')
 
     //权限申请框架
-    implementation 'com.hjq:xxpermissions:1.5'
+    implementation 'com.hjq:xxpermissions:6.0'
     implementation 'com.amap.api:search:latest.integration'
 
     implementation 'com.aliyun.dpa:oss-android-sdk:+'

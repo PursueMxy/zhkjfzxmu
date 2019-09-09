@@ -4,12 +4,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
+import android.hardware.display.DisplayManager;
+import android.os.Build;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
+import android.view.KeyEvent;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -33,17 +38,12 @@ public class ALYVodplayerActivity extends AppCompatActivity {
     private String mcid;
     private SurfaceView mSurfaceView;
     private Handler mHandler;
-    private String MyUrl="null";
+    private String MyUrl="";
     private AliVcMediaPlayer mPlayer;
     private boolean IsPlay=true;
     private Handler myhandler;
-    private ImageView img_one;
-    private ImageView img_two;
-    private TextView tv_money_one;
-    private TextView tv_price1_one;
-    private TextView tv_money_two;
-    private TextView tv_price1_two;
-    private ImageView img_qrcode;
+    private DifferentDislay differentDislay;
+    private ImageView img_advertising_code;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,39 +56,43 @@ public class ALYVodplayerActivity extends AppCompatActivity {
         mSurfaceView = findViewById(R.id.video_view);
         mHandler = new Handler();
         myhandler = new Handler();
-        XXPermissions.with(this)
-                .request(new OnPermission() {
-
-                    @Override
-                    public void hasPermission(List<String> granted, boolean isAll) {
-
-                    }
-
-                    @Override
-                    public void noPermission(List<String> denied, boolean quick) {
-
-                    }
-                });
         myhandler.postDelayed(myrunnable,3000);
         mHandler.postDelayed(PlayRunnable,1000);
+        AdvertHander.postDelayed(advertRunable,1000);
     }
 
     private void InitUI() {
-        img_one = findViewById(R.id.alyvodplay_img_one);
-        img_two = findViewById(R.id.alyvodplay_img_two);
-        img_qrcode = findViewById(R.id.alyvodplay_img_qrcode);
-        tv_money_one = findViewById(R.id.alyvodplay_tv_money_one);
-        tv_price1_one = findViewById(R.id.alyvodplay_tv_price1_one);
-        tv_money_two = findViewById(R.id.alyvodplay_tv_money_two);
-        tv_price1_two = findViewById(R.id.alyvodplay_tv_price1_two);
-        tv_price1_one.getPaint().setFlags(Paint. STRIKE_THRU_TEXT_FLAG|Paint.ANTI_ALIAS_FLAG);
-        tv_price1_two.getPaint().setFlags(Paint. STRIKE_THRU_TEXT_FLAG|Paint.ANTI_ALIAS_FLAG);
+        img_advertising_code = findViewById(R.id.alyvod_img_advertising_code);
+        DisplayManager manager = (DisplayManager) getSystemService(Context.DISPLAY_SERVICE);
+        Display[] displays = manager.getDisplays();
+        // displays[0] 主屏
+        // displays[1] 副屏
+        differentDislay = new DifferentDislay(ALYVodplayerActivity.this,displays[1]);
+        differentDislay.getWindow().setType(
+                WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+        differentDislay.show();
     }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus && Build.VERSION.SDK_INT >= 19) {
+            View decorView = getWindow().getDecorView();
+            decorView.setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        }
+    }
+
 
     Runnable PlayRunnable=new Runnable() {
         @Override
         public void run() {
-            OkGo.<String>get("http://csh.0598qq.com/Api/led/LiveUrl")
+            OkGo.<String>get(RequstURIUtils.URI.livrURL)
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(Response<String> response) {
@@ -104,7 +108,7 @@ public class ALYVodplayerActivity extends AppCompatActivity {
 
                         }
                     });
-            OkGo.<String>get("http://csh.0598qq.com/Api/Led/GetDetailBymchid")
+            OkGo.<String>get(RequstURIUtils.URI.GetDetailBymchid)
                     .params("mcid",mcid)
                     .execute(new StringCallback() {
                         @Override
@@ -117,32 +121,7 @@ public class ALYVodplayerActivity extends AppCompatActivity {
                                 if (detailBymchidBean.getStatus()==1){
                                     DetailBymchidBean.DataBean data = detailBymchidBean.getData();
                                     String right = data.getRight();
-                                    Glide.with(ALYVodplayerActivity.this).load(right).into(img_qrcode);
-                                    if (data!=null){
-                                        List<DetailBymchidBean.DataBean.ThegoodsBean> thegoods = data.getThegoods();
-                                        if (thegoods!=null){
-                                            for (int a=0;a<thegoods.size();a++){
-                                                if (a==0){
-                                                    String topimg = thegoods.get(a).getTopimg();
-                                                    String price = thegoods.get(a).getPrice();
-                                                    String money = thegoods.get(a).getMoney();
-                                                    String title = thegoods.get(a).getTitle();
-                                                    tv_price1_one.setText("日常价 ¥ "+price);
-                                                    tv_money_one.setText(""+money);
-                                                    Glide.with(ALYVodplayerActivity.this).load(topimg).into(img_one);
-                                                }else if (a==1){
-                                                    String topimg = thegoods.get(a).getTopimg();
-                                                    String price = thegoods.get(a).getPrice();
-                                                    String money = thegoods.get(a).getMoney();
-                                                    String title = thegoods.get(a).getTitle();
-                                                    tv_price1_two.setText("日常价 ¥ "+price);
-                                                    tv_money_two.setText(""+money);
-                                                    Glide.with(ALYVodplayerActivity.this).load(topimg).into(img_two);
-                                                }
                                             }
-                                        }
-                                    }
-                                }
                             }
                         }
                     });
@@ -157,7 +136,7 @@ public class ALYVodplayerActivity extends AppCompatActivity {
             MyUrl=url;
             mPlayer = new AliVcMediaPlayer(this, mSurfaceView);
 //            mPlayer.setVideoScalingMode(MediaPlayer.VideoScalingMode.VIDEO_SCALING_MODE_SCALE_TO_FIT);
-      mPlayer.setVideoScalingMode(MediaPlayer.VideoScalingMode.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING);
+                mPlayer.setVideoScalingMode(MediaPlayer.VideoScalingMode.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING);
             mPlayer.setDefaultDecoder(0);
             mPlayer.setCirclePlay(true);
             //准备开始播放
@@ -191,15 +170,15 @@ public class ALYVodplayerActivity extends AppCompatActivity {
                     //错误发生时触发，错误码见接口文档
                     Log.e("直播中", i + "哈哈哈错误发生时触发" + msg+ MyUrl);
                     if (i == 4003) {
-//                        OkGo.<String>get("http://csh.0598qq.com/Api/led/Liveflag/status/0")
-//                                .execute(new StringCallback() {
-//                                    @Override
-//                                    public void onSuccess(Response<String> response) {
-//
-//                                    }
-//                                });
-//                        startActivity(new Intent(mContext,MainActivity.class));
-//                        finish();
+                        OkGo.<String>get(RequstURIUtils.URI.Liveflag)
+                                .execute(new StringCallback() {
+                                    @Override
+                                    public void onSuccess(Response<String> response) {
+
+                                    }
+                                });
+                        startActivity(new Intent(mContext,MainActivity.class));
+                        finish();
                     }
                 }
             });
@@ -247,7 +226,7 @@ public class ALYVodplayerActivity extends AppCompatActivity {
     Runnable myrunnable=new Runnable() {
         @Override
         public void run() {
-            OkGo.<String>get("http://csh.0598qq.com/Api/led/Livenow")
+            OkGo.<String>get(RequstURIUtils.URI.livenNow)
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(Response<String> response) {
@@ -257,6 +236,9 @@ public class ALYVodplayerActivity extends AppCompatActivity {
                             TypeResult typeResult = gson.fromJson(body, TypeResult.class);
                             if (typeResult.getStatus().equals("0")){
                                 startActivity(new Intent(mContext,MainActivity.class));
+                                if (differentDislay != null) {
+                                    differentDislay.dismiss();
+                                }
                                 finish();
                             }
                         }
@@ -270,6 +252,70 @@ public class ALYVodplayerActivity extends AppCompatActivity {
         super.onDestroy();
         myhandler.removeCallbacks(myrunnable);
         mHandler.removeCallbacks(PlayRunnable);
+        AdvertHander.removeCallbacks(advertRunable);
+    }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode==KeyEvent.KEYCODE_ESCAPE) {
+            if (differentDislay != null) {
+                differentDislay.dismiss();
+            }
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    //一分钟更新广告
+    Handler AdvertHander=new Handler();
+    Runnable advertRunable=new Runnable() {
+        @Override
+        public void run() {
+            InitGgDatas();
+            AdvertHander.postDelayed(advertRunable,600000);
+        }
+    };
+
+
+
+    private void InitGgDatas() {
+        OkGo.<String>get(RequstURIUtils.URI.Screen)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        Gson gson = new GsonBuilder().create();
+                        ledadbean ledadbean = gson.fromJson(response.body(), ledadbean.class);
+                        if (ledadbean!=null){
+                            if (ledadbean.getStatus()==1){
+                                List<com.fzzhkj.spgg.ledadbean.DataBean> data = ledadbean.getData();
+                                if (data!=null){
+                                    String right = data.get(0).getImg();
+                                    differentDislay.getImg_qrcode(right);
+                                }
+                            }
+                        }
+                    }
+                });
+
+        OkGo.<String>get(RequstURIUtils.URI.GetDetailBymchid)
+                .params("mcid",mcid)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        String body = response.body();
+                        GsonBuilder gsonBuilder = new GsonBuilder();
+                        Gson gson = gsonBuilder.create();
+                        DetailBymchidBean detailBymchidBean = gson.fromJson(body, DetailBymchidBean.class);
+                        if (detailBymchidBean!=null){
+                            if (detailBymchidBean.getStatus()==1){
+                                DetailBymchidBean.DataBean data = detailBymchidBean.getData();
+                                if (data!=null){
+                                    String leftmoney = data.getLeftmoney();
+                                    String right = data.getRight();
+                                    Glide.with(ALYVodplayerActivity.this).load(right).into(img_advertising_code);
+                                }
+                            }
+                        }
+                    }
+                });
     }
 }

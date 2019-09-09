@@ -120,21 +120,6 @@ public class ALiVodPlayerActivity extends AppCompatActivity implements View.OnCl
         handler = new Handler();
         mHandler = new Handler();
         myhandler = new Handler();
-//        //创建播放器的实例
-        //权限申请
-        XXPermissions.with(this)
-                .request(new OnPermission() {
-
-                    @Override
-                    public void hasPermission(List<String> granted, boolean isAll) {
-
-                    }
-
-                    @Override
-                    public void noPermission(List<String> denied, boolean quick) {
-
-                    }
-                });
         mHandler.postDelayed(PlayRunnable,1000);
         this.handler.postDelayed(runnable,delayMillis);
         myhandler.postDelayed(myrunnable,3000);
@@ -226,15 +211,15 @@ public class ALiVodPlayerActivity extends AppCompatActivity implements View.OnCl
                     //错误发生时触发，错误码见接口文档
                     Log.e("直播中", i + "哈哈哈错误发生时触发" + msg+ MyUrl);
                     if (i == 4003) {
-                        OkGo.<String>get("http://csh.0598qq.com/Api/led/Liveflag/status/0")
-                                .execute(new StringCallback() {
-                                    @Override
-                                    public void onSuccess(Response<String> response) {
-
-                                    }
-                                });
-                    startActivity(new Intent(mContext,MainActivity.class));
-                        finish();
+//                        OkGo.<String>get(RequstURIUtils.URI.Liveflag)
+//                                .execute(new StringCallback() {
+//                                    @Override
+//                                    public void onSuccess(Response<String> response) {
+//
+//                                    }
+//                                });
+//                    startActivity(new Intent(mContext,MainActivity.class));
+//                        finish();
                     }
                 }
             });
@@ -318,7 +303,7 @@ public class ALiVodPlayerActivity extends AppCompatActivity implements View.OnCl
      * 随机生成一些弹幕内容以供测试
      */
     private void generateSomeDanmaku() {
-        OkGo.<String>get("http://csh.0598qq.com/Api/led/Subtitle")
+        OkGo.<String>get(RequstURIUtils.URI.Subtitle)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
@@ -436,7 +421,7 @@ public class ALiVodPlayerActivity extends AppCompatActivity implements View.OnCl
     Runnable myrunnable=new Runnable() {
         @Override
         public void run() {
-            OkGo.<String>get("http://csh.0598qq.com/Api/led/Livenow")
+            OkGo.<String>get(RequstURIUtils.URI.livenNow)
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(Response<String> response) {
@@ -457,7 +442,7 @@ public class ALiVodPlayerActivity extends AppCompatActivity implements View.OnCl
     Runnable PlayRunnable=new Runnable() {
         @Override
         public void run() {
-            OkGo.<String>get("http://csh.0598qq.com/Api/led/LiveUrl")
+            OkGo.<String>get(RequstURIUtils.URI.livrURL)
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(Response<String> response) {
@@ -473,7 +458,7 @@ public class ALiVodPlayerActivity extends AppCompatActivity implements View.OnCl
 
                         }
                     });
-            OkGo.<String>get("http://csh.0598qq.com/Api/Led/GetDetailBymchid")
+            OkGo.<String>get(RequstURIUtils.URI.GetDetailBymchid)
                     .params("mcid",mcid)
                     .execute(new StringCallback() {
                         @Override

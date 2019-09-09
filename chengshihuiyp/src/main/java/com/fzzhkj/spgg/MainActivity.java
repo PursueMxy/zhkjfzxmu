@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Paint;
+import android.hardware.display.DisplayManager;
 import android.media.MediaPlayer;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -19,9 +20,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -31,10 +35,10 @@ import android.widget.TextView;
 import com.alivc.player.AliVcMediaPlayer;
 import com.bumptech.glide.Glide;
 import com.danikula.videocache.HttpProxyCacheServer;
-import com.fzzhkj.widget.AliyunVodPlayerView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.hjq.permissions.OnPermission;
+import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -83,16 +87,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String imei="";
     private String xxh;
     private String usn="";
-    private ImageView img_left;
-    private TextView tv_name1;
-    private TextView tv_money1;
-    private TextView tv_price1;
-    private TextView tv_name2;
-    private TextView tv_money2;
-    private TextView tv_price2;
-    private ImageView img_top1;
-    private ImageView img_top2;
-    private ImageView main_img_qrcode;
+    private DifferentDislay differentDislay;
+    private ImageView img_advertising_code;
 
 
     @Override
@@ -101,19 +97,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         mContext = getApplicationContext();
         apnType = NetWorkUtils.getAPNType(mContext);
-        XXPermissions.with(this)
-                .request(new OnPermission() {
-
-                    @Override
-                    public void hasPermission(List<String> granted, boolean isAll) {
-
-                    }
-
-                    @Override
-                    public void noPermission(List<String> denied, boolean quick) {
-
-                    }
-                });
+        getPermissions();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String nowtime = df.format(new Date());
         SharedPreferences share = getSharedPreferences("industryInfo", Context.MODE_PRIVATE);
@@ -136,8 +120,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             View decorView = getWindow().getDecorView();
             decorView.setSystemUiVisibility(
                     View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            |
-                            View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                             | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                             | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                             | View.SYSTEM_UI_FLAG_FULLSCREEN
@@ -171,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (apnType > 0) {
             handler.removeCallbacks(runnable);
             //获取播放列表
-            OkGo.<String>get("http://csh.0598qq.com/Api/Led/lists")
+            OkGo.<String>get(RequstURIUtils.URI.lists)
                     .params("mcid",imei)
                     .execute(new StringCallback() {
                         @Override
@@ -244,7 +227,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void InitApkVersion() {
-        OkGo.<String>get("http://csh.0598qq.com/Api/Led/version")
+        OkGo.<String>get(RequstURIUtils.URI.versions)
                 .execute(new StringCallback() {
 
 
@@ -292,22 +275,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void InitUI() {
-        img_left = findViewById(R.id.main_img_left);
-        tv_name1 = findViewById(R.id.main_tv_name1);
-        tv_money1 = findViewById(R.id.main_tv_money1);
-        tv_price1 = findViewById(R.id.main_tv_price1);
-        tv_name2 = findViewById(R.id.main_tv_name2);
-        tv_money2 = findViewById(R.id.main_tv_money2);
-        tv_money1.getPaint().setAntiAlias(true);
-        tv_money1.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG|Paint.ANTI_ALIAS_FLAG);
-        tv_money2.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG|Paint.ANTI_ALIAS_FLAG);
-        tv_money2.getPaint().setAntiAlias(true);
-        tv_price2 = findViewById(R.id.main_tv_price2);
-        img_top1 = findViewById(R.id.main_img_top1);
-        img_top2 = findViewById(R.id.main_img_top2);
-        main_img_qrcode = findViewById(R.id.main_img_qrcode);
-
-
+        img_advertising_code = findViewById(R.id.min_img_advertising_code);
         rl_binding = findViewById(R.id.main_rl_binding);
         edt_xxh = findViewById(R.id.main_edt_xxh);
         findViewById(R.id.main_tv_binding).setOnClickListener(this);
@@ -343,18 +311,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 }
             });
-
+        //副屏显示
+        DisplayManager manager = (DisplayManager) getSystemService(Context.DISPLAY_SERVICE);
+        Display[] displays = manager.getDisplays();
+        // displays[0] 主屏
+        // displays[1] 副屏
+        differentDislay = new DifferentDislay(MainActivity.this,displays[1]);
+        differentDislay.getWindow().setType(
+                WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         if (!usn.equals("")){
             rl_binding.setVisibility(View.GONE);
+            img_advert.setVisibility(View.VISIBLE);
             AdvertHander.postDelayed(advertRunable,100);
             InitDatas();
+            differentDislay.show();
         }else {
             Log.e("usn",usn+"空码");
         }
+
     }
 
     public void InitGgDatas(){
-        OkGo.<String>get("http://csh.0598qq.com/Api/led/AdGoodsQrcode")
+        OkGo.<String>get(RequstURIUtils.URI.AdGoodsQrcode)
                 .params("mcid",imei)
                 .execute(new StringCallback() {
                     @Override
@@ -367,38 +345,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 if (data!=null){
                                     String leftmoney = data.getLeftmoney();
                                     String right = data.getRight();
-                                    Glide.with(MainActivity.this).load(leftmoney).into(img_left);
-                                    Glide.with(MainActivity.this).load(right).into(main_img_qrcode);
+                                    Glide.with(mContext).load(right).into(img_advertising_code);
                                     List<AdvertBean.DataBean.ThegoodsBean> thegoods = data.getThegoods();
-                                    if (thegoods!=null){
-                                        for (int a=0;a<thegoods.size();a++){
-                                            if (a==0){
-                                                String topimg = thegoods.get(a).getTopimg();
-                                                String price = thegoods.get(a).getPrice();
-                                                String money = thegoods.get(a).getMoney();
-                                                String title = thegoods.get(a).getTitle();
-                                                tv_name1.setText(title);
-                                                tv_money1.setText("¥ "+price);
-                                                tv_price1.setText("¥ "+money);
-                                                Glide.with(MainActivity.this).load(topimg).into(img_top1);
-                                            }else if (a==1){
-                                                String topimg = thegoods.get(a).getTopimg();
-                                                String price = thegoods.get(a).getPrice();
-                                                String money = thegoods.get(a).getMoney();
-                                                String title = thegoods.get(a).getTitle();
-                                                tv_name2.setText(title);
-                                                tv_money2.setText("¥ "+price);
-                                                tv_price2.setText("¥ "+money);
-                                                Glide.with(MainActivity.this).load(topimg).into(img_top2);
-                                            }
                                         }
-                                    }
+                            }
+                        }
+                    }
+                });
+        OkGo.<String>get(RequstURIUtils.URI.Screen)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        Gson gson = new GsonBuilder().create();
+                        ledadbean ledadbean = gson.fromJson(response.body(), ledadbean.class);
+                        if (ledadbean!=null){
+                            if (ledadbean.getStatus()==1){
+                                List<com.fzzhkj.spgg.ledadbean.DataBean> data = ledadbean.getData();
+                                if (data!=null){
+                                    String right = data.get(0).getImg();
+                                    differentDislay.getImg_qrcode(right);
                                 }
                             }
                         }
                     }
                 });
-
     }
 
    public void InitDatas(){
@@ -460,9 +430,54 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if(keyCode == KeyEvent.KEYCODE_BACK ) {
-            handler.removeCallbacks(runnable);
-            mHandler.removeCallbacks(myrunnable);
+            try {
+                handler.removeCallbacks(runnable);
+                mHandler.removeCallbacks(myrunnable);
+            }catch (Exception e){
+
+            }
             System.exit(0);
+        }
+        if (keyCode==KeyEvent.KEYCODE_ESCAPE) {
+            if (differentDislay != null) {
+                differentDislay.dismiss();
+            }
+        }
+        if (keyCode==KeyEvent.KEYCODE_ENTER ) {
+            //处理事件
+            imei = DervicesUtils.getMac(mContext);
+            xxh = edt_xxh.getText().toString();
+            if (xxh.equals("")) {
+                OkGo.<String>get(RequstURIUtils.URI.linkusn)
+                        .params("usn", xxh)
+                        .params("mcid", imei)
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onSuccess(Response<String> response) {
+                                String body = response.body();
+                                GsonBuilder gsonBuilder = new GsonBuilder();
+                                Gson gson = gsonBuilder.create();
+                                DevicesBean devicesBean = gson.fromJson(body, DevicesBean.class);
+                                if (devicesBean != null) {
+                                    if (devicesBean.getStatus().equals("1")) {
+                                        differentDislay.show();
+                                        SharedPreferences.Editor editor = sp.edit();
+                                        editor.putString("usn", xxh);
+                                        editor.putString("mcid", imei);
+                                        editor.commit();//提交
+                                        rl_binding.setVisibility(View.GONE);
+                                        AdvertHander.postDelayed(advertRunable, 1000);
+                                        InitDatas();
+                                    } else {
+                                        ToastUtils.showToast(mContext, devicesBean.getMsg() + "");
+                                    }
+                                }
+                            }
+                        });
+
+            } else {
+                ToastUtils.showToast(mContext, "请输入序号号");
+            }
         }
         return super.onKeyDown(keyCode, event);
     }
@@ -551,7 +566,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 imei = DervicesUtils.getMac(mContext);
                 xxh = edt_xxh.getText().toString();
                 if (!xxh.equals("")) {
-                    OkGo.<String>get("http://csh.0598qq.com/Api/Led/linkusn")
+                    OkGo.<String>get(RequstURIUtils.URI.linkusn)
                             .params("usn", xxh)
                             .params("mcid",imei)
                             .execute(new StringCallback() {
@@ -586,27 +601,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+     public void   getPermissions(){
+         try {
+             XXPermissions.with(this)
+                     // 可设置被拒绝后继续申请，直到用户授权或者永久拒绝
+                     .constantRequest()
+                     // 支持请求6.0悬浮窗权限8.0请求安装权限
+                     .permission(Permission.SYSTEM_ALERT_WINDOW)
+                     .permission(Permission.WRITE_EXTERNAL_STORAGE)
+                     .permission(Permission.CAMERA)
+                     // 不指定权限则自动获取清单中的危险权限
+                     .request(new OnPermission() {
 
-    //Android5.0以上
-//        if (Build.VERSION.SDK_INT >=21) {
-//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-//        }else {
-//            Window window =getWindow();
-//            WindowManager.LayoutParams attributes =
-//window.getAttributes();
-//            int flagTranslucentStatus =
-//    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
-//            int flagTranslucentNavigation =
-//    WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION;
-//            attributes.flags |= flagTranslucentStatus;
-////                attributes.flags |= flagTranslucentNavigation;
-//            window.setAttributes(attributes);
-//        }
+                         @Override
+                         public void hasPermission(List<String> granted, boolean isAll) {
+
+                         }
+
+                         @Override
+                         public void noPermission(List<String> denied, boolean quick) {
+
+                         }
+                     });
+         }catch (Exception e){
+
+         }
+     }
+
+
     //获取是否开启直播
     Runnable myrunnable=new Runnable() {
         @Override
         public void run() {
-            OkGo.<String>get("http://csh.0598qq.com/Api/led/Livenow")
+            OkGo.<String>get(RequstURIUtils.URI.livenNow)
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(Response<String> response) {
@@ -616,6 +643,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             TypeResult typeResult = gson.fromJson(body, TypeResult.class);
                             if (typeResult.getStatus().equals("1")){
                                 startActivity(new Intent(mContext,ALYVodplayerActivity.class));
+                                if (differentDislay != null) {
+                                    differentDislay.dismiss();
+                                }
                                 finish();
                             }
                         }
