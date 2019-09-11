@@ -12,28 +12,33 @@ import android.view.View;
 import android.view.WindowManager;
 
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.hjq.permissions.OnPermission;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
+import com.yyydjk.library.BannerLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
 
     private DifferentDislay differentDislay;
+    private BannerLayout bannerLayout;
+    private List<ledadbean.DataBean> screen_data;
+    final List<String> urls = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        DisplayManager manager = (DisplayManager) getSystemService(Context.DISPLAY_SERVICE);
-        Display[] displays = manager.getDisplays();
-        // displays[0] 主屏
-        // displays[1] 副屏
-        differentDislay = new DifferentDislay(HomeActivity.this,displays[1]);
-        differentDislay.getWindow().setType(
-                WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-        differentDislay.show();
+        bannerLayout = (BannerLayout) findViewById(R.id.banner);
+        bannerLayout.setAutoPlay(true);
+        getdata();
     }
 
     @Override
@@ -51,14 +56,30 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+    public void getdata(){
+        OkGo.<String>get(RequstURIUtils.URI.Screen)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        Gson gson = new GsonBuilder().create();
+                        ledadbean ledadbean = gson.fromJson(response.body(), ledadbean.class);
+                        if (ledadbean!=null){
+                            if (ledadbean.getStatus()==1){
+                                screen_data = ledadbean.getData();
+                                for (int a = 0; a< screen_data.size(); a++){
+                                    urls.add(screen_data.get(a).getImg());
+                                }
+                                Log.e("网址长度",urls.size()+"");
+                                bannerLayout.setImageLoader(new GlideImageLoader());
+                                bannerLayout.setViewUrls(urls);
+                            }
+                        }
+                    }
+                });
+    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        Log.e("keyCode",keyCode+"");
-        if (keyCode==KeyEvent.KEYCODE_ESCAPE)
-        if (differentDislay!=null) {
-            differentDislay.dismiss();
-        }
         return super.onKeyDown(keyCode, event);
     }
 }

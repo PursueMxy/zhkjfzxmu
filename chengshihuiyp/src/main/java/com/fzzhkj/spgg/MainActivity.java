@@ -70,12 +70,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String packageName;
     private Context mContext;
     private AlertDialog mAlertDialog;
-    private ImageView img_advert;
     private int Number = 0;
     private List<ledadbean.DataBean> datas = new ArrayList<>();
     private int delayMillis = 0;
     private LinearLayout layout_main;
-    private int apnType;
     private List<LiteDataBean> dataBean = new ArrayList<>();
     private boolean IsSelect=false;
     private SurfaceView mSurfaceView;
@@ -87,7 +85,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String imei="";
     private String xxh;
     private String usn="";
-    private DifferentDislay differentDislay;
     private ImageView img_advertising_code;
 
 
@@ -96,7 +93,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mContext = getApplicationContext();
-        apnType = NetWorkUtils.getAPNType(mContext);
         getPermissions();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String nowtime = df.format(new Date());
@@ -137,12 +133,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //获得版本名称
             versionCode = info.versionCode;
             packageName = info.packageName;
-            apnType = NetWorkUtils.getAPNType(mContext);
-            if (apnType > 0) {
-                InitApkVersion();
-            } else {
-                ToastUtils.showToast(mContext, "请检查网络是否正常");
-            }
+             InitApkVersion();
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
@@ -150,8 +141,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void DataList() {
-        apnType = NetWorkUtils.getAPNType(mContext);
-        if (apnType > 0) {
             handler.removeCallbacks(runnable);
             //获取播放列表
             OkGo.<String>get(RequstURIUtils.URI.lists)
@@ -180,13 +169,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                         } else {
                                             layout_main.setVisibility(View.GONE);
                                         }
-                                        if (!data.get(0).getImg().equals("0")) {
-                                            img_advert.setVisibility(View.VISIBLE);
-//                                            Glide.with(mContext).load(data.get(0).getImg()).centerCrop().into(img_advert);
-                                            Glide.with(mContext).load(data.get(0).getImg()).transform(new RotateTransformation(360)).into(img_advert);
-                                        } else {
-                                            img_advert.setVisibility(View.GONE);
-                                        }
                                         delayMillis = Integer.parseInt(data.get(0).getSecond()) * 1000;
                                         handler.postDelayed(runnable,delayMillis);
                                         if (data.size() > 1) {
@@ -210,20 +192,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     }
                                 } else {
                                     layout_main.setVisibility(View.GONE);
-                                    img_advert.setVisibility(View.VISIBLE);
                                 }
                             } catch (Exception e) {
                                 layout_main.setVisibility(View.GONE);
-                                img_advert.setVisibility(View.VISIBLE);
                             }
                         }
 
 
                     });
-        }else {
-            ToastUtils.showToast(mContext,"没有网络");
-            handler.postDelayed(runnable, delayMillis);
-        }
     }
 
     private void InitApkVersion() {
@@ -278,11 +254,55 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         img_advertising_code = findViewById(R.id.min_img_advertising_code);
         rl_binding = findViewById(R.id.main_rl_binding);
         edt_xxh = findViewById(R.id.main_edt_xxh);
+        edt_xxh.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                // 这两个条件必须同时成立，如果仅仅用了enter判断，就会执行两次
+                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
+                    // 执行发送消息等操作
+                    xxh = edt_xxh.getText().toString();
+                    if (!xxh.equals("")) {
+                        OkGo.<String>get(RequstURIUtils.URI.linkusn)
+                                .params("usn", xxh)
+                                .params("mcid", imei)
+                                .execute(new StringCallback() {
+                                    @Override
+                                    public void onSuccess(Response<String> response) {
+                                        String body = response.body();
+                                        GsonBuilder gsonBuilder = new GsonBuilder();
+                                        Gson gson = gsonBuilder.create();
+                                        DevicesBean devicesBean = gson.fromJson(body, DevicesBean.class);
+                                        if (devicesBean != null) {
+                                            if (devicesBean.getStatus().equals("1")) {
+                                                SharedPreferences.Editor editor = sp.edit();
+                                                editor.putString("usn", xxh);
+                                                editor.putString("mcid", imei);
+                                                editor.commit();//提交
+                                                rl_binding.setVisibility(View.GONE);
+                                                img_advertising_code.setVisibility(View.VISIBLE);
+                                                AdvertHander.postDelayed(advertRunable, 1000);
+                                                InitDatas();
+                                                MyApplication.getInstance().showExternalAd(MainActivity.this);
+                                            } else {
+                                                ToastUtils.showToast(mContext, devicesBean.getMsg() + "");
+                                            }
+                                        }
+                                    }
+                                });
+
+                    } else {
+                        Log.e("点击事件","xxh为空");
+                        ToastUtils.showToast(mContext, "请输入序号号");
+                    }
+                 return true;
+                }
+                return false;
+            }
+        });
         findViewById(R.id.main_tv_binding).setOnClickListener(this);
         layout_main = findViewById(R.id.layout_main);
         videoPlay = findViewById(R.id.videoPlayView);
         proxy = MyApplication.getProxy(getApplicationContext());
-        img_advert = findViewById(R.id.main_img_advert);
         //设置视频控制器,组件可以控制视频的播放，暂停，快进，组件，不需要你实现
         videoPlay.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                                                       @Override
@@ -311,27 +331,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 }
             });
-        //副屏显示
-        DisplayManager manager = (DisplayManager) getSystemService(Context.DISPLAY_SERVICE);
-        Display[] displays = manager.getDisplays();
-        // displays[0] 主屏
-        // displays[1] 副屏
-        differentDislay = new DifferentDislay(MainActivity.this,displays[1]);
-        differentDislay.getWindow().setType(
-                WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         if (!usn.equals("")){
+            MyApplication.getInstance().showExternalAd(this);
+            img_advertising_code.setVisibility(View.VISIBLE);
             rl_binding.setVisibility(View.GONE);
-            img_advert.setVisibility(View.VISIBLE);
-            AdvertHander.postDelayed(advertRunable,100);
             InitDatas();
-            differentDislay.show();
+            AdvertHander.postDelayed(advertRunable,100);
         }else {
             Log.e("usn",usn+"空码");
         }
 
     }
 
-    public void InitGgDatas(){
+   public void InitGgDatas(){
         OkGo.<String>get(RequstURIUtils.URI.AdGoodsQrcode)
                 .params("mcid",imei)
                 .execute(new StringCallback() {
@@ -347,24 +359,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     String right = data.getRight();
                                     Glide.with(mContext).load(right).into(img_advertising_code);
                                     List<AdvertBean.DataBean.ThegoodsBean> thegoods = data.getThegoods();
-                                        }
-                            }
-                        }
-                    }
-                });
-        OkGo.<String>get(RequstURIUtils.URI.Screen)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(Response<String> response) {
-                        Gson gson = new GsonBuilder().create();
-                        ledadbean ledadbean = gson.fromJson(response.body(), ledadbean.class);
-                        if (ledadbean!=null){
-                            if (ledadbean.getStatus()==1){
-                                List<com.fzzhkj.spgg.ledadbean.DataBean> data = ledadbean.getData();
-                                if (data!=null){
-                                    String right = data.get(0).getImg();
-                                    differentDislay.getImg_qrcode(right);
-                                }
+                                    if (thegoods!=null){
+                                    }
+
+                                 }
                             }
                         }
                     }
@@ -374,44 +372,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
    public void InitDatas(){
        mHandler = new Handler();
        mHandler.postDelayed(myrunnable,5);
-       if (apnType > 0) {
            InitData();
-       } else {
-           dataBean = LitePal.findAll(LiteDataBean.class);
-           if (dataBean.size() > 0) {
-               for (int a = 0; a < dataBean.size(); a++) {
-                   datas.add(new ledadbean.DataBean(dataBean.get(a).getdbid(), dataBean.get(a).getTitle(), dataBean.get(a).getStart(),
-                           dataBean.get(a).getEnd(), dataBean.get(a).getImg(), dataBean.get(a).getVideo(), dataBean.get(a).getStatus(),
-                           dataBean.get(a).getOrd(), dataBean.get(a).getCate(), dataBean.get(a).getSecond()));
-               }
-               if (!datas.get(0).getVideo().equals("0")) {
-                   layout_main.setVisibility(View.VISIBLE);
-                   proxyUrl = proxy.getProxyUrl(datas.get(0).getVideo());
-                   videoPlay.setVideoPath(proxyUrl);
-                   videoPlay.requestFocus();//让VideiView获取焦点
-                   videoPlay.start();//开始播放
-               } else {
-                   layout_main.setVisibility(View.GONE);
-               }
-               if (!datas.get(0).getImg().equals("0")) {
-                   img_advert.setVisibility(View.VISIBLE);
-//                    Glide.with(mContext).load(datas.get(0).getImg()).centerCrop().into(img_advert);
-                   Glide.with(mContext).load(datas.get(0).getImg()).transform(new RotateTransformation(360)).into(img_advert);
-               } else {
-                   img_advert.setVisibility(View.GONE);
-               }
-               delayMillis = Integer.parseInt(datas.get(0).getSecond()) * 1000;
-               handler.postDelayed(runnable, delayMillis);
-               if (datas.size() > 1) {
-                   Number = Number + 1;
-               }
-           } else {
-               layout_main.setVisibility(View.GONE);
-               img_advert.setVisibility(View.VISIBLE);
-               img_advert.setImageResource(R.drawable.zmy_bg);
-           }
-       }
-
    }
 
     @Override
@@ -433,56 +394,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             try {
                 handler.removeCallbacks(runnable);
                 mHandler.removeCallbacks(myrunnable);
+                AdvertHander.removeCallbacks(advertRunable);
             }catch (Exception e){
-
             }
             System.exit(0);
         }
         if (keyCode==KeyEvent.KEYCODE_ESCAPE) {
-            if (differentDislay != null) {
-                differentDislay.dismiss();
-            }
-        }
-        if (keyCode==KeyEvent.KEYCODE_ENTER ) {
-            //处理事件
-            imei = DervicesUtils.getMac(mContext);
-            xxh = edt_xxh.getText().toString();
-            if (xxh.equals("")) {
-                OkGo.<String>get(RequstURIUtils.URI.linkusn)
-                        .params("usn", xxh)
-                        .params("mcid", imei)
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onSuccess(Response<String> response) {
-                                String body = response.body();
-                                GsonBuilder gsonBuilder = new GsonBuilder();
-                                Gson gson = gsonBuilder.create();
-                                DevicesBean devicesBean = gson.fromJson(body, DevicesBean.class);
-                                if (devicesBean != null) {
-                                    if (devicesBean.getStatus().equals("1")) {
-                                        differentDislay.show();
-                                        SharedPreferences.Editor editor = sp.edit();
-                                        editor.putString("usn", xxh);
-                                        editor.putString("mcid", imei);
-                                        editor.commit();//提交
-                                        rl_binding.setVisibility(View.GONE);
-                                        AdvertHander.postDelayed(advertRunable, 1000);
-                                        InitDatas();
-                                    } else {
-                                        ToastUtils.showToast(mContext, devicesBean.getMsg() + "");
-                                    }
-                                }
-                            }
-                        });
-
-            } else {
-                ToastUtils.showToast(mContext, "请输入序号号");
+            MyApplication.getInstance().dismissExternalAd();
+            try {
+                handler.removeCallbacks(runnable);
+                mHandler.removeCallbacks(myrunnable);
+                AdvertHander.removeCallbacks(advertRunable);
+            }catch (Exception e){
             }
         }
         return super.onKeyDown(keyCode, event);
     }
-
-
 
     Handler handler = new Handler();
     Runnable runnable = new Runnable() {
@@ -499,11 +426,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 layout_main.setVisibility(View.GONE);
             }
             if (!datas.get(Number).getImg().equals("0")) {
-                img_advert.setVisibility(View.VISIBLE);
-//                Glide.with(mContext).load(datas.get(Number).getImg()).centerCrop().into(img_advert);
-                Glide.with(mContext).load(datas.get(Number).getImg()).transform(new RotateTransformation(360)).into(img_advert);
             } else {
-                img_advert.setVisibility(View.GONE);
             }
             delayMillis = Integer.parseInt(datas.get(Number).getSecond()) * 1000;
             if (Number < datas.size() - 1) {
@@ -583,6 +506,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                             editor.putString("mcid",imei);
                                             editor.commit();//提交
                                             rl_binding.setVisibility(View.GONE);
+                                            img_advertising_code.setVisibility(View.VISIBLE);
                                             AdvertHander.postDelayed(advertRunable,1000);
                                             InitDatas();
                                         } else {
@@ -601,7 +525,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-     public void   getPermissions(){
+    public void  getPermissions(){
          try {
              XXPermissions.with(this)
                      // 可设置被拒绝后继续申请，直到用户授权或者永久拒绝
@@ -643,9 +567,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             TypeResult typeResult = gson.fromJson(body, TypeResult.class);
                             if (typeResult.getStatus().equals("1")){
                                 startActivity(new Intent(mContext,ALYVodplayerActivity.class));
-                                if (differentDislay != null) {
-                                    differentDislay.dismiss();
-                                }
+                                MyApplication.getInstance().dismissExternalAd();
                                 finish();
                             }
                         }
@@ -660,6 +582,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         public void run() {
          InitGgDatas();
+         DataList();
          AdvertHander.postDelayed(advertRunable,600000);
         }
     };

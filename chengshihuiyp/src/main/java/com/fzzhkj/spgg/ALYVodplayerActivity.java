@@ -3,33 +3,38 @@ package com.fzzhkj.spgg;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Paint;
-import android.hardware.display.DisplayManager;
+import android.graphics.Rect;
 import android.os.Build;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Display;
 import android.view.KeyEvent;
 import android.view.SurfaceView;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.alivc.player.AliVcMediaPlayer;
 import com.alivc.player.MediaPlayer;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.hjq.permissions.OnPermission;
-import com.hjq.permissions.XXPermissions;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 
+import java.lang.annotation.IncompleteAnnotationException;
+import java.util.ArrayList;
 import java.util.List;
+
+import master.flame.danmaku.danmaku.model.BaseDanmaku;
+import master.flame.danmaku.danmaku.model.IDanmakus;
+import master.flame.danmaku.danmaku.model.android.DanmakuContext;
+import master.flame.danmaku.danmaku.model.android.Danmakus;
+import master.flame.danmaku.danmaku.parser.BaseDanmakuParser;
 
 public class ALYVodplayerActivity extends AppCompatActivity {
 
@@ -42,8 +47,22 @@ public class ALYVodplayerActivity extends AppCompatActivity {
     private AliVcMediaPlayer mPlayer;
     private boolean IsPlay=true;
     private Handler myhandler;
-    private DifferentDislay differentDislay;
     private ImageView img_advertising_code;
+    private DanmakuContext danmakuContext;
+    private boolean showDanmaku;
+    private Handler handler;
+    private int delayMillis = 1000;
+    private BaseDanmakuParser parser = new BaseDanmakuParser() {
+        @Override
+        protected IDanmakus parse() {
+            return new Danmakus();
+        }
+    };
+    private BaseDanmaku danmaku;
+    private List<subtitle.DataBean> data=new ArrayList<>();
+    private RecyclerView mRecyclerView;
+    private AlyVodAdapter alyVodAdapter;
+    private ImageView img_goods;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,24 +73,68 @@ public class ALYVodplayerActivity extends AppCompatActivity {
         mcid = sp.getString("mcid", "");
         InitUI();
         mSurfaceView = findViewById(R.id.video_view);
+        handler = new Handler();
         mHandler = new Handler();
         myhandler = new Handler();
         myhandler.postDelayed(myrunnable,3000);
         mHandler.postDelayed(PlayRunnable,1000);
-        AdvertHander.postDelayed(advertRunable,1000);
     }
 
     private void InitUI() {
         img_advertising_code = findViewById(R.id.alyvod_img_advertising_code);
-        DisplayManager manager = (DisplayManager) getSystemService(Context.DISPLAY_SERVICE);
-        Display[] displays = manager.getDisplays();
-        // displays[0] 主屏
-        // displays[1] 副屏
-        differentDislay = new DifferentDislay(ALYVodplayerActivity.this,displays[1]);
-        differentDislay.getWindow().setType(
-                WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-        differentDislay.show();
+        img_goods = findViewById(R.id.alyvod_img_goods);
+        MyApplication.getInstance().showExternalAd(ALYVodplayerActivity.this);
+        mRecyclerView = findViewById(R.id.alyvod_RecyclerView);
+        LinearLayoutManager manager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(manager);
+        manager.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerView.setNestedScrollingEnabled(false);
+        alyVodAdapter = new AlyVodAdapter(this, data);
+        mRecyclerView.setAdapter(alyVodAdapter);
+        mRecyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+                super.getItemOffsets(outRect, view, parent, state);
+                outRect.set(0
+                        , 0
+                        , 0
+                        , MxyUtils.dpToPx(mContext, MxyUtils.getDimens(mContext, R.dimen.dp_5)));
+            }
+        });
+        generateSomeDanmaku();
     }
+
+    /**
+     * 随机生成一些弹幕内容以供测试
+     */
+    private void generateSomeDanmaku() {
+        OkGo.<String>get(RequstURIUtils.URI.Subtitle)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        String body = response.body();
+                        GsonBuilder builder = new GsonBuilder();
+                        Gson gson = builder.create();
+                        subtitle subtitle = gson.fromJson(body, subtitle.class);
+                        List<subtitle.DataBean>  datas = subtitle.getData();
+                        if (datas !=null) {
+                            if (data.size()>250) {
+                                for (int a=1;a<50;a++) {
+                                    data.remove(a);
+                                }
+                            }
+                            data.addAll(datas);
+                            alyVodAdapter = new AlyVodAdapter(ALYVodplayerActivity.this, data);
+                            mRecyclerView.setAdapter(alyVodAdapter);
+                            alyVodAdapter.notifyDataSetChanged();
+                            mRecyclerView.scrollToPosition(alyVodAdapter.getItemCount()-1);
+                        }
+                        handler.postDelayed(runnable,delayMillis);
+                    }
+                });
+    }
+
+
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
@@ -108,25 +171,8 @@ public class ALYVodplayerActivity extends AppCompatActivity {
 
                         }
                     });
-            OkGo.<String>get(RequstURIUtils.URI.GetDetailBymchid)
-                    .params("mcid",mcid)
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onSuccess(Response<String> response) {
-                            String body = response.body();
-                            GsonBuilder gsonBuilder = new GsonBuilder();
-                            Gson gson = gsonBuilder.create();
-                            DetailBymchidBean detailBymchidBean = gson.fromJson(body, DetailBymchidBean.class);
-                            if (detailBymchidBean!=null){
-                                if (detailBymchidBean.getStatus()==1){
-                                    DetailBymchidBean.DataBean data = detailBymchidBean.getData();
-                                    String right = data.getRight();
-                                            }
-                            }
-                        }
-                    });
-
-            mHandler.postDelayed(PlayRunnable,30000);
+            InitGgDatas();
+            mHandler.postDelayed(PlayRunnable,600000);
         }
     };
 
@@ -136,7 +182,7 @@ public class ALYVodplayerActivity extends AppCompatActivity {
             MyUrl=url;
             mPlayer = new AliVcMediaPlayer(this, mSurfaceView);
 //            mPlayer.setVideoScalingMode(MediaPlayer.VideoScalingMode.VIDEO_SCALING_MODE_SCALE_TO_FIT);
-                mPlayer.setVideoScalingMode(MediaPlayer.VideoScalingMode.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING);
+            mPlayer.setVideoScalingMode(MediaPlayer.VideoScalingMode.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING);
             mPlayer.setDefaultDecoder(0);
             mPlayer.setCirclePlay(true);
             //准备开始播放
@@ -235,10 +281,8 @@ public class ALYVodplayerActivity extends AppCompatActivity {
                             Gson gson = builder.create();
                             TypeResult typeResult = gson.fromJson(body, TypeResult.class);
                             if (typeResult.getStatus().equals("0")){
+                                MyApplication.getInstance().dismissExternalAd();
                                 startActivity(new Intent(mContext,MainActivity.class));
-                                if (differentDislay != null) {
-                                    differentDislay.dismiss();
-                                }
                                 finish();
                             }
                         }
@@ -252,50 +296,42 @@ public class ALYVodplayerActivity extends AppCompatActivity {
         super.onDestroy();
         myhandler.removeCallbacks(myrunnable);
         mHandler.removeCallbacks(PlayRunnable);
-        AdvertHander.removeCallbacks(advertRunable);
+        mPlayer.stop();
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode==KeyEvent.KEYCODE_ESCAPE) {
-            if (differentDislay != null) {
-                differentDislay.dismiss();
+            MyApplication.getInstance().dismissExternalAd();
+            try {
+                myhandler.removeCallbacks(myrunnable);
+                mHandler.removeCallbacks(PlayRunnable);
+            }catch (Exception e){
+
             }
+            System.exit(0);
+        }
+        if(keyCode == KeyEvent.KEYCODE_BACK ) {
+            try {
+                myhandler.removeCallbacks(myrunnable);
+                mHandler.removeCallbacks(PlayRunnable);
+            }catch (Exception e){
+
+            }
+            System.exit(0);
         }
         return super.onKeyDown(keyCode, event);
     }
 
-    //一分钟更新广告
-    Handler AdvertHander=new Handler();
-    Runnable advertRunable=new Runnable() {
+
+    Runnable runnable=new Runnable() {
         @Override
         public void run() {
-            InitGgDatas();
-            AdvertHander.postDelayed(advertRunable,600000);
+            generateSomeDanmaku();
         }
     };
 
-
-
     private void InitGgDatas() {
-        OkGo.<String>get(RequstURIUtils.URI.Screen)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(Response<String> response) {
-                        Gson gson = new GsonBuilder().create();
-                        ledadbean ledadbean = gson.fromJson(response.body(), ledadbean.class);
-                        if (ledadbean!=null){
-                            if (ledadbean.getStatus()==1){
-                                List<com.fzzhkj.spgg.ledadbean.DataBean> data = ledadbean.getData();
-                                if (data!=null){
-                                    String right = data.get(0).getImg();
-                                    differentDislay.getImg_qrcode(right);
-                                }
-                            }
-                        }
-                    }
-                });
-
         OkGo.<String>get(RequstURIUtils.URI.GetDetailBymchid)
                 .params("mcid",mcid)
                 .execute(new StringCallback() {
@@ -312,6 +348,11 @@ public class ALYVodplayerActivity extends AppCompatActivity {
                                     String leftmoney = data.getLeftmoney();
                                     String right = data.getRight();
                                     Glide.with(ALYVodplayerActivity.this).load(right).into(img_advertising_code);
+                                    List<DetailBymchidBean.DataBean.ThegoodsBean> thegoods = data.getThegoods();
+                                    if (thegoods!=null){
+                                        String topimg = thegoods.get(0).getTopimg();
+                                        Glide.with(ALYVodplayerActivity.this).load(topimg).into(img_goods);
+                                    }
                                 }
                             }
                         }

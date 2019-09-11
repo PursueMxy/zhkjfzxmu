@@ -4,13 +4,18 @@ import java.util.List;
 
 public class subtitle {
 
+
     /**
      * status : 1
+     * starttime : null
+     * liveflag : null
      * msg : 获取字幕成功
-     * data : [{"id":"1","title":"电子屏上线测试啦 ","color":"#FFFFFF","theaccount":"1","dateline":"1564391280","status":"1"}]
+     * data : [{"id":"0","title":"666","color":"","theaccount":"124288","dateline":"1568183514","status":"1","nickname":"宋起文"}]
      */
 
     private int status;
+    private Object starttime;
+    private Object liveflag;
     private String msg;
     private List<DataBean> data;
 
@@ -20,6 +25,22 @@ public class subtitle {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public Object getStarttime() {
+        return starttime;
+    }
+
+    public void setStarttime(Object starttime) {
+        this.starttime = starttime;
+    }
+
+    public Object getLiveflag() {
+        return liveflag;
+    }
+
+    public void setLiveflag(Object liveflag) {
+        this.liveflag = liveflag;
     }
 
     public String getMsg() {
@@ -40,12 +61,13 @@ public class subtitle {
 
     public static class DataBean {
         /**
-         * id : 1
-         * title : 电子屏上线测试啦
-         * color : #FFFFFF
-         * theaccount : 1
-         * dateline : 1564391280
+         * id : 0
+         * title : 666
+         * color :
+         * theaccount : 124288
+         * dateline : 1568183514
          * status : 1
+         * nickname : 宋起文
          */
 
         private String id;
@@ -54,6 +76,7 @@ public class subtitle {
         private String theaccount;
         private String dateline;
         private String status;
+        private String nickname;
 
         public String getId() {
             return id;
@@ -101,6 +124,14 @@ public class subtitle {
 
         public void setStatus(String status) {
             this.status = status;
+        }
+
+        public String getNickname() {
+            return nickname;
+        }
+
+        public void setNickname(String nickname) {
+            this.nickname = nickname;
         }
     }
 }
