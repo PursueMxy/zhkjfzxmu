@@ -1,6 +1,5 @@
 package com.fzzhkj.spgg;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -8,31 +7,20 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Paint;
-import android.hardware.display.DisplayManager;
 import android.media.MediaPlayer;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.telephony.TelephonyManager;
 import android.util.Log;
-import android.view.Display;
 import android.view.KeyEvent;
-import android.view.SurfaceView;
 import android.view.View;
-import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import com.alivc.player.AliVcMediaPlayer;
 import com.bumptech.glide.Glide;
 import com.danikula.videocache.HttpProxyCacheServer;
 import com.google.gson.Gson;
@@ -74,11 +62,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private List<ledadbean.DataBean> datas = new ArrayList<>();
     private int delayMillis = 0;
     private LinearLayout layout_main;
-    private List<LiteDataBean> dataBean = new ArrayList<>();
-    private boolean IsSelect=false;
-    private SurfaceView mSurfaceView;
-    private AliVcMediaPlayer mPlayer;
-    private Handler mHandler;
+    private Handler  mHandler = new Handler();
     private RelativeLayout rl_binding;
     private SharedPreferences sp;
     private EditText edt_xxh;
@@ -86,6 +70,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String xxh;
     private String usn="";
     private ImageView img_advertising_code;
+    private Handler AdvertHander=new Handler();
+    private Handler handler = new Handler();
 
 
     @Override
@@ -137,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        DataList();
+//        DataList();
     }
 
     private void DataList() {
@@ -159,6 +145,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 if (data != null) {
                                     if (data.size() > 0) {
                                         datas.addAll(data);
+                                        Log.e("视频长度",datas.size()+"");
                                         Number = 0;
                                         layout_main.setVisibility(View.VISIBLE);
                                         if (!data.get(0).getVideo().equals("0")) {
@@ -214,38 +201,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         Gson gson = builder.create();
                         final version version = gson.fromJson(body,
                                 version.class);
-                        if (Integer.parseInt(version.getCode())
-                                > versionCode) {
-                            String cate = version.getCate();
-                            AlertDialog.Builder diabuilder = new
-                                    AlertDialog.Builder(MainActivity.this);
-                            diabuilder.setTitle(version.getTitle
-                                    () + "");
-                            diabuilder.setMessage("请选择升级");
-                            diabuilder.setPositiveButton("确定", new
-                                    DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick
-                                                (DialogInterface dialogInterface, int i) {
-                                            new AppDownloadManager
-                                                    (MainActivity.this).downloadApk("http://zmy.0598qq.com/Led/app-release.apk", "版本更新", "版本更新");
-                                        }
-                                    });
-                            diabuilder.setNeutralButton("取消", new
-                                    DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface
-                                                                    dialogInterface, int i) {
-                                            if (version.getCate().equals("1")) {
-                                                System.exit(0);
-                                            }
-                                        }
-                                    });
-                            mAlertDialog = diabuilder.create();
-                            mAlertDialog.show();
-                            mAlertDialog.setCanceledOnTouchOutside
-                                    (false);
+                        if (Integer.parseInt(version.getCode())> versionCode) {
+                            new AppDownloadManager(MainActivity.this).downloadApk("http://wx.cshshop.cn/Led/app-release.apk", "版本更新", "版本更新");
                         }
+//                            String cate = version.getCate();
+//                            AlertDialog.Builder diabuilder = new
+//                                    AlertDialog.Builder(MainActivity.this);
+//                            diabuilder.setTitle(version.getTitle
+//                                    () + "");
+//                            diabuilder.setMessage("请选择升级");
+//                            diabuilder.setPositiveButton("确定", new
+//                                    DialogInterface.OnClickListener() {
+//                                        @Override
+//                                        public void onClick
+//                                                (DialogInterface dialogInterface, int i) {
+//                                            new AppDownloadManager
+//                                                    (MainActivity.this).downloadApk("http://wx.cshshop.cn/Led/app-release.apk", "版本更新", "版本更新");
+//                                        }
+//                                    });
+//                            diabuilder.setNeutralButton("取消", new
+//                                    DialogInterface.OnClickListener() {
+//                                        @Override
+//                                        public void onClick(DialogInterface
+//                                                                    dialogInterface, int i) {
+//                                            if (version.getCate().equals("1")) {
+//                                                System.exit(0);
+//                                            }
+//                                        }
+//                                    });
+//                            mAlertDialog = diabuilder.create();
+//                            mAlertDialog.show();
+//                            mAlertDialog.setCanceledOnTouchOutside(false);
+//                        }
                     }
                 });
     }
@@ -281,8 +268,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                                 rl_binding.setVisibility(View.GONE);
                                                 img_advertising_code.setVisibility(View.VISIBLE);
                                                 AdvertHander.postDelayed(advertRunable, 1000);
-                                                InitDatas();
                                                 MyApplication.getInstance().showExternalAd(MainActivity.this);
+                                                InitDatas();
                                             } else {
                                                 ToastUtils.showToast(mContext, devicesBean.getMsg() + "");
                                             }
@@ -358,10 +345,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     String leftmoney = data.getLeftmoney();
                                     String right = data.getRight();
                                     Glide.with(mContext).load(right).into(img_advertising_code);
-                                    List<AdvertBean.DataBean.ThegoodsBean> thegoods = data.getThegoods();
-                                    if (thegoods!=null){
-                                    }
-
                                  }
                             }
                         }
@@ -370,9 +353,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
    public void InitDatas(){
-       mHandler = new Handler();
        mHandler.postDelayed(myrunnable,5);
-           InitData();
+       InitData();
    }
 
     @Override
@@ -411,47 +393,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return super.onKeyDown(keyCode, event);
     }
 
-    Handler handler = new Handler();
-    Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-            if (!datas.get(Number).getVideo().equals("0")) {
-                layout_main.setVisibility(View.VISIBLE);
-                proxyUrl = proxy.getProxyUrl(datas.get(Number).getVideo());
-                videoPlay.setVideoPath(proxyUrl);
-                videoPlay.requestFocus();//让VideiView获取焦点
-                videoPlay.start();
-            } else {
-                videoPlay.stopPlayback(); //播放异常，则停止播放,防止弹窗使界面阻塞
-                layout_main.setVisibility(View.GONE);
-            }
-            if (!datas.get(Number).getImg().equals("0")) {
-            } else {
-            }
-            delayMillis = Integer.parseInt(datas.get(Number).getSecond()) * 1000;
-            if (Number < datas.size() - 1) {
-                Number = Number + 1;
-            } else {
-                Number = 0;
-            }
-            SharedPreferences share = getSharedPreferences
-                    ("industryInfo", Activity.MODE_PRIVATE);
-            String industryOne = share.getString("retime", "");
-            SimpleDateFormat dfs = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String str2 = dfs.format(new Date());
-            int distanceTimemin = getDistanceTimemin(industryOne, str2);
-            if (distanceTimemin > 2) {
-                SharedPreferences sharedPreferences = getSharedPreferences("industryInfo", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("retime", str2);
-                editor.commit();//提交
-                DataList();
-                InitApkVersion();
-            }else {
-                handler.postDelayed(runnable, delayMillis);
-            }
-        }
-    };
 
     public static int getDistanceTimemin(String str1, String str2) {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -508,6 +449,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                             rl_binding.setVisibility(View.GONE);
                                             img_advertising_code.setVisibility(View.VISIBLE);
                                             AdvertHander.postDelayed(advertRunable,1000);
+                                            MyApplication.getInstance().showExternalAd(MainActivity.this);
                                             InitDatas();
                                         } else {
                                             ToastUtils.showToast(mContext,devicesBean.getMsg()+"" );
@@ -530,7 +472,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
              XXPermissions.with(this)
                      // 可设置被拒绝后继续申请，直到用户授权或者永久拒绝
                      .constantRequest()
-                     // 支持请求6.0悬浮窗权限8.0请求安装权限
+                     // 支持请求6.0悬浮窗权限
                      .permission(Permission.SYSTEM_ALERT_WINDOW)
                      .permission(Permission.WRITE_EXTERNAL_STORAGE)
                      .permission(Permission.CAMERA)
@@ -577,13 +519,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     };
 
     //一分钟更新广告
-    Handler AdvertHander=new Handler();
     Runnable advertRunable=new Runnable() {
         @Override
         public void run() {
-         InitGgDatas();
-         DataList();
-         AdvertHander.postDelayed(advertRunable,600000);
+            DataList();
+            InitGgDatas();
+         AdvertHander.postDelayed(advertRunable,900000);
+        }
+    };
+
+    Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            if (!datas.get(Number).getVideo().equals("0")) {
+                layout_main.setVisibility(View.VISIBLE);
+                proxyUrl = proxy.getProxyUrl(datas.get(Number).getVideo());
+                videoPlay.setVideoPath(proxyUrl);
+                videoPlay.requestFocus();//让VideiView获取焦点
+                videoPlay.start();
+            } else {
+                videoPlay.stopPlayback(); //播放异常，则停止播放,防止弹窗使界面阻塞
+                layout_main.setVisibility(View.GONE);
+            }
+            if (!datas.get(Number).getImg().equals("0")) {
+            } else {
+            }
+            delayMillis = Integer.parseInt(datas.get(Number).getSecond()) * 1000;
+            if (Number < datas.size() - 1) {
+                Number = Number + 1;
+            } else {
+                Number = 0;
+            }
+           handler.postDelayed(runnable, delayMillis);
         }
     };
 }

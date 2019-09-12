@@ -44,11 +44,6 @@
         </activity>
         <activity android:name=".ALYVodplayerActivity">
         </activity>
-        <activity
-            android:name=".ALiVodPlayerActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:launchMode="singleTask"
-            android:screenOrientation="landscape" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"

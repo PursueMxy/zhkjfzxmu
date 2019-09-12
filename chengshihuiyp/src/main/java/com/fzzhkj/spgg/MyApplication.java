@@ -111,14 +111,19 @@ public class MyApplication extends Application {
     }
 
     public DifferentDislay showExternalAd(Context context) {
-        if (mPresentation == null) {
-            mPresentation = new DifferentDislay(context, displays[displays.length - 1]);// displays[1]是副屏 displays[0]是主屏
-            mPresentation.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-            mPresentation.show();
-            return mPresentation;
-        } else {
-            return null;
-        }
+            if (mPresentation == null) {
+                try {
+                    mPresentation = new DifferentDislay(context, displays[displays.length - 1]);// displays[1]是副屏 displays[0]是主屏
+                    mPresentation.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+                    mPresentation.show();
+                    return mPresentation;
+                }catch (Exception e){
+                    return null;
+                }
+            } else {
+                return null;
+            }
+
     }
 
     public void dismissExternalAd(){

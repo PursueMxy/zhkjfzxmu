@@ -26,15 +26,8 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 
-import java.lang.annotation.IncompleteAnnotationException;
 import java.util.ArrayList;
 import java.util.List;
-
-import master.flame.danmaku.danmaku.model.BaseDanmaku;
-import master.flame.danmaku.danmaku.model.IDanmakus;
-import master.flame.danmaku.danmaku.model.android.DanmakuContext;
-import master.flame.danmaku.danmaku.model.android.Danmakus;
-import master.flame.danmaku.danmaku.parser.BaseDanmakuParser;
 
 public class ALYVodplayerActivity extends AppCompatActivity {
 
@@ -42,27 +35,18 @@ public class ALYVodplayerActivity extends AppCompatActivity {
     private SharedPreferences sp;
     private String mcid;
     private SurfaceView mSurfaceView;
-    private Handler mHandler;
     private String MyUrl="";
     private AliVcMediaPlayer mPlayer;
     private boolean IsPlay=true;
-    private Handler myhandler;
     private ImageView img_advertising_code;
-    private DanmakuContext danmakuContext;
-    private boolean showDanmaku;
-    private Handler handler;
-    private int delayMillis = 1000;
-    private BaseDanmakuParser parser = new BaseDanmakuParser() {
-        @Override
-        protected IDanmakus parse() {
-            return new Danmakus();
-        }
-    };
-    private BaseDanmaku danmaku;
+    private int delayMillis = 2000;
     private List<subtitle.DataBean> data=new ArrayList<>();
     private RecyclerView mRecyclerView;
     private AlyVodAdapter alyVodAdapter;
     private ImageView img_goods;
+    private Handler handler = new Handler();
+    private Handler mHandler = new Handler();
+    private Handler myhandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,9 +57,6 @@ public class ALYVodplayerActivity extends AppCompatActivity {
         mcid = sp.getString("mcid", "");
         InitUI();
         mSurfaceView = findViewById(R.id.video_view);
-        handler = new Handler();
-        mHandler = new Handler();
-        myhandler = new Handler();
         myhandler.postDelayed(myrunnable,3000);
         mHandler.postDelayed(PlayRunnable,1000);
     }
@@ -108,28 +89,35 @@ public class ALYVodplayerActivity extends AppCompatActivity {
      * 随机生成一些弹幕内容以供测试
      */
     private void generateSomeDanmaku() {
+        long current_time = System.currentTimeMillis()/1000;
         OkGo.<String>get(RequstURIUtils.URI.Subtitle)
+                .params("timeline",current_time)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
                         String body = response.body();
                         GsonBuilder builder = new GsonBuilder();
                         Gson gson = builder.create();
-                        subtitle subtitle = gson.fromJson(body, subtitle.class);
-                        List<subtitle.DataBean>  datas = subtitle.getData();
-                        if (datas !=null) {
-                            if (data.size()>250) {
-                                for (int a=1;a<50;a++) {
-                                    data.remove(a);
+                        try {
+                            subtitle subtitle = gson.fromJson(body, subtitle.class);
+                            List<subtitle.DataBean> datas = subtitle.getData();
+                            if (datas != null) {
+                                if (data.size() >50) {
+                                    for (int a = 1; a < 50; a++) {
+                                        data.remove(a);
+                                    }
                                 }
+                                data.addAll(datas);
+                                alyVodAdapter = new AlyVodAdapter(ALYVodplayerActivity.this, data);
+                                mRecyclerView.setAdapter(alyVodAdapter);
+                                alyVodAdapter.notifyDataSetChanged();
+                                mRecyclerView.scrollToPosition(alyVodAdapter.getItemCount() - 1);
                             }
-                            data.addAll(datas);
-                            alyVodAdapter = new AlyVodAdapter(ALYVodplayerActivity.this, data);
-                            mRecyclerView.setAdapter(alyVodAdapter);
-                            alyVodAdapter.notifyDataSetChanged();
-                            mRecyclerView.scrollToPosition(alyVodAdapter.getItemCount()-1);
+
+                            handler.postDelayed(runnable, delayMillis);
+                        }catch (Exception e){
+
                         }
-                        handler.postDelayed(runnable,delayMillis);
                     }
                 });
     }
@@ -152,29 +140,6 @@ public class ALYVodplayerActivity extends AppCompatActivity {
     }
 
 
-    Runnable PlayRunnable=new Runnable() {
-        @Override
-        public void run() {
-            OkGo.<String>get(RequstURIUtils.URI.livrURL)
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onSuccess(Response<String> response) {
-                            String body = response.body();
-                            GsonBuilder gsonBuilder = new GsonBuilder();
-                            Gson gson = gsonBuilder.create();
-                            LiveUrlBean liveUrlBean = gson.fromJson(body, LiveUrlBean.class);
-                            if (liveUrlBean!=null){
-                                if (liveUrlBean.getStatus()==1){
-                                    InitJDUI(liveUrlBean.getUrl());
-                                }
-                            }
-
-                        }
-                    });
-            InitGgDatas();
-            mHandler.postDelayed(PlayRunnable,600000);
-        }
-    };
 
     private void InitJDUI(String url) {
         if (url.equals(MyUrl)) {
@@ -268,6 +233,78 @@ public class ALYVodplayerActivity extends AppCompatActivity {
         }
     }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        try {
+            myhandler.removeCallbacks(myrunnable);
+            mHandler.removeCallbacks(PlayRunnable);
+            handler.removeCallbacks(runnable);
+            mPlayer.stop();
+        }catch (Exception e){
+
+        }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode==KeyEvent.KEYCODE_ESCAPE) {
+            MyApplication.getInstance().dismissExternalAd();
+            try {
+                myhandler.removeCallbacks(myrunnable);
+                mHandler.removeCallbacks(PlayRunnable);
+                handler.removeCallbacks(runnable);
+            }catch (Exception e){
+
+            }
+            System.exit(0);
+        }
+        if(keyCode == KeyEvent.KEYCODE_BACK ) {
+            try {
+                myhandler.removeCallbacks(myrunnable);
+                mHandler.removeCallbacks(PlayRunnable);
+                handler.removeCallbacks(runnable);
+            }catch (Exception e){
+
+            }
+            System.exit(0);
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+
+    Runnable PlayRunnable=new Runnable() {
+        @Override
+        public void run() {
+            OkGo.<String>get(RequstURIUtils.URI.livrURL)
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onSuccess(Response<String> response) {
+                            String body = response.body();
+                            GsonBuilder gsonBuilder = new GsonBuilder();
+                            Gson gson = gsonBuilder.create();
+                            LiveUrlBean liveUrlBean = gson.fromJson(body, LiveUrlBean.class);
+                            if (liveUrlBean!=null){
+                                if (liveUrlBean.getStatus()==1){
+                                    InitJDUI(liveUrlBean.getUrl());
+                                }
+                            }
+
+                        }
+                    });
+            InitGgDatas();
+            mHandler.postDelayed(PlayRunnable,600000);
+        }
+    };
+
+    Runnable runnable=new Runnable() {
+        @Override
+        public void run() {
+            generateSomeDanmaku();
+        }
+    };
+
     //获取是否开启直播
     Runnable myrunnable=new Runnable() {
         @Override
@@ -291,48 +328,8 @@ public class ALYVodplayerActivity extends AppCompatActivity {
         }
     };
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        myhandler.removeCallbacks(myrunnable);
-        mHandler.removeCallbacks(PlayRunnable);
-        mPlayer.stop();
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode==KeyEvent.KEYCODE_ESCAPE) {
-            MyApplication.getInstance().dismissExternalAd();
-            try {
-                myhandler.removeCallbacks(myrunnable);
-                mHandler.removeCallbacks(PlayRunnable);
-            }catch (Exception e){
-
-            }
-            System.exit(0);
-        }
-        if(keyCode == KeyEvent.KEYCODE_BACK ) {
-            try {
-                myhandler.removeCallbacks(myrunnable);
-                mHandler.removeCallbacks(PlayRunnable);
-            }catch (Exception e){
-
-            }
-            System.exit(0);
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-
-
-    Runnable runnable=new Runnable() {
-        @Override
-        public void run() {
-            generateSomeDanmaku();
-        }
-    };
-
     private void InitGgDatas() {
-        OkGo.<String>get(RequstURIUtils.URI.GetDetailBymchid)
+        OkGo.<String>get(RequstURIUtils.URI.AdGoodsQrcode)
                 .params("mcid",mcid)
                 .execute(new StringCallback() {
                     @Override
@@ -345,7 +342,6 @@ public class ALYVodplayerActivity extends AppCompatActivity {
                             if (detailBymchidBean.getStatus()==1){
                                 DetailBymchidBean.DataBean data = detailBymchidBean.getData();
                                 if (data!=null){
-                                    String leftmoney = data.getLeftmoney();
                                     String right = data.getRight();
                                     Glide.with(ALYVodplayerActivity.this).load(right).into(img_advertising_code);
                                     List<DetailBymchidBean.DataBean.ThegoodsBean> thegoods = data.getThegoods();
