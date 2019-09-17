@@ -1,8 +1,7 @@
 package com.fzzhkj.spgg;
 
-import android.app.Activity;
+import android.accessibilityservice.AccessibilityServiceInfo;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -10,12 +9,15 @@ import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Handler;
+import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.accessibility.AccessibilityManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,6 +25,18 @@ import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
 import com.danikula.videocache.HttpProxyCacheServer;
+import com.fzzhkj.spgg.Bean.AdvertBean;
+import com.fzzhkj.spgg.Bean.DevicesBean;
+import com.fzzhkj.spgg.Bean.LiteDataBean;
+import com.fzzhkj.spgg.Bean.TypeResult;
+import com.fzzhkj.spgg.Bean.ledadbean;
+import com.fzzhkj.spgg.Bean.version;
+import com.fzzhkj.spgg.CustView.CustomVideoView;
+import com.fzzhkj.spgg.Utils.AppDownloadManager;
+import com.fzzhkj.spgg.Utils.DervicesUtils;
+import com.fzzhkj.spgg.Utils.NetWorkUtils;
+import com.fzzhkj.spgg.Utils.RequstURIUtils;
+import com.fzzhkj.spgg.Utils.ToastUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.hjq.permissions.OnPermission;
@@ -34,14 +48,10 @@ import com.lzy.okgo.model.Response;
 
 import org.litepal.LitePal;
 
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 /**
  * The type Main activity.
@@ -60,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private AlertDialog mAlertDialog;
     private int Number = 0;
     private List<ledadbean.DataBean> datas = new ArrayList<>();
-    private int delayMillis = 0;
+    private int delayMillis = 100;
     private LinearLayout layout_main;
     private Handler  mHandler = new Handler();
     private RelativeLayout rl_binding;
@@ -68,10 +78,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText edt_xxh;
     private String imei="";
     private String xxh;
-    private String usn="";
+    private String usn="250127745951";
     private ImageView img_advertising_code;
     private Handler AdvertHander=new Handler();
     private Handler handler = new Handler();
+    private SharedPreferences spisupdate;
+    private String update="fale";
+    private boolean networkConnected=false;
+    private List<LiteDataBean> liteDataBeanList=new ArrayList<>();
 
 
     @Override
@@ -87,10 +101,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         editor.putString("retime", nowtime);
         editor.commit();//提交
         sp = getSharedPreferences("binding", Context.MODE_PRIVATE);
-        usn = sp.getString("usn", "");
+//        usn = sp.getString("usn", "");
         imei = sp.getString("mcid", "");
+        spisupdate = getSharedPreferences("isupdate", Context.MODE_PRIVATE);
+        update =spisupdate.getString("update", "");
         if (imei.equals("")){
-            imei =DervicesUtils.getMac(mContext);
+            imei = DervicesUtils.getMac(mContext);
+        }
+        if (!update.equals("truess")) {
+            updateServiceStatus();
+        }else {
+            Log.e("updatesss",update);
         }
         InitUI();
     }
@@ -123,70 +144,74 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-//        DataList();
     }
 
     private void DataList() {
-            handler.removeCallbacks(runnable);
-            //获取播放列表
-            OkGo.<String>get(RequstURIUtils.URI.lists)
-                    .params("mcid",imei)
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onSuccess(Response<String>
-                                                      response) {
-                            datas.clear();
-                            String body = response.body();
-                            GsonBuilder builder = new GsonBuilder();
-                            Gson gson = builder.create();
-                            ledadbean ledadbean = gson.fromJson(body,ledadbean.class);
-                            List<com.fzzhkj.spgg.ledadbean.DataBean> data = ledadbean.getData();
-                            try {
-                                if (data != null) {
-                                    if (data.size() > 0) {
-                                        datas.addAll(data);
-                                        Log.e("视频长度",datas.size()+"");
-                                        Number = 0;
-                                        layout_main.setVisibility(View.VISIBLE);
-                                        if (!data.get(0).getVideo().equals("0")) {
-                                            proxyUrl = proxy.getProxyUrl(data.get(0).getVideo());
-                                            videoPlay.setVideoPath(proxyUrl);
-                                            videoPlay.requestFocus();//让VideiView获取焦点
-                                            videoPlay.start();//开始播放
-                                        } else {
-                                            layout_main.setVisibility(View.GONE);
-                                        }
-                                        delayMillis = Integer.parseInt(data.get(0).getSecond()) * 1000;
-                                        handler.postDelayed(runnable,delayMillis);
-                                        if (data.size() > 1) {
-                                            Number = Number + 1;
-                                        }
-                                        LitePal.deleteAll(LiteDataBean.class);
-                                        for (int a = 0; a < data.size(); a++) {
-                                            LiteDataBean liteDataBean = new LiteDataBean();
-                                            liteDataBean.setdbid(data.get(a).getId());
-                                            liteDataBean.setTitle(data.get(a).getTitle());
-                                            liteDataBean.setStart(data.get(a).getStart());
-                                            liteDataBean.setEnd(data.get(a).getEnd());
-                                            liteDataBean.setImg(data.get(a).getImg());
-                                            liteDataBean.setVideo(data.get(a).getVideo());
-                                            liteDataBean.setStatus(data.get(a).getStatus());
-                                            liteDataBean.setOrd(data.get(a).getOrd());
-                                            liteDataBean.setCate(data.get(a).getCate());
-                                            liteDataBean.setSecond(data.get(a).getSecond());
-                                            liteDataBean.save();
-                                        }
-                                    }
-                                } else {
-                                    layout_main.setVisibility(View.GONE);
-                                }
-                            } catch (Exception e) {
-                                layout_main.setVisibility(View.GONE);
-                            }
-                        }
+        networkConnected = NetWorkUtils.isNetworkConnected(mContext);
+         if (networkConnected) {
+             handler.removeCallbacks(runnable);
+             //获取播放列表
+             OkGo.<String>get(RequstURIUtils.URI.lists)
+                     .params("mcid", imei)
+                     .execute(new StringCallback() {
+                         @Override
+                         public void onSuccess(Response<String>
+                                                       response) {
+                             datas.clear();
+                             String body = response.body();
+                             GsonBuilder builder = new GsonBuilder();
+                             Gson gson = builder.create();
+                             ledadbean ledadbean = gson.fromJson(body, ledadbean.class);
+                             List<com.fzzhkj.spgg.Bean.ledadbean.DataBean> data = ledadbean.getData();
+                             try {
+                                 if (data != null) {
+                                     if (data.size() > 0) {
+                                         datas.addAll(data);
+                                         Number = 0;
+                                         layout_main.setVisibility(View.VISIBLE);
+                                         if (!data.get(0).getVideo().equals("0")) {
+                                             proxyUrl = proxy.getProxyUrl(data.get(0).getVideo());
+                                             videoPlay.setVideoPath(proxyUrl);
+                                             videoPlay.requestFocus();//让VideiView获取焦点
+                                             videoPlay.start();//开始播放
+                                         } else {
+                                             layout_main.setVisibility(View.GONE);
+                                         }
+                                         delayMillis = Integer.parseInt(data.get(0).getSecond()) * 1000;
+                                         handler.postDelayed(runnable, delayMillis);
+                                         if (data.size() > 1) {
+                                             Number = Number + 1;
+                                         }
+                                         LitePal.deleteAll(LiteDataBean.class);
+                                         for (int a = 0; a < data.size(); a++) {
+                                             LiteDataBean liteDataBean = new LiteDataBean();
+                                             liteDataBean.setdbid(data.get(a).getId());
+                                             liteDataBean.setTitle(data.get(a).getTitle());
+                                             liteDataBean.setStart(data.get(a).getStart());
+                                             liteDataBean.setEnd(data.get(a).getEnd());
+                                             liteDataBean.setImg(data.get(a).getImg());
+                                             liteDataBean.setVideo(data.get(a).getVideo());
+                                             liteDataBean.setStatus(data.get(a).getStatus());
+                                             liteDataBean.setOrd(data.get(a).getOrd());
+                                             liteDataBean.setCate(data.get(a).getCate());
+                                             liteDataBean.setSecond(data.get(a).getSecond());
+                                             liteDataBean.save();
+                                         }
+                                     }
+                                 } else {
+                                     layout_main.setVisibility(View.GONE);
+                                 }
+                             } catch (Exception e) {
+                                 layout_main.setVisibility(View.GONE);
+                             }
+                         }
 
 
-                    });
+                     });
+         }else {
+             liteDataBeanList = LitePal.findAll(LiteDataBean.class);
+             handler.postDelayed(runnable, delayMillis);
+         }
     }
 
     private void InitApkVersion() {
@@ -204,35 +229,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         if (Integer.parseInt(version.getCode())> versionCode) {
                             new AppDownloadManager(MainActivity.this).downloadApk("http://wx.cshshop.cn/Led/app-release.apk", "版本更新", "版本更新");
                         }
-//                            String cate = version.getCate();
-//                            AlertDialog.Builder diabuilder = new
-//                                    AlertDialog.Builder(MainActivity.this);
-//                            diabuilder.setTitle(version.getTitle
-//                                    () + "");
-//                            diabuilder.setMessage("请选择升级");
-//                            diabuilder.setPositiveButton("确定", new
-//                                    DialogInterface.OnClickListener() {
-//                                        @Override
-//                                        public void onClick
-//                                                (DialogInterface dialogInterface, int i) {
-//                                            new AppDownloadManager
-//                                                    (MainActivity.this).downloadApk("http://wx.cshshop.cn/Led/app-release.apk", "版本更新", "版本更新");
-//                                        }
-//                                    });
-//                            diabuilder.setNeutralButton("取消", new
-//                                    DialogInterface.OnClickListener() {
-//                                        @Override
-//                                        public void onClick(DialogInterface
-//                                                                    dialogInterface, int i) {
-//                                            if (version.getCate().equals("1")) {
-//                                                System.exit(0);
-//                                            }
-//                                        }
-//                                    });
-//                            mAlertDialog = diabuilder.create();
-//                            mAlertDialog.show();
-//                            mAlertDialog.setCanceledOnTouchOutside(false);
-//                        }
                     }
                 });
     }
@@ -353,8 +349,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
    public void InitDatas(){
-       mHandler.postDelayed(myrunnable,5);
        InitData();
+       mHandler.postDelayed(myrunnable,5);
    }
 
     @Override
@@ -393,35 +389,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return super.onKeyDown(keyCode, event);
     }
 
-
-    public static int getDistanceTimemin(String str1, String str2) {
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date one;
-        Date two;
-        long day = 0;//天数差
-        long hour = 0;//小时数差
-        long min = 0;//分钟数差
-        long second = 0;//秒数差
-        try {
-            final Calendar c = Calendar.getInstance();
-            c.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
-            one = df.parse(str1);
-            c.setTime(one);
-            two = df.parse(str2);
-            long time1 = one.getTime();
-            long time2 = two.getTime();
-            long diff;
-            diff = time2 - time1;
-
-            day = diff / (24 * 60 * 60 * 1000);
-            hour = (diff / (60 * 60 * 1000) - day * 24);
-            min = ((diff / (60 * 1000)) - day * 24 * 60 - hour * 60);
-            second = diff / 1000;
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return (int) min;
-    }
 
     @Override
     public void onClick(View v) {
@@ -476,6 +443,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                      .permission(Permission.SYSTEM_ALERT_WINDOW)
                      .permission(Permission.WRITE_EXTERNAL_STORAGE)
                      .permission(Permission.CAMERA)
+                     .permission(Permission.REQUEST_INSTALL_PACKAGES)
                      // 不指定权限则自动获取清单中的危险权限
                      .request(new OnPermission() {
 
@@ -493,6 +461,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
          }
      }
+
+    private void updateServiceStatus() {
+        boolean ServiceEnabled = false;
+        // 循环遍历所有服务，查看是否开启
+        AccessibilityManager accessibilityManager = (AccessibilityManager) getSystemService(Context.ACCESSIBILITY_SERVICE);
+        List<AccessibilityServiceInfo> accessibilityServices = accessibilityManager
+                .getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_SPOKEN);
+        for (AccessibilityServiceInfo info : accessibilityServices) {
+            if (info.getId().equals(getPackageName() + "/.AccessibilityServiceExample")) {
+                ServiceEnabled = true;
+                break;
+            }
+        }
+        if (ServiceEnabled) {
+            Log.e("测试服务","关闭测试服务");
+            // Prevent screen from dimming
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        } else {
+            Log.e("测试服务","开启测试服务");
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
+            SharedPreferences.Editor editors = spisupdate.edit();
+            editors.putString("update","true");
+            editors.commit();//提交
+        }
+    }
 
 
     //获取是否开启直播
@@ -514,6 +508,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             }
                         }
                     });
+            if (networkConnected){
+                  if (datas.size()==0){
+                      DataList();
+                  }
+            }else {
+                networkConnected = NetWorkUtils.isNetworkConnected(mContext);
+            }
             mHandler.postDelayed(myrunnable,3000);
         }
     };
@@ -524,33 +525,59 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         public void run() {
             DataList();
             InitGgDatas();
-         AdvertHander.postDelayed(advertRunable,900000);
+         AdvertHander.postDelayed(advertRunable,600000);
         }
     };
 
     Runnable runnable = new Runnable() {
         @Override
         public void run() {
-            if (!datas.get(Number).getVideo().equals("0")) {
-                layout_main.setVisibility(View.VISIBLE);
-                proxyUrl = proxy.getProxyUrl(datas.get(Number).getVideo());
-                videoPlay.setVideoPath(proxyUrl);
-                videoPlay.requestFocus();//让VideiView获取焦点
-                videoPlay.start();
-            } else {
-                videoPlay.stopPlayback(); //播放异常，则停止播放,防止弹窗使界面阻塞
-                layout_main.setVisibility(View.GONE);
+            if (networkConnected) {
+                try {
+                    if (!datas.get(Number).getVideo().equals("0")) {
+                        layout_main.setVisibility(View.VISIBLE);
+                        proxyUrl = proxy.getProxyUrl(datas.get(Number).getVideo());
+                        videoPlay.setVideoPath(proxyUrl);
+                        videoPlay.requestFocus();//让VideiView获取焦点
+                        videoPlay.start();
+                    } else {
+                        videoPlay.stopPlayback(); //播放异常，则停止播放,防止弹窗使界面阻塞
+                        layout_main.setVisibility(View.GONE);
+                    }
+                    delayMillis = Integer.parseInt(datas.get(Number).getSecond()) * 1000;
+                    if (Number < datas.size() - 1) {
+                        Number = Number + 1;
+                    } else {
+                        Number = 0;
+                    }
+                }catch (Exception e){
+
+                }
+                handler.postDelayed(runnable, delayMillis);
+            }else {
+                try{
+                if (!liteDataBeanList.get(Number).getVideo().equals("0")) {
+                    layout_main.setVisibility(View.VISIBLE);
+                    proxyUrl = proxy.getProxyUrl(liteDataBeanList.get(Number).getVideo());
+                    videoPlay.setVideoPath(proxyUrl);
+                    videoPlay.requestFocus();//让VideiView获取焦点
+                    videoPlay.start();
+                } else {
+                    videoPlay.stopPlayback(); //播放异常，则停止播放,防止弹窗使界面阻塞
+                    layout_main.setVisibility(View.GONE);
+                }
+                delayMillis = Integer.parseInt(liteDataBeanList.get(Number).getSecond()) * 1000;
+                if (Number < liteDataBeanList.size() - 1) {
+                    Number = Number + 1;
+                } else {
+                    Number = 0;
+                }
+                }catch (Exception e){
+
+                }
+                handler.postDelayed(runnable, delayMillis);
             }
-            if (!datas.get(Number).getImg().equals("0")) {
-            } else {
-            }
-            delayMillis = Integer.parseInt(datas.get(Number).getSecond()) * 1000;
-            if (Number < datas.size() - 1) {
-                Number = Number + 1;
-            } else {
-                Number = 0;
-            }
-           handler.postDelayed(runnable, delayMillis);
         }
     };
+
 }

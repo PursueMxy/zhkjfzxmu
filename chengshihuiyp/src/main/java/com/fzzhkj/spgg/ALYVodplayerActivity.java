@@ -16,10 +16,17 @@ import android.view.KeyEvent;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
+
 import com.alivc.player.AliVcMediaPlayer;
 import com.alivc.player.MediaPlayer;
 import com.bumptech.glide.Glide;
+import com.fzzhkj.spgg.Adapter.AlyVodAdapter;
+import com.fzzhkj.spgg.Bean.DetailBymchidBean;
+import com.fzzhkj.spgg.Bean.LiveUrlBean;
+import com.fzzhkj.spgg.Bean.TypeResult;
+import com.fzzhkj.spgg.Bean.subtitle;
+import com.fzzhkj.spgg.Utils.MxyUtils;
+import com.fzzhkj.spgg.Utils.RequstURIUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.lzy.okgo.OkGo;
@@ -343,11 +350,15 @@ public class ALYVodplayerActivity extends AppCompatActivity {
                                 DetailBymchidBean.DataBean data = detailBymchidBean.getData();
                                 if (data!=null){
                                     String right = data.getRight();
-                                    Glide.with(ALYVodplayerActivity.this).load(right).into(img_advertising_code);
+                                    if (img_advertising_code!=null) {
+                                        Glide.with(ALYVodplayerActivity.this).load(right).into(img_advertising_code);
+                                    }
                                     List<DetailBymchidBean.DataBean.ThegoodsBean> thegoods = data.getThegoods();
                                     if (thegoods!=null){
                                         String topimg = thegoods.get(0).getTopimg();
-                                        Glide.with(ALYVodplayerActivity.this).load(topimg).into(img_goods);
+                                        if (img_goods!=null) {
+                                            Glide.with(ALYVodplayerActivity.this).load(topimg).into(img_goods);
+                                        }
                                     }
                                 }
                             }

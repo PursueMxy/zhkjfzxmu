@@ -3,12 +3,12 @@ package com.fzzhkj.spgg;
 import android.app.Application;
 import android.content.Context;
 import android.hardware.display.DisplayManager;
-import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
 
 import com.alivc.player.AliVcMediaPlayer;
 import com.danikula.videocache.HttpProxyCacheServer;
+import com.fzzhkj.spgg.Utils.DifferentDislay;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheEntity;
 import com.lzy.okgo.cache.CacheMode;

@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.fzzhkj.spgg">
+
     <!-- 显示系统窗口权限 -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /> <!-- 在 屏幕最顶部显示addview -->
     <uses-permission android:name="android.permission.SYSTEM_OVERLAY_WINDOW" />
@@ -26,10 +27,13 @@
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.GET_TASKS" /> <!-- <uses-permission android:name="android.permission.WAKE_LOCK"/> -->
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
-
+    <uses-permission
+        android:name="android.permission.INSTALL_PACKAGES"
+        tools:ignore="ProtectedPermissions" />
 
     <application
         android:name=".MyApplication"
@@ -40,14 +44,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".HomeActivity">
-        </activity>
-        <activity android:name=".ALYVodplayerActivity">
-        </activity>
+        <meta-data
+            android:name="com.google.android.actions"
+            android:resource="@xml/auto_reply_service_config" />
+
+        <activity android:name=".ALYVodplayerActivity"></activity>
 
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="ccom.fzzhkj.spgg.provider"
+            android:authorities="com.fzzhkj.spgg.provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -66,6 +71,34 @@
             </intent-filter>
         </activity>
         <activity android:name=".AndroidOPermissionActivity" />
+
+        <receiver android:name=".SerRec.BootBroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".SerRec.MyReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_REPLACED" />
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+                <data android:scheme="package"/>
+            </intent-filter>
+        </receiver>
+        <service
+            android:name=".SerRec.AutoReplyService"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/auto_reply_service_config" />
+        </service>
     </application>
 
 </manifest>

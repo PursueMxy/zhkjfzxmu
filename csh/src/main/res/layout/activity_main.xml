@@ -11,7 +11,7 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <com.fzzhkj.spgg.CustomVideoView
+        <com.fzzhkj.spgg.CustView.CustomVideoView
             android:layout_weight="1"
             android:id="@+id/videoPlayView"
             android:layout_width="match_parent"

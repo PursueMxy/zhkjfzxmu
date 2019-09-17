@@ -3,6 +3,6 @@
     <dbname value="spggsql" />
     <version value="6" />
     <list>
-        <mapping class="com.fzzhkj.spgg.LiteDataBean" />
+        <mapping class="com.fzzhkj.spgg.Bean.LiteDataBean" />
     </list>
 </litepal>
